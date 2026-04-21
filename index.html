@@ -449,10 +449,10 @@
   .modal-body {
     overflow: hidden;
     flex: 1 1 auto;
-    padding: 20px 40px 14px;
+    padding: 14px 36px 10px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     min-height: 0;
   }
 
@@ -474,23 +474,23 @@
   .section-tag.insight { background: var(--neon); color: var(--bg); }
 
   .story-title {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 900;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     line-height: 1.25;
   }
   .story-subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--dim);
     margin-bottom: 0;
     font-weight: 400;
   }
   .setup-text {
-    font-size: 15px;
-    line-height: 1.7;
+    font-size: 14px;
+    line-height: 1.65;
     color: var(--text);
   }
-  .setup-text p { margin-bottom: 0.7em; }
+  .setup-text p { margin-bottom: 0.55em; }
   .setup-text p:last-child { margin-bottom: 0; }
   .setup-text strong { color: var(--cyan); }
   .setup-text em { color: var(--pink); font-style: normal; font-weight: 700; }
@@ -561,17 +561,18 @@
   .reveal-banner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 22px;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex: 0 0 auto;
   }
   @media (max-width: 720px) {
     .reveal-banner { grid-template-columns: 1fr; }
   }
   .picked-mini {
-    padding: 14px 18px;
+    padding: 10px 14px;
     background: rgba(52, 211, 153, 0.08);
     border: 2px solid var(--neon);
-    display: flex; gap: 14px; align-items: flex-start;
+    display: flex; gap: 12px; align-items: flex-start;
     position: relative;
   }
   .picked-mini .mini-tag {
@@ -605,8 +606,8 @@
     line-height: 1.5;
   }
   .rejected-mini {
-    padding: 14px 18px;
-    background: rgba(244, 114, 182, 0.05);
+    padding: 10px 14px;
+    background: rgba(136, 146, 184, 0.05);
     border: 1px dashed var(--pink);
     position: relative;
     opacity: 0.85;
@@ -647,21 +648,21 @@
     margin-bottom: 18px;
   }
 
-  /* Setup row (pre-reveal with photo) */
+  /* Setup row (pre-reveal with photo) — photo-first, text compact */
   .setup-row {
     display: grid;
-    gap: 18px;
+    gap: 20px;
     flex: 0 0 auto;
-    max-height: 44vh;
-    min-height: 220px;
+    max-height: 52vh;
+    min-height: 260px;
     overflow: hidden;
   }
-  .setup-row.split-lr { grid-template-columns: 380px 1fr; }
-  .setup-row.split-rl { grid-template-columns: 1fr 380px; }
+  .setup-row.split-lr { grid-template-columns: 520px 1fr; }
+  .setup-row.split-rl { grid-template-columns: 1fr 520px; }
   .setup-row.split-rl > .photo-grid { order: 2; }
   .setup-row.split-rl > .story-col { order: 1; }
 
-  /* Story row (post-reveal with photo) */
+  /* Story row (post-reveal with photo) — photo-first */
   .story-row {
     display: grid;
     gap: 20px;
@@ -669,13 +670,13 @@
     min-height: 0;
     overflow: hidden;
   }
-  .story-row.split-lr { grid-template-columns: 420px 1fr; }
-  .story-row.split-rl { grid-template-columns: 1fr 420px; }
+  .story-row.split-lr { grid-template-columns: 540px 1fr; }
+  .story-row.split-rl { grid-template-columns: 1fr 540px; }
   .story-row.split-rl > .photo-grid { order: 2; }
   .story-row.split-rl > .story-col { order: 1; }
   .story-row.hero {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(240px, 1.2fr) auto;
+    grid-template-rows: minmax(340px, 2.2fr) minmax(130px, auto);
     gap: 16px;
   }
   @media (max-width: 900px) {
@@ -841,23 +842,23 @@
     flex-direction: column;
   }
   .story-text {
-    font-size: 15px;
-    line-height: 1.75;
+    font-size: 14px;
+    line-height: 1.65;
     color: var(--text);
     flex: 1 1 auto;
     min-height: 0;
   }
-  .story-text p { margin-bottom: 0.8em; }
+  .story-text p { margin-bottom: 0.6em; }
   .story-text p:last-child { margin-bottom: 0; }
   .story-text strong { color: var(--cyan); font-weight: 700; }
   .story-text em { color: var(--pink); font-style: normal; font-weight: 700; }
 
   .insight-section { flex: 0 0 auto; }
   .insight-card {
-    padding: 14px 20px;
+    padding: 10px 16px;
     background: linear-gradient(135deg, rgba(52, 211, 153, 0.12), rgba(52, 211, 153, 0.03));
     border-left: 4px solid var(--neon);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--neon);
     line-height: 1.5;
