@@ -959,6 +959,78 @@
     padding: 0;
   }
 
+  /* =========== Choice cards after voting — show marks =========== */
+  .option-card.audience-picked {
+    border-color: var(--amber);
+    background: rgba(251, 191, 36, 0.1);
+  }
+  .option-card.ceo-picked {
+    border-color: var(--neon);
+    background: rgba(52, 211, 153, 0.12);
+    box-shadow: 0 0 22px rgba(52, 211, 153, 0.22);
+  }
+  .option-card.audience-picked.ceo-picked {
+    border-color: var(--neon);
+    background: rgba(52, 211, 153, 0.18);
+    box-shadow: 0 0 30px rgba(52, 211, 153, 0.35);
+  }
+  .card-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    margin-top: 8px;
+    margin-right: 6px;
+  }
+  .audience-badge { background: var(--amber); color: var(--bg); }
+  .ceo-badge { background: var(--neon); color: var(--bg); }
+
+  /* Match result banner (between cards and next button) */
+  .match-result {
+    margin-top: 16px;
+    padding: 18px 28px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    flex: 0 0 auto;
+  }
+  .match-result.hit {
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--neon);
+    border: 2px solid var(--neon);
+  }
+  .match-result.miss {
+    background: rgba(251, 191, 36, 0.1);
+    color: var(--amber);
+    border: 2px dashed var(--amber);
+  }
+
+  /* Button to proceed to story */
+  .show-story-btn {
+    margin-top: 14px;
+    padding: 16px 36px;
+    background: linear-gradient(135deg, var(--amber), #f59e0b);
+    border: none;
+    color: var(--bg);
+    font-family: "Noto Sans TC";
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.08em;
+    align-self: flex-end;
+    display: block;
+    margin-left: auto;
+    box-shadow: 0 4px 18px rgba(251, 191, 36, 0.35);
+  }
+  .show-story-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(251, 191, 36, 0.5);
+  }
+
   /* =========== Audience vote bar (pre-reveal) =========== */
   .audience-vote-bar {
     display: flex;
@@ -1710,7 +1782,8 @@ const MAX_SCORE = VOTE_NODE_COUNT;
 // ========== 狀態 ==========
 let currentIdx = -1;
 let visited = new Set();
-let revealed = {};   // idx -> true (公布過答案)
+let audienceVote = {}; // idx -> "A" | "B" (全班投票的結果)
+let revealed = {};   // idx -> true (進到故事頁)
 let scored = {};     // idx -> "hit" | "miss" | null
 let score = 0;
 let pathSegments = [];
@@ -1970,15 +2043,43 @@ function renderModalBody(idx) {
     } else {
       html += setupBlock;
     }
+    const voted = !!audienceVote[idx];
+    const aClass = voted ? `${audienceVote[idx] === 'A' ? 'audience-picked' : ''} ${n.correct === 'A' ? 'ceo-picked' : ''}`.trim() : '';
+    const bClass = voted ? `${audienceVote[idx] === 'B' ? 'audience-picked' : ''} ${n.correct === 'B' ? 'ceo-picked' : ''}`.trim() : '';
+
     html += `
       <div class="choice-section">
         <div class="choice-question">${n.question}</div>
-        ${renderChoiceGrid(n)}
-        <div class="audience-vote-bar">
-          <div class="vote-prompt"><i class="ra ra-hand"></i> 全班多數選？</div>
-          <button class="vote-btn" data-vote="A">A</button>
-          <button class="vote-btn" data-vote="B">B</button>
+        <div class="choice-grid">
+          <div class="option-card ${aClass}" data-card="A">
+            <div class="label">A</div>
+            <h3>${n.optionA.title}</h3>
+            <div class="desc">${n.optionA.desc}</div>
+            ${voted && audienceVote[idx] === 'A' ? '<div class="card-badge audience-badge"><i class="ra ra-hand"></i> 全班選</div>' : ''}
+            ${voted && n.correct === 'A' ? '<div class="card-badge ceo-badge">我當年選 ✓</div>' : ''}
+          </div>
+          <div class="option-card ${bClass}" data-card="B">
+            <div class="label">B</div>
+            <h3>${n.optionB.title}</h3>
+            <div class="desc">${n.optionB.desc}</div>
+            ${voted && audienceVote[idx] === 'B' ? '<div class="card-badge audience-badge"><i class="ra ra-hand"></i> 全班選</div>' : ''}
+            ${voted && n.correct === 'B' ? '<div class="card-badge ceo-badge">我當年選 ✓</div>' : ''}
+          </div>
         </div>
+        ${voted ? `
+          <div class="match-result ${scored[idx]}">
+            ${scored[idx] === 'hit'
+              ? '<i class="ra ra-compass"></i> 一樣——你們跟我同路 +1 站'
+              : '<i class="ra ra-footprint"></i> 不一樣——你們走了另一條（走得好）'}
+          </div>
+          <button class="show-story-btn" data-show-story>▶ 看我發生了什麼</button>
+        ` : `
+          <div class="audience-vote-bar">
+            <div class="vote-prompt"><i class="ra ra-hand"></i> 全班多數選？</div>
+            <button class="vote-btn" data-vote="A">A</button>
+            <button class="vote-btn" data-vote="B">B</button>
+          </div>
+        `}
       </div>
     `;
   } else if (n.hasVote && isRevealed) {
@@ -2051,17 +2152,25 @@ function renderModalBody(idx) {
 
   modalBody.innerHTML = html;
 
-  // Wire up audience vote buttons (pre-reveal) — reveals answer + scores in one click
+  // Wire up audience vote buttons (Stage 1 → Stage 2) — shows match, stays on same page
   modalBody.querySelectorAll("[data-vote]").forEach(btn => {
     btn.addEventListener("click", () => {
       const vote = btn.getAttribute("data-vote");
-      revealed[idx] = true;
+      audienceVote[idx] = vote;
       scored[idx] = (vote === n.correct) ? "hit" : "miss";
       if (scored[idx] === "hit") {
         score += 1;
         floatPoints(btn);
       }
       updateScore(true);
+      renderModalBody(idx);
+    });
+  });
+
+  // Wire up "看故事" button (Stage 2 → Stage 3) — advances to post-reveal
+  modalBody.querySelectorAll("[data-show-story]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      revealed[idx] = true;
       renderModalBody(idx);
       updateNav(idx);
     });
