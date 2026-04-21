@@ -723,9 +723,9 @@
   .photo-grid.main-stack.count-4 > :nth-child(3) { grid-column: 2; grid-row: 2; }
   .photo-grid.main-stack.count-4 > :nth-child(4) { grid-column: 2; grid-row: 3; }
 
-  /* When hero has the main-stack layout, allocate more height to photos */
-  .story-row.hero:has(.photo-grid.main-stack) {
-    grid-template-rows: minmax(400px, 2.2fr) auto;
+  /* When story-row is marked as photo-heavy, photos get more height but text always gets min 160px */
+  .story-row.hero.photo-heavy {
+    grid-template-rows: minmax(320px, 3fr) minmax(160px, 1fr);
   }
 
   .story-photo {
@@ -791,9 +791,8 @@
   .story-col {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
     min-height: 0;
-    overflow: hidden;
   }
   .option-card .label {
     font-family: "Press Start 2P", monospace;
@@ -1760,7 +1759,7 @@ function renderModalBody(idx) {
   } else {
     // Non-vote: photos + setup + insight
     const content = `
-      <div class="setup-section" style="flex:1 1 auto; min-height:0;">
+      <div class="setup-section">
         <div class="section-tag setup">▸ 情境 · SETUP</div>
         <div class="setup-text">${n.setup}</div>
       </div>
@@ -1771,7 +1770,7 @@ function renderModalBody(idx) {
     `;
     if (setupPhotos.length > 0) {
       html += `
-        <div class="story-row ${layout}">
+        <div class="story-row ${layout}${n.photoLayout === 'main-stack' ? ' photo-heavy' : ''}">
           ${renderPhotoGrid(setupPhotos, n.photoLayout)}
           <div class="story-col">${content}</div>
         </div>
