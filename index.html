@@ -712,6 +712,22 @@
   .photo-grid.featured.count-4 > :nth-child(3) { grid-column: 2; grid-row: 2; }
   .photo-grid.featured.count-4 > :nth-child(4) { grid-column: 3; grid-row: 2; }
 
+  /* Main + stack layout: first photo large on left, others stacked on right */
+  .photo-grid.main-stack.count-4 {
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .photo-grid.main-stack.count-4 > :nth-child(1) { grid-column: 1; grid-row: 1 / -1; }
+  .photo-grid.main-stack.count-4 > :nth-child(2) { grid-column: 2; grid-row: 1; }
+  .photo-grid.main-stack.count-4 > :nth-child(3) { grid-column: 2; grid-row: 2; }
+  .photo-grid.main-stack.count-4 > :nth-child(4) { grid-column: 2; grid-row: 3; }
+
+  /* When hero has the main-stack layout, allocate more height to photos */
+  .story-row.hero:has(.photo-grid.main-stack) {
+    grid-template-rows: minmax(400px, 2.2fr) auto;
+  }
+
   .story-photo {
     background-size: contain;
     background-repeat: no-repeat;
@@ -1435,18 +1451,15 @@ const NODES = [
     setupPhotos: ["./photos/s8-0.jpg", "./photos/s8-1.jpg", "./photos/s8-2.jpg", "./photos/s8-3.jpg"],
     storyPhotos: [],
     layout: "hero",
-    photoLayout: "featured",
+    photoLayout: "main-stack",
     title: "六年後，我在這裡",
     subtitle: "回頭看這張地圖",
     pos: { x: 86, y: 30 },
     hasVote: false,
     setup: `
-      <p>從那張 PPT 開始，六年過去了。</p>
-      <p>這六年我能<em>問心無愧</em>地說：我花了大量時間在自己的公司上，我真的非常努力。</p>
-      <p>回頭看這張地圖——法律系、玉山、球學、蔡崇信那頓飯、疫情、Spot——</p>
-      <p><strong>每一條路，都沒有所謂的對或錯。</strong></p>
-      <p>選另一邊可能更好、也可能更壞，都有可能。</p>
-      <p>但現在回頭看，我會說：<em>相信自己選的那條路，然後堅持下去。</em></p>
+      <p>從那張 PPT 開始，六年了。</p>
+      <p>這六年我<em>問心無愧</em>——我真的努力過。</p>
+      <p><strong>每一條路，都沒有對錯。</strong></p>
     `,
     insight: "既然選了，就走下去。走久了，那條路就會變成「對的路」。"
   }
