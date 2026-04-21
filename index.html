@@ -788,10 +788,11 @@
   <h1>創業地圖</h1>
   <h2>一個法律系學生，走去哪了？</h2>
   <div class="cover-rule">
-    <b>遊戲規則：</b>每一站都是一個人生抉擇。
-    你們先看<b>情境</b>，再看 A / B 兩個選項，
-    投票猜「我當年選了哪個」。猜中 <b>+10 分</b>，
-    最後看全班的 <b>CEO 直覺值</b> 有多高。
+    <b>怎麼玩：</b>每一站我先講情境，
+    然後給你們看 A / B 兩個選項。
+    <b>你們先想——如果是你，會怎麼選？</b>
+    我再公布我當年選了哪個。
+    <br/><br/>沒有對錯。沒有標準答案。<b>這是你自己的地圖</b>，我的故事只是一個版本。
   </div>
   <div class="cover-speaker">
     SPEAKER
@@ -805,9 +806,9 @@
   <div class="topbar">
     <div class="logo">◆ 創業地圖</div>
     <div class="score-box">
-      <div class="score-label">🎯 CEO 直覺值</div>
+      <div class="score-label">🧭 與我同路</div>
       <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
-      <div class="score-value" id="scoreValue">0 / 50</div>
+      <div class="score-value" id="scoreValue">0 / 5</div>
     </div>
     <div class="station-count" id="stationCount">第 1 站 / 共 8 站</div>
     <button class="restart-btn" id="restartBtn">重來</button>
@@ -844,18 +845,19 @@
 
 <!-- 結局 -->
 <div class="ending" id="ending">
-  <div class="ending-score-label">CEO 直覺值 · FINAL SCORE</div>
-  <div class="ending-score"><span id="finalScore">0</span><small>/50</small></div>
+  <div class="ending-score-label">全班跟我同路 · FINAL</div>
+  <div class="ending-score"><span id="finalScore">0</span><small>/5 站</small></div>
   <div class="ending-title" id="endingTitle">—</div>
   <div class="ending-subtitle" id="endingSubtitle">—</div>
   <div class="ending-quote" id="endingQuote">
     六年了。<br />
     我<strong>問心無愧</strong>可以說，我花了大量的時間在自己的公司上。<br /><br />
-    每一條路都沒有對錯。<br />
-    既然選了，就走下去。
+    每一條路，都沒有對錯。<br />
+    <strong>我的地圖只是一個版本。</strong><br />
+    你們的地圖，還沒開始畫。
   </div>
   <div class="ending-question">
-    那你們呢？下一步要選哪邊？
+    那你們呢？下一步，你會往哪邊走？
   </div>
   <button class="ending-restart" id="endingRestart">重新遊玩</button>
 </div>
@@ -899,7 +901,7 @@ const NODES = [
     optionA: {
       title: "撐下去",
       desc: "六個月也許只是倦怠期，做滿一年再說，薪水穩定很重要",
-      whatif: "如果留下來——現在可能是襄理、副理，房貸快繳完。穩定，但再也不會有後面的故事。"
+      whatif: "選這條路：幾年後可能升襄理、副理，房貸快繳完。對很多人來說，這是嚮往的人生。"
     },
     optionB: {
       title: "直接辭職",
@@ -932,7 +934,7 @@ const NODES = [
     optionA: {
       title: "回家睡，明天再說",
       desc: "熱血是一回事，但沒薪水要怎麼活？先冷靜一下比較好",
-      whatif: "如果冷靜了——熱度就退了。過兩天你會說服自己回去投履歷，今晚的故事就結束。"
+      whatif: "選這條路：熱度會慢慢退。你隔天冷靜後會投履歷找下一份工作——很多人這樣走下來，一樣活得好好的。"
     },
     optionB: {
       title: "隔天就去報到",
@@ -965,7 +967,7 @@ const NODES = [
     optionA: {
       title: "認清現實",
       desc: "夢想是夢想，生存是生存。找個正常工作，存一點錢再說",
-      whatif: "如果走了——你會錯過蔡崇信的 $1M 投資，錯過高國豪、林庭謙這群被我們送出去的球員。"
+      whatif: "選這條路：你換一份穩定的工作，存錢、規劃人生。不是每個夢想都要用命去燒——這也是一種成熟。"
     },
     optionB: {
       title: "繼續撐",
@@ -1018,7 +1020,7 @@ const NODES = [
     optionA: {
       title: "等疫情過",
       desc: "留學規劃已經定了，做點過渡的工作，明年再出國",
-      whatif: "如果等了——你會錯過 PLG 剛成立的那個視窗。一年後市場上早就有其他玩家在做了。"
+      whatif: "選這條路：你隔年順利出國，走學術或進大公司的路線。世界很大——不是只有創業這一條路。"
     },
     optionB: {
       title: "既然出不去，就做點事",
@@ -1051,7 +1053,7 @@ const NODES = [
     optionA: {
       title: "先做出 MVP",
       desc: "至少要有個可以 demo 的東西再去提案吧？否則誰會信你？",
-      whatif: "如果先做產品——你會花 6 個月開發，然後發現你做的根本不是客戶要的。"
+      whatif: "選這條路：你花幾個月把 MVP 做紮實再出門。節奏慢但扎實——客戶可能會覺得你比較可信。"
     },
     optionB: {
       title: "PPT 直接衝",
@@ -1089,7 +1091,7 @@ const NODES = [
 ];
 
 const VOTE_NODE_COUNT = NODES.filter(n => n.hasVote).length;
-const MAX_SCORE = VOTE_NODE_COUNT * 10;
+const MAX_SCORE = VOTE_NODE_COUNT;
 
 // ========== 狀態 ==========
 let currentIdx = -1;
@@ -1120,7 +1122,7 @@ function renderNodes() {
     if (visited.has(i)) el.classList.add("visited");
     if (i === currentIdx) el.classList.add("current");
 
-    const voteBadge = n.hasVote ? `<div class="node-vote-badge">投票題 +10</div>` : "";
+    const voteBadge = n.hasVote ? `<div class="node-vote-badge">抉擇點</div>` : "";
 
     el.innerHTML = `
       <div class="node-dot">
@@ -1166,7 +1168,7 @@ function renderPaths() {
 function updateScore(animate) {
   const scoreValue = document.getElementById("scoreValue");
   const fill = document.getElementById("scoreFill");
-  scoreValue.textContent = `${score} / ${MAX_SCORE}`;
+  scoreValue.textContent = `${score} / ${MAX_SCORE} 站`;
   fill.style.width = `${(score / MAX_SCORE) * 100}%`;
   if (animate) {
     scoreValue.classList.add("bump");
@@ -1200,14 +1202,14 @@ function renderModalBody(idx) {
         <div class="choice-question">${n.question}</div>
         <div class="choice-grid">
           <div class="option-card ${aClass}">
-            <div class="check-mark">${n.correct === "A" ? "✓ 我選了這個" : ""}</div>
+            <div class="check-mark">${n.correct === "A" ? "這是我當年的路" : ""}</div>
             <div class="label">A</div>
             <h3>${n.optionA.title}</h3>
             <div class="desc">${n.optionA.desc}</div>
             <div class="whatif">${n.optionA.whatif}</div>
           </div>
           <div class="option-card ${bClass}">
-            <div class="check-mark">${n.correct === "B" ? "✓ 我選了這個" : ""}</div>
+            <div class="check-mark">${n.correct === "B" ? "這是我當年的路" : ""}</div>
             <div class="label">B</div>
             <h3>${n.optionB.title}</h3>
             <div class="desc">${n.optionB.desc}</div>
@@ -1240,22 +1242,18 @@ function renderModalBody(idx) {
   let scoreSectionHtml = "";
   if (n.hasVote && isRevealed) {
     if (scoreStatus) {
-      // Scored already
       scoreSectionHtml = `
         <div class="score-section scored">
-          <div class="score-prompt">這題結果：${scoreStatus === "hit" ? "🎯 大多數猜中 +10 分" : "🔄 大多數沒猜到（下次繼續）"}</div>
-          <div class="score-btns">
-            <button class="score-btn scored-pick ${scoreStatus === "miss" ? "miss" : ""}" disabled>${scoreStatus === "hit" ? "✓ +10 分已加" : "沒中 +0"}</button>
-          </div>
+          <div class="score-prompt">這一站：${scoreStatus === "hit" ? "🧭 多數跟我同路 · +1 站" : "✨ 多數走了另一邊 · 走得好"}</div>
         </div>
       `;
     } else {
       scoreSectionHtml = `
         <div class="score-section">
-          <div class="score-prompt">📊 目測全班：大多數學生猜對了嗎？</div>
+          <div class="score-prompt">📊 目測一下，全班多數選了哪邊？</div>
           <div class="score-btns">
-            <button class="score-btn hit" data-score="hit">📈 大多數猜中 +10</button>
-            <button class="score-btn" data-score="miss">沒猜到 +0</button>
+            <button class="score-btn hit" data-score="hit">🧭 跟我同路（+1 站）</button>
+            <button class="score-btn" data-score="miss">✨ 走了另一條（也很好）</button>
           </div>
         </div>
       `;
@@ -1280,7 +1278,7 @@ function renderModalBody(idx) {
       const status = btn.getAttribute("data-score");
       scored[idx] = status;
       if (status === "hit") {
-        score += 10;
+        score += 1;
         floatPoints(btn);
       }
       updateScore(true);
@@ -1293,7 +1291,7 @@ function floatPoints(sourceEl) {
   const rect = sourceEl.getBoundingClientRect();
   const el = document.createElement("div");
   el.className = "float-points";
-  el.textContent = "+10";
+  el.textContent = "+1 站";
   el.style.left = rect.left + rect.width / 2 + "px";
   el.style.top = rect.top + "px";
   document.body.appendChild(el);
@@ -1350,12 +1348,10 @@ function showEnding() {
   document.getElementById("finalScore").textContent = score;
 
   const titles = [
-    { min: 50, title: "🏆 完美預言家", subtitle: "天生創業人格 · 你跟我簡直同一個腦袋" },
-    { min: 40, title: "🎯 神準", subtitle: "創業基因很強 · 大概下一個就是你了" },
-    { min: 30, title: "⚡ 戰略型思考家", subtitle: "敢冒險，也會算風險" },
-    { min: 20, title: "🛡️ 穩健派", subtitle: "穩也是一種智慧 · 不是每個人都要當 CEO" },
-    { min: 10, title: "🧭 安全牌", subtitle: "你走的路會比我踏實" },
-    { min: 0, title: "🔄 你跟我完全相反", subtitle: "但說不定，這才是你該走的路" }
+    { min: 5, title: "我們思考的方式很像", subtitle: "這很有意思——但你還是該走自己的路" },
+    { min: 3, title: "有些像，有些不像", subtitle: "這就是你跟我的差異——也是你會走出自己故事的地方" },
+    { min: 1, title: "我們走的方向不太一樣", subtitle: "你的地圖會長得跟我很不同——那會是一個我沒走過的世界" },
+    { min: 0, title: "我們幾乎沒交集", subtitle: "我的故事對你來說只是一個版本——你的版本，比我的更值得期待" }
   ];
   const match = titles.find(t => score >= t.min);
   document.getElementById("endingTitle").textContent = match.title;
