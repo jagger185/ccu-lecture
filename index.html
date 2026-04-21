@@ -240,11 +240,46 @@
     position: absolute;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: opacity 0.6s ease, transform 0.6s ease;
     text-align: center;
     z-index: 5;
   }
   .node:hover { transform: translate(-50%, -50%) scale(1.08); z-index: 10; }
+
+  /* Fog of war: undiscovered stations hidden */
+  .node.hidden-node {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  /* Preview: next upcoming station shown as silhouette */
+  .node.preview { opacity: 0.35; pointer-events: none; }
+  .node.preview:hover { transform: translate(-50%, -50%) scale(1); }
+  .node.preview .node-dot {
+    background: var(--bg2);
+    border-color: var(--line);
+    box-shadow: none;
+    animation: none;
+    filter: grayscale(1) blur(0.5px);
+  }
+  .node.preview .node-year,
+  .node.preview .node-title,
+  .node.preview .node-sub,
+  .node.preview .node-vote-badge,
+  .node.preview .node-num { opacity: 0.25; }
+  .node.preview .node-dot::after {
+    content: "?";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Press Start 2P", monospace;
+    font-size: 18px;
+    color: var(--dim);
+    opacity: 0.7;
+  }
+  .node.preview .node-dot i { opacity: 0.15; }
 
   .node-dot {
     width: 64px; height: 64px;
@@ -323,10 +358,20 @@
   .path-line {
     stroke: var(--line); stroke-width: 2;
     stroke-dasharray: 6 6; fill: none;
+    transition: opacity 0.6s, stroke 0.6s;
   }
   .path-line.active {
     stroke: var(--cyan);
     animation: dashflow 2s linear infinite;
+  }
+  .path-line.path-preview {
+    stroke: var(--line);
+    opacity: 0.35;
+    stroke-dasharray: 3 10;
+  }
+  .path-line.path-hidden {
+    stroke: transparent;
+    opacity: 0;
   }
   @keyframes dashflow { to { stroke-dashoffset: -24; } }
 
@@ -1600,18 +1645,18 @@ const NODES = [
     `,
     question: "這時候，你怎麼告訴自己？",
     optionA: {
-      title: "這只是倦怠期",
-      desc: "40 歲的樣子其實還不錯，穩定、有保障。撐下去，會習慣的",
-      whatif: "選這條路：幾年後你習慣了，升襄理、副理，房貸快繳完。對很多人來說，這是嚮往的人生。"
-    },
-    optionB: {
       title: "我遲早要離開",
       desc: "這份工作我遲早不會做。只是「要去哪」的那個答案——還沒出現",
       whatif: ""
     },
-    correct: "B",
+    optionB: {
+      title: "這只是倦怠期",
+      desc: "40 歲的樣子其實還不錯，穩定、有保障。撐下去，會習慣的",
+      whatif: "選這條路：幾年後你習慣了，升襄理、副理，房貸快繳完。對很多人來說，這是嚮往的人生。"
+    },
+    correct: "A",
     story: `
-      <p>我選了 B——但我<strong>還沒真的辭職</strong>。</p>
+      <p>我選了 A——但我<strong>還沒真的辭職</strong>。</p>
       <p>我只是在等一個信號。等一個「往哪走」的答案。</p>
       <p><em>那個答案，在下一站出現。</em></p>
     `,
@@ -1637,16 +1682,16 @@ const NODES = [
     `,
     question: "熱血衝上頭那一刻，你會？",
     optionA: {
-      title: "回家睡，明天再說",
-      desc: "熱度沖頭時別做決定。先冷靜一下，明天理性看看再說",
-      whatif: "選這條路：熱度會慢慢退。你隔天冷靜後繼續上班，投履歷找下一份工作——很多人這樣走下來，一樣活得好好的。"
-    },
-    optionB: {
       title: "隔天就行動",
       desc: "有些熱度一冷就沒了。要做就趁現在——不管後面有多少未知",
       whatif: ""
     },
-    correct: "B",
+    optionB: {
+      title: "回家睡，明天再說",
+      desc: "熱度沖頭時別做決定。先冷靜一下，明天理性看看再說",
+      whatif: "選這條路：熱度會慢慢退。你隔天冷靜後繼續上班，投履歷找下一份工作——很多人這樣走下來，一樣活得好好的。"
+    },
+    correct: "A",
     story: `
       <p>我當下就做了一件事——</p>
       <p>直接衝到旁邊的 <strong>Subway</strong>，找到 <strong>Cheng</strong>（我後來的共同創辦人）。</p>
@@ -1771,18 +1816,18 @@ const NODES = [
     `,
     question: "這時候你會？",
     optionA: {
-      title: "坦白撐著，等新工程師",
-      desc: "COO 能做的事繼續做，產品等人才到位再說",
-      whatif: "選這條路：你保持 COO 身份，慢慢重招團隊。很多創辦人這樣撐過去——但你也會永遠失去「自己動手做」的能力。"
-    },
-    optionB: {
       title: "從零學寫程式",
       desc: "法律系出身也沒關係。工程師走了——那我自己來",
       whatif: ""
     },
-    correct: "B",
+    optionB: {
+      title: "坦白撐著，等新工程師",
+      desc: "COO 能做的事繼續做，產品等人才到位再說",
+      whatif: "選這條路：你保持 COO 身份，慢慢重招團隊。很多創辦人這樣撐過去——但你也會永遠失去「自己動手做」的能力。"
+    },
+    correct: "A",
     story: `
-      <p>我選了 B。從那時候——<strong>自學寫程式</strong>。</p>
+      <p>我選了 A。從那時候——<strong>自學寫程式</strong>。</p>
       <p>從零開始。每天幾小時。錯了重寫，重寫再錯。</p>
       <p>那段時間我強烈感受到——<em>AI 跟 coding 即將改變這個世界。</em></p>
       <p>這個決定為我後來在科技創業<strong>奠下最大的基礎</strong>。</p>
@@ -1846,16 +1891,16 @@ const NODES = [
     `,
     question: "你會？",
     optionA: {
-      title: "先做出 MVP",
-      desc: "至少要有個可以 demo 的東西再去提案吧？否則誰會信你？",
-      whatif: "選這條路：你花幾個月把 MVP 做紮實再出門。節奏慢但扎實——客戶可能會覺得你比較可信。"
-    },
-    optionB: {
       title: "PPT 直接衝",
       desc: "沒產品沒關係，先讓對方相信我們是誰、懂什麼，他們才會告訴我們他們要什麼",
       whatif: ""
     },
-    correct: "B",
+    optionB: {
+      title: "先做出 MVP",
+      desc: "至少要有個可以 demo 的東西再去提案吧？否則誰會信你？",
+      whatif: "選這條路：你花幾個月把 MVP 做紮實再出門。節奏慢但扎實——客戶可能會覺得你比較可信。"
+    },
+    correct: "A",
     story: `
       <p>我們就拿著那份 PPT，一家一家去提案。</p>
       <p>關鍵是：我在球學時<strong>親手剪過一兩百支 Highlight</strong>。</p>
@@ -1924,8 +1969,15 @@ function renderNodes() {
     el.style.left = n.pos.x + "%";
     el.style.top = n.pos.y + "%";
 
-    if (visited.has(i)) el.classList.add("visited");
-    if (i === currentIdx) el.classList.add("current");
+    const isVisited = visited.has(i);
+    const isCurrent = i === currentIdx;
+    const isPreview = !isVisited && !isCurrent && i === currentIdx + 1;
+    const isHidden = !isVisited && !isCurrent && !isPreview;
+
+    if (isVisited) el.classList.add("visited");
+    if (isCurrent) el.classList.add("current");
+    if (isPreview) el.classList.add("preview");
+    if (isHidden) el.classList.add("hidden-node");
 
     const voteBadge = n.hasVote ? `<div class="node-vote-badge"><i class="ra ra-crossed-swords"></i> 抉擇點</div>` : "";
 
@@ -1966,7 +2018,14 @@ function renderPaths() {
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", d);
-    path.setAttribute("class", "path-line" + (visited.has(i) ? " active" : ""));
+    const fromVisible = visited.has(i) || i === currentIdx;
+    const toVisible = visited.has(i + 1) || i + 1 === currentIdx;
+    const toPreview = i + 1 === currentIdx + 1;
+    let cls = "path-line";
+    if (fromVisible && toVisible) cls += " active";
+    else if (fromVisible && toPreview) cls += " path-preview";
+    else cls += " path-hidden";
+    path.setAttribute("class", cls);
     mapSvg.appendChild(path);
     pathSegments.push(path);
   }
