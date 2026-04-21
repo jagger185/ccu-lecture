@@ -325,6 +325,37 @@
   }
   @keyframes dashflow { to { stroke-dashoffset: -24; } }
 
+  /* Walker */
+  .walker {
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, var(--amber) 40%, rgba(251,191,36,0.5) 70%, transparent 100%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 6;
+    filter: drop-shadow(0 0 12px var(--amber)) drop-shadow(0 0 24px rgba(251,191,36,0.5));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .walker.visible { opacity: 1; }
+  .walker::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--amber), transparent 60%);
+    opacity: 0.6;
+    animation: pulseWalker 1.2s ease-in-out infinite;
+  }
+  @keyframes pulseWalker {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(2.2); opacity: 0; }
+  }
+  .walker.walking {
+    filter: drop-shadow(0 0 16px var(--amber)) drop-shadow(0 0 32px var(--amber));
+  }
+
   /* =============== 故事 modal =============== */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 100;
@@ -1137,6 +1168,9 @@ let visited = new Set();
 let revealed = {};   // idx -> true (公布過答案)
 let scored = {};     // idx -> "hit" | "miss" | null
 let score = 0;
+let pathSegments = [];
+let walker = null;
+let walkerAnimId = null;
 
 // ========== 元素 ==========
 const cover = document.getElementById("cover");
@@ -1184,6 +1218,7 @@ function renderPaths() {
   const rect = map.getBoundingClientRect();
   mapSvg.setAttribute("viewBox", `0 0 ${rect.width} ${rect.height}`);
   mapSvg.innerHTML = "";
+  pathSegments = [];
 
   for (let i = 0; i < NODES.length - 1; i++) {
     const a = NODES[i].pos;
@@ -1200,7 +1235,70 @@ function renderPaths() {
     path.setAttribute("d", d);
     path.setAttribute("class", "path-line" + (visited.has(i) ? " active" : ""));
     mapSvg.appendChild(path);
+    pathSegments.push(path);
   }
+
+  if (walker && currentIdx >= 0) placeWalkerAt(currentIdx);
+}
+
+// ========== Walker ==========
+function ensureWalker() {
+  if (walker) return;
+  walker = document.createElement("div");
+  walker.className = "walker";
+  map.appendChild(walker);
+}
+
+function nodePixelPos(idx) {
+  const rect = map.getBoundingClientRect();
+  const n = NODES[idx];
+  return {
+    x: (n.pos.x / 100) * rect.width,
+    y: (n.pos.y / 100) * rect.height
+  };
+}
+
+function placeWalkerAt(idx) {
+  ensureWalker();
+  const p = nodePixelPos(idx);
+  walker.style.left = p.x + "px";
+  walker.style.top = p.y + "px";
+  walker.classList.add("visible");
+  walker.classList.remove("walking");
+}
+
+function walkFromTo(fromIdx, toIdx, onDone) {
+  ensureWalker();
+  if (walkerAnimId) {
+    cancelAnimationFrame(walkerAnimId);
+    walkerAnimId = null;
+  }
+  const reverse = toIdx < fromIdx;
+  const segIdx = Math.min(fromIdx, toIdx);
+  const segment = pathSegments[segIdx];
+  if (!segment) { onDone && onDone(); return; }
+
+  const total = segment.getTotalLength();
+  const duration = 1100;
+  const start = performance.now();
+  walker.classList.add("visible", "walking");
+
+  function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const dist = reverse ? (1 - ease) * total : ease * total;
+    const pt = segment.getPointAtLength(dist);
+    walker.style.left = pt.x + "px";
+    walker.style.top = pt.y + "px";
+    if (t < 1) {
+      walkerAnimId = requestAnimationFrame(step);
+    } else {
+      walkerAnimId = null;
+      walker.classList.remove("walking");
+      onDone && onDone();
+    }
+  }
+  walkerAnimId = requestAnimationFrame(step);
 }
 
 function updateScore(animate) {
@@ -1336,19 +1434,32 @@ function floatPoints(sourceEl) {
   setTimeout(() => el.remove(), 1600);
 }
 
-function openNode(idx) {
+function openNode(idx, opts = {}) {
+  const { walk = false } = opts;
+  const fromIdx = currentIdx;
   currentIdx = idx;
   visited.add(idx);
-  const n = NODES[idx];
-
-  document.getElementById("modalMeta").textContent = `${n.year} · ${n.location}`;
-  document.getElementById("modalIcon").textContent = n.icon;
-
-  renderModalBody(idx);
-  updateNav(idx);
-
-  modal.classList.add("visible");
   renderNodes();
+
+  const showModal = () => {
+    const n = NODES[idx];
+    document.getElementById("modalMeta").textContent = `${n.year} · ${n.location}`;
+    document.getElementById("modalIcon").textContent = n.icon;
+    renderModalBody(idx);
+    updateNav(idx);
+    modal.classList.add("visible");
+    placeWalkerAt(idx);
+  };
+
+  const canWalk = walk && fromIdx >= 0 && Math.abs(idx - fromIdx) === 1;
+  if (canWalk) {
+    modal.classList.remove("visible");
+    setTimeout(() => {
+      walkFromTo(fromIdx, idx, showModal);
+    }, 200);
+  } else {
+    showModal();
+  }
 }
 
 function updateNav(idx) {
@@ -1375,11 +1486,11 @@ function nextNode() {
     showEnding();
     return;
   }
-  openNode(currentIdx + 1);
+  openNode(currentIdx + 1, { walk: true });
 }
 
 function prevNode() {
-  if (currentIdx > 0) openNode(currentIdx - 1);
+  if (currentIdx > 0) openNode(currentIdx - 1, { walk: true });
 }
 
 function showEnding() {
@@ -1410,8 +1521,10 @@ document.getElementById("startBtn").addEventListener("click", () => {
   cover.classList.add("hidden");
   app.classList.add("visible");
   setTimeout(() => {
+    currentIdx = 0;
     renderNodes();
-    openNode(0);
+    placeWalkerAt(0);
+    updateScore(false);
   }, 400);
 });
 
