@@ -16,11 +16,13 @@
     --line: #2a3566;
     --text: #e8ecff;
     --dim: #8892b8;
-    --amber: #fbbf24;
-    --neon: #34d399;
-    --cyan: #22d3ee;
-    --pink: #f472b6;
-    --purple: #a78bfa;
+    --amber: #fbbf24;          /* 主色：current / 強調 */
+    --amber-muted: #c9942b;    /* 走過的路 */
+    --neon: #34d399;           /* 成功：我當年選的路 */
+    /* Legacy aliases — all collapse to amber / dim for visual unity */
+    --cyan: #c9942b;
+    --pink: #8892b8;
+    --purple: #8892b8;
     --red: #f87171;
   }
 
@@ -51,11 +53,11 @@
       radial-gradient(2px 2px at 55% 15%, #fff, transparent),
       radial-gradient(1px 1px at 75% 50%, #fff, transparent),
       radial-gradient(1px 1px at 90% 85%, #fff, transparent),
-      radial-gradient(1px 1px at 20% 90%, #a78bfa, transparent),
-      radial-gradient(2px 2px at 85% 25%, #f472b6, transparent),
-      radial-gradient(1px 1px at 45% 45%, #34d399, transparent),
-      radial-gradient(1px 1px at 5% 55%, #22d3ee, transparent);
-    opacity: 0.55;
+      radial-gradient(1px 1px at 20% 90%, #fff, transparent),
+      radial-gradient(2px 2px at 85% 25%, var(--amber), transparent),
+      radial-gradient(1px 1px at 45% 45%, #fff, transparent),
+      radial-gradient(1px 1px at 5% 55%, #fff, transparent);
+    opacity: 0.45;
     animation: twinkle 6s ease-in-out infinite alternate;
   }
   @keyframes twinkle { from { opacity: 0.35; } to { opacity: 0.65; } }
@@ -91,7 +93,7 @@
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 0.4em;
-    background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--pink) 100%);
+    background: linear-gradient(135deg, #fff 0%, var(--amber) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -326,35 +328,65 @@
   }
   @keyframes dashflow { to { stroke-dashoffset: -24; } }
 
-  /* Walker */
+  /* Walker 大頭娃娃 */
   .walker {
     position: absolute;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #fff 0%, var(--amber) 40%, rgba(251,191,36,0.5) 70%, transparent 100%);
+    width: 56px; height: 56px;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    z-index: 6;
-    filter: drop-shadow(0 0 12px var(--amber)) drop-shadow(0 0 24px rgba(251,191,36,0.5));
+    z-index: 7;
     opacity: 0;
     transition: opacity 0.3s;
   }
   .walker.visible { opacity: 1; }
-  .walker::before {
+  .avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: url('./jagger.jpg');
+    background-size: cover;
+    background-position: center top;
+    border: 3px solid var(--amber);
+    box-shadow:
+      0 0 18px rgba(251, 191, 36, 0.6),
+      0 6px 14px rgba(0, 0, 0, 0.7);
+    animation: idleBob 1.4s ease-in-out infinite alternate;
+    transform-origin: center bottom;
+  }
+  .walker.walking .avatar {
+    animation: walkBob 0.32s ease-in-out infinite alternate;
+    box-shadow:
+      0 0 26px rgba(251, 191, 36, 0.85),
+      0 8px 16px rgba(0, 0, 0, 0.7);
+  }
+  @keyframes idleBob {
+    0%   { transform: translateY(0) rotate(-2deg); }
+    100% { transform: translateY(-2px) rotate(2deg); }
+  }
+  @keyframes walkBob {
+    0%   { transform: translateY(0) rotate(-7deg); }
+    100% { transform: translateY(-6px) rotate(7deg); }
+  }
+  /* 大頭娃娃底下的影子 */
+  .walker::after {
     content: "";
     position: absolute;
-    inset: -6px;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 8px;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--amber), transparent 60%);
-    opacity: 0.6;
-    animation: pulseWalker 1.2s ease-in-out infinite;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.5), transparent 70%);
+    filter: blur(2px);
+    animation: shadowPulse 1.4s ease-in-out infinite alternate;
   }
-  @keyframes pulseWalker {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(2.2); opacity: 0; }
+  .walker.walking::after {
+    animation: shadowPulse 0.32s ease-in-out infinite alternate;
   }
-  .walker.walking {
-    filter: drop-shadow(0 0 16px var(--amber)) drop-shadow(0 0 32px var(--amber));
+  @keyframes shadowPulse {
+    0% { width: 44px; opacity: 0.7; }
+    100% { width: 36px; opacity: 0.5; }
   }
 
   /* =============== 故事 modal =============== */
@@ -824,7 +856,7 @@
     font-size: clamp(60px, 12vw, 140px);
     line-height: 1;
     margin-bottom: 0.1em;
-    background: linear-gradient(135deg, var(--amber), var(--pink), var(--cyan));
+    background: linear-gradient(135deg, var(--amber), #fff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -839,7 +871,7 @@
     font-size: clamp(26px, 5vw, 56px);
     font-weight: 900;
     margin-bottom: 0.3em;
-    color: var(--text);
+    color: var(--amber);
   }
   .ending-subtitle {
     font-size: clamp(14px, 1.8vw, 18px);
@@ -1333,6 +1365,7 @@ function ensureWalker() {
   if (walker) return;
   walker = document.createElement("div");
   walker.className = "walker";
+  walker.innerHTML = `<div class="avatar"></div>`;
   map.appendChild(walker);
 }
 
