@@ -1189,19 +1189,53 @@
     aspect-ratio: auto;
   }
 
-  /* No-photo post-reveal: centered bigger */
+  /* No-photo post-reveal: reveal banner on top, story + insight side-by-side below */
   .story-col.big-text-col.text-hero {
-    max-width: 980px;
-    margin: 0 auto;
+    display: grid;
+    grid-template-areas:
+      "reveal reveal"
+      "story  insight";
+    grid-template-columns: 1.1fr 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 24px;
+    max-width: 1400px;
     width: 100%;
-    padding: 20px 40px;
+    margin: 0 auto;
+    padding: 18px 28px;
+    align-items: stretch;
+    overflow-y: auto;
   }
-  .story-col.big-text-col.text-hero .huge-quote {
-    font-size: 34px;
-    text-align: center;
+  .story-col.big-text-col.text-hero > .compact-reveal {
+    grid-area: reveal;
+  }
+  .story-col.big-text-col.text-hero > .story-big {
+    grid-area: story;
+    overflow-y: auto;
+  }
+  .story-col.big-text-col.text-hero > .insight-big {
+    grid-area: insight;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 22px 26px;
   }
   .story-col.big-text-col.text-hero .big-story-text {
-    font-size: 20px;
+    font-size: 19px;
+    line-height: 1.75;
+  }
+  .story-col.big-text-col.text-hero .huge-quote {
+    font-size: 28px;
+    text-align: left;
+    line-height: 1.45;
+  }
+  @media (max-width: 900px) {
+    .story-col.big-text-col.text-hero {
+      grid-template-areas:
+        "reveal"
+        "story"
+        "insight";
+      grid-template-columns: 1fr;
+    }
   }
 
   /* Score buttons */
