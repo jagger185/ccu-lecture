@@ -846,7 +846,7 @@
 <!-- 結局 -->
 <div class="ending" id="ending">
   <div class="ending-score-label">全班跟我同路 · FINAL</div>
-  <div class="ending-score"><span id="finalScore">0</span><small>/5 站</small></div>
+  <div class="ending-score"><span id="finalScore">0</span><small id="finalTotal">/8 站</small></div>
   <div class="ending-title" id="endingTitle">—</div>
   <div class="ending-subtitle" id="endingSubtitle">—</div>
   <div class="ending-quote" id="endingQuote">
@@ -1002,22 +1002,42 @@ const NODES = [
   },
   {
     id: 4,
-    year: "那頓飯",
-    location: "臺北 · 高級餐廳",
+    year: "那次機會",
+    location: "要不要赴約？",
     icon: "🍽️",
-    title: "蔡崇信那頓飯",
-    subtitle: "25、26 歲那年，我學到的不是商業",
+    title: "蔡崇信的飯局",
+    subtitle: "全英文會議 · 我該去嗎？",
     pos: { x: 74, y: 54 },
-    hasVote: false,
+    hasVote: true,
     setup: `
-      <p>蔡崇信決定投我們那一天，地點在一間很高檔的餐廳。我那時<em>25、26 歲</em>——<strong>就跟你們現在差不多。</strong></p>
-      <p>整頓飯下來，我注意到一件事：</p>
-      <p><strong>他對每一個人的態度都一樣好。</strong>服務生、我們這些毛小孩、總經理——完全一樣。</p>
-      <p>那一刻我心裡默默決定：<em>不管以後成功或失敗，我要讓自己永遠是這個樣子。</em></p>
-      <p>還有當時的共同創辦人 Chen，他讓我第一次真的搞懂什麼叫「創業」——</p>
-      <p><strong>原來創業沒那麼難，沒那麼遙遠。只要你有一件想做的事，開始做，總會找到出路。</strong></p>
+      <p>球學做了一陣子，我們突然收到一個邀約——</p>
+      <p><strong>蔡崇信</strong>（阿里巴巴創辦人之一、現在 Brooklyn Nets 的老闆）想跟我們見面。</p>
+      <p>地點臺北高檔餐廳。但——<em>這是一個全英文的會議。</em></p>
+      <p>而我那時候英文其實<em>蠻爛的</em>。</p>
+      <p>團隊其他成員，<strong>其實都不太敢去。</strong></p>
+      <p>那年我 25、26 歲——<em>就跟你們現在差不多。</em></p>
     `,
-    insight: "我們的教育很少教創業思維。所以——跟對的人吃飯，比上對的課重要。"
+    question: "這個飯局，你會？",
+    optionA: {
+      title: "讓別人去",
+      desc: "英文爛、層級差太多、怕出糗。讓比較會講英文的同事代表去比較好",
+      whatif: "選這條路：你保護了自己不丟臉。很多人也會這樣選——保留最好的面貌給別人看。"
+    },
+    optionB: {
+      title: "硬著頭皮也要去",
+      desc: "這種層級的人，一輩子能碰幾次？英文爛沒關係、緊張沒關係——進場才有故事",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>我去了。全英文、我結巴、我緊張——但我<strong>進場了。</strong></p>
+      <p>結果：<em>蔡崇信決定投我們一百萬美金。</em></p>
+      <p>但更重要的不是那筆錢——</p>
+      <p>整頓飯下來，我注意到：<strong>他對每一個人的態度都一樣好。</strong>服務生、我們這些毛小孩、對面的大人物——完全一樣。</p>
+      <p>那一刻我決定：<em>不管以後成功或失敗，我要讓自己永遠是這個樣子。</em></p>
+      <p>如果那天我沒去——這些我都不會學到。</p>
+    `,
+    insight: "20 幾歲的你，每一個能跟「比你高」的人碰面的機會都要爭取。英文爛沒關係、緊張沒關係——進場，才有故事。"
   },
   {
     id: 5,
@@ -1364,14 +1384,21 @@ function prevNode() {
 
 function showEnding() {
   document.getElementById("finalScore").textContent = score;
+  document.getElementById("finalTotal").textContent = `/${MAX_SCORE} 站`;
 
-  const titles = [
-    { min: 5, title: "我們思考的方式很像", subtitle: "這很有意思——但你還是該走自己的路" },
-    { min: 3, title: "有些像，有些不像", subtitle: "這就是你跟我的差異——也是你會走出自己故事的地方" },
-    { min: 1, title: "我們走的方向不太一樣", subtitle: "你的地圖會長得跟我很不同——那會是一個我沒走過的世界" },
-    { min: 0, title: "我們幾乎沒交集", subtitle: "我的故事對你來說只是一個版本——你的版本，比我的更值得期待" }
-  ];
-  const match = titles.find(t => score >= t.min);
+  const ratio = MAX_SCORE > 0 ? score / MAX_SCORE : 0;
+  let match;
+  if (ratio >= 0.85) {
+    match = { title: "我們思考的方式很像", subtitle: "這很有意思——但你還是該走自己的路" };
+  } else if (ratio >= 0.6) {
+    match = { title: "大部分的路你都會跟我選一樣", subtitle: "你可能適合這樣的冒險——但還是要聽自己的" };
+  } else if (ratio >= 0.3) {
+    match = { title: "有些像，有些不像", subtitle: "這就是你跟我的差異——也是你會走出自己故事的地方" };
+  } else if (ratio > 0) {
+    match = { title: "我們走的方向不太一樣", subtitle: "你的地圖會長得跟我很不同——那會是一個我沒走過的世界" };
+  } else {
+    match = { title: "我們幾乎沒交集", subtitle: "我的故事對你來說只是一個版本——你的版本，比我的更值得期待" };
+  }
   document.getElementById("endingTitle").textContent = match.title;
   document.getElementById("endingSubtitle").textContent = match.subtitle;
 
