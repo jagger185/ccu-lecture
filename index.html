@@ -647,37 +647,75 @@
     margin-bottom: 18px;
   }
 
-  /* Story + Photo row (post-reveal) */
+  /* Setup row (pre-reveal with photo) */
+  .setup-row {
+    display: grid;
+    gap: 18px;
+    flex: 0 0 auto;
+    max-height: 36vh;
+    min-height: 180px;
+    overflow: hidden;
+  }
+  .setup-row.split-lr { grid-template-columns: 320px 1fr; }
+  .setup-row.split-rl { grid-template-columns: 1fr 320px; }
+  .setup-row.split-rl > .photo-grid { order: 2; }
+  .setup-row.split-rl > .story-col { order: 1; }
+
+  /* Story row (post-reveal with photo) */
   .story-row {
     display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 24px;
+    gap: 20px;
     flex: 1 1 auto;
     min-height: 0;
+    overflow: hidden;
+  }
+  .story-row.split-lr { grid-template-columns: 420px 1fr; }
+  .story-row.split-rl { grid-template-columns: 1fr 420px; }
+  .story-row.split-rl > .photo-grid { order: 2; }
+  .story-row.split-rl > .story-col { order: 1; }
+  .story-row.hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(240px, 1.2fr) auto;
+    gap: 16px;
   }
   @media (max-width: 900px) {
-    .story-row { grid-template-columns: 1fr; }
+    .story-row.split-lr, .story-row.split-rl,
+    .setup-row.split-lr, .setup-row.split-rl {
+      grid-template-columns: 1fr;
+    }
   }
+
+  /* Photo grid (handles 1-5 photos) */
+  .photo-grid {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .photo-grid.count-1 { grid-template-columns: 1fr; }
+  .photo-grid.count-2 { grid-template-columns: 1fr 1fr; }
+  .photo-grid.count-3 { grid-template-columns: repeat(3, 1fr); }
+  .photo-grid.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+  .photo-grid.count-5 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
+  .photo-grid.count-5 > :nth-child(1) { grid-column: 1 / 3; }
+
   .story-photo {
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
     background-color: var(--bg2);
     border: 2px solid var(--amber);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 0 0 1px rgba(251,191,36,0.15);
-    position: relative;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.55), 0 0 0 1px rgba(251,191,36,0.15);
+    min-height: 100px;
     overflow: hidden;
   }
-  .story-photo::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 60%, rgba(10,14,39,0.5));
-    pointer-events: none;
-  }
+
   .story-col {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     min-height: 0;
     overflow: hidden;
   }
@@ -1050,43 +1088,46 @@ const NODES = [
     year: "2008",
     location: "嘉義 · 中正大學",
     icon: "scroll-unfurled",
-    photo: "./photos/station-1.jpg",
+    setupPhotos: ["./photos/s1-3.jpg"],
+    storyPhotos: ["./photos/s1-1.jpg", "./photos/s1-2.jpg"],
+    layout: "split-lr",
     title: "起點：非我所願",
     subtitle: "法律系 · 大一",
     pos: { x: 10, y: 72 },
     hasVote: true,
     setup: `
-      <p>各位同學好。我跟你們一樣，當年就坐在這個教室裡。</p>
-      <p>我念的是<strong>中正大學法律系</strong>——但說實話，不是因為我多嚮往法律，而是<em>情勢所逼</em>。加上當時的女朋友念中山大學，中正的距離剛剛好。</p>
-      <p>所以我念得<em>有點心不在焉</em>。</p>
-      <p>每個進大學時「非我所願」的人，心裡都有一個小小的抉擇——</p>
+      <p>各位同學好。</p>
+      <p>我 <strong>16 年前</strong>——就坐在你們這個位置。</p>
+      <p>中正大學法律系。<em>情勢所逼</em>，加上當時女朋友念中山。</p>
+      <p>每個進大學時「非我所願」的人，心裡都有一個抉擇——</p>
     `,
     question: "你會選？",
     optionA: {
       title: "既然選了就好好念",
-      desc: "法律系出來還是很穩，考律師、檢察官、公職都行，把這四年念到底",
-      whatif: "選這條路：你會好好準備國考，走法律界的標準路線。這是一條踏實、被社會認可的路——不少同學就是這樣畢業的。"
+      desc: "法律系出路其實很穩：考律師、檢察官、公職——把四年念到底",
+      whatif: "選這條路：你走法律界的標準路線。踏實、被社會認可——不少同學就是這樣畢業的。"
     },
     optionB: {
       title: "遲早要走的",
-      desc: "法律只是我的起點，我遲早會離開。不管最後要做什麼，我都不會做法律",
+      desc: "法律只是起點。不管最後做什麼——我都不會做法律",
       whatif: ""
     },
     correct: "B",
     story: `
-      <p>我沒有明講——但我心裡一直知道：<strong>我不會做法律。</strong></p>
-      <p>那四年，我大部分時間其實不是在念法條。打球、談戀愛、想以後要幹嘛。</p>
-      <p><em>法律系給我的不是法條——是我知道「我不想要什麼」。</em></p>
-      <p>這聽起來有點消極，但其實很重要：<strong>知道自己不要什麼，是知道自己要什麼的起點。</strong></p>
+      <p>我沒明講——但我心裡一直知道：<strong>我不會做法律。</strong></p>
+      <p>那四年，我大部分時間在<em>打球、談戀愛、想以後要幹嘛</em>。</p>
+      <p>法律系給我的不是法條——是「<strong>我知道我不想要什麼</strong>」。</p>
     `,
-    insight: "起點從來不決定終點。你現在坐在哪個科系，不代表你十年後會做什麼。"
+    insight: "起點從來不決定終點。知道自己不要什麼，是知道自己要什麼的起點。"
   },
   {
     id: 1,
     year: "畢業後",
     location: "臺北 · 玉山銀行",
     icon: "gem",
-    photo: "./photos/station-2.jpg",
+    setupPhotos: ["./photos/s2-1.jpg"],
+    storyPhotos: [],
+    layout: "split-rl",
     title: "六個月，看見 40 歲的自己",
     subtitle: "第一份工作",
     pos: { x: 26, y: 42 },
@@ -1095,23 +1136,25 @@ const NODES = [
       <p>畢業後我其實<em>非常徬徨</em>。沒什麼方向，就跟大部分人一樣，找了一份「看起來穩的」工作——<strong>玉山銀行</strong>。</p>
       <p>做到第六個月，我有個很恐怖的發現：</p>
       <p><em>我已經可以預見自己 40 歲的樣子了。</em></p>
-      <p>升遷路徑、薪水級距、甚至我以後會坐哪一層樓、哪一個位置，全部都能算出來。</p>
+      <p>升遷路徑、薪水級距、甚至我以後會坐哪一層樓——全部都能算出來。</p>
+      <p>心裡有個聲音說「得走」。但我<strong>還沒走</strong>——因為我還沒看見要去哪。</p>
     `,
-    question: "你會選？",
+    question: "這時候，你怎麼告訴自己？",
     optionA: {
-      title: "撐下去",
-      desc: "六個月也許只是倦怠期，做滿一年再說，薪水穩定很重要",
-      whatif: "選這條路：幾年後可能升襄理、副理，房貸快繳完。對很多人來說，這是嚮往的人生。"
+      title: "這只是倦怠期",
+      desc: "40 歲的樣子其實還不錯，穩定、有保障。撐下去，會習慣的",
+      whatif: "選這條路：幾年後你習慣了，升襄理、副理，房貸快繳完。對很多人來說，這是嚮往的人生。"
     },
     optionB: {
-      title: "直接辭職",
-      desc: "看得到盡頭的人生不是我要的，就算還沒找到下一步也要走",
+      title: "我遲早要離開",
+      desc: "這份工作我遲早不會做。只是「要去哪」的那個答案——還沒出現",
       whatif: ""
     },
     correct: "B",
     story: `
-      <p>我選了 B。<strong>那一瞬間我覺得：這不是我要的人生。</strong></p>
-      <p>我沒有下一個工作、沒有方向，只是<em>想離開</em>。</p>
+      <p>我選了 B——但我<strong>還沒真的辭職</strong>。</p>
+      <p>我只是在等一個信號。等一個「往哪走」的答案。</p>
+      <p><em>那個答案，在下一站出現。</em></p>
     `,
     insight: "一條你能看到盡頭的路，不一定是你要走的路。"
   },
@@ -1120,41 +1163,49 @@ const NODES = [
     year: "2014 左右",
     location: "臺北 · 一場講座",
     icon: "lightning-bolt",
-    photo: "./photos/station-3.jpg",
+    setupPhotos: [],
+    storyPhotos: ["./photos/s3-1.jpg"],
+    layout: "hero",
     title: "一個晚上，改寫命運",
     subtitle: "聽了何凱成的演講",
     pos: { x: 44, y: 58 },
     hasVote: true,
     setup: `
-      <p>辭職後的某個晚上，我去臺北聽了一場講座。</p>
+      <p>還在玉山上班的某個晚上，我搭車去臺北聽一場講座。</p>
       <p>講者是<strong>何凱成（Cheng Ho）</strong>——<em>哈佛的跑鋒、林書豪的室友</em>，回台灣創了一間叫「球學」的公司，要改變台灣的體育。</p>
-      <p>整場聽下來，我整個人都被點燃了。</p>
-      <p>講座結束，他在現場招募。</p>
+      <p>整場聽下來，我整個人<strong>被點燃了</strong>。</p>
+      <p>講座結束——</p>
     `,
-    question: "講完剛點完火——你會？",
+    question: "熱血衝上頭那一刻，你會？",
     optionA: {
       title: "回家睡，明天再說",
-      desc: "熱血是一回事，但沒薪水要怎麼活？先冷靜一下比較好",
-      whatif: "選這條路：熱度會慢慢退。你隔天冷靜後會投履歷找下一份工作——很多人這樣走下來，一樣活得好好的。"
+      desc: "熱度沖頭時別做決定。先冷靜一下，明天理性看看再說",
+      whatif: "選這條路：熱度會慢慢退。你隔天冷靜後繼續上班，投履歷找下一份工作——很多人這樣走下來，一樣活得好好的。"
     },
     optionB: {
-      title: "隔天就去報到",
-      desc: "沒薪水沒關係，跟著有 vision 的人做事才是重點",
+      title: "隔天就行動",
+      desc: "有些熱度一冷就沒了。要做就趁現在——不管後面有多少未知",
       whatif: ""
     },
     correct: "B",
     story: `
-      <p>隔天我就去球學報到了。<strong>零薪水，做了六個月。</strong></p>
-      <p>那是我人生第一次，<em>沒有因為現實而退一步</em>。</p>
+      <p>隔天早上——我做了<strong>兩件事</strong>：</p>
+      <p>① 寫了一封<em>辭職信</em>，遞給玉山。<br/>
+         ② 寫了一封<em>求職信</em>，寄給球學。</p>
+      <p><strong>（就是這張照片——我留了當年的信。）</strong></p>
+      <p>零薪水沒關係。我終於找到「要去哪」的那個答案了。</p>
+      <p>然後我真的加入了球學——做了<strong>六個月，一毛沒領。</strong></p>
     `,
-    insight: "你永遠不知道哪一扇門會改變你——所以多出門、多聽、多見人。"
+    insight: "有些門只會為你開一次。那一晚如果我回家睡覺——你們今天就不會坐在這裡聽我講。"
   },
   {
     id: 3,
     year: "2015-2018",
     location: "球學時期",
     icon: "trophy",
-    photo: "./photos/station-4.jpg",
+    setupPhotos: ["./photos/s4-1.jpg"],
+    storyPhotos: ["./photos/s4-3.jpg", "./photos/s4-2.jpg", "./photos/s4-5.jpg", "./photos/s4-4.jpg"],
+    layout: "hero",
     title: "六個月零薪水——繼續還是走？",
     subtitle: "第一次創業的十字路口",
     pos: { x: 58, y: 32 },
@@ -1187,49 +1238,53 @@ const NODES = [
   {
     id: 4,
     year: "那次機會",
-    location: "要不要赴約？",
+    location: "要不要自願跟去？",
     icon: "crown",
-    photo: "./photos/station-5.jpg",
+    setupPhotos: [],
+    storyPhotos: ["./photos/s5-1.jpg"],
+    layout: "hero",
     title: "蔡崇信的飯局",
-    subtitle: "全英文會議 · 我該去嗎？",
+    subtitle: "我不是必要的那個人",
     pos: { x: 74, y: 54 },
     hasVote: true,
     setup: `
-      <p>球學做了一陣子，我們突然收到一個邀約——</p>
-      <p><strong>蔡崇信</strong>（阿里巴巴創辦人之一、現在 Brooklyn Nets 的老闆）想跟我們見面。</p>
-      <p>地點臺北高檔餐廳。但——<em>這是一個全英文的會議。</em></p>
-      <p>而我那時候英文其實<em>蠻爛的</em>。</p>
-      <p>團隊其他成員，<strong>其實都不太敢去。</strong></p>
-      <p>那年我 25、26 歲——<em>就跟你們現在差不多。</em></p>
+      <p>球學做了一陣子，公司收到一個邀約——</p>
+      <p><strong>蔡崇信</strong>（阿里巴巴創辦人之一、現在 Brooklyn Nets 的老闆）要跟我們見面。</p>
+      <p>但這場會議，<em>主要對口是 Joe Chen</em>——我們的共同創辦人。會議是<strong>全英文</strong>的，我那時候英文蠻爛的。</p>
+      <p>老實講——<em>公司不需要我去。</em></p>
+      <p>我面臨的抉擇是：要不要<strong>自願跟去</strong>？</p>
     `,
-    question: "這個飯局，你會？",
+    question: "你會？",
     optionA: {
-      title: "讓別人去",
-      desc: "英文爛、層級差太多、怕出糗。讓比較會講英文的同事代表去比較好",
-      whatif: "選這條路：你保護了自己不丟臉。很多人也會這樣選——保留最好的面貌給別人看。"
+      title: "留在辦公室",
+      desc: "Joe Chen 主導就夠了。我去只是多餘，英文又爛，還可能變成麻煩",
+      whatif: "選這條路：你避開了一次尷尬。很合理——你不該搶不屬於你的舞台。"
     },
     optionB: {
-      title: "硬著頭皮也要去",
-      desc: "這種層級的人，一輩子能碰幾次？英文爛沒關係、緊張沒關係——進場才有故事",
+      title: "自願跟去",
+      desc: "這種層級的人，一輩子能近距離看幾次？千載難逢——不是去幫忙，是去學",
       whatif: ""
     },
     correct: "B",
     story: `
-      <p>我去了。全英文、我結巴、我緊張——但我<strong>進場了。</strong></p>
-      <p>結果：<em>蔡崇信決定投我們一百萬美金。</em></p>
-      <p>但更重要的不是那筆錢——</p>
-      <p>整頓飯下來，我注意到：<strong>他對每一個人的態度都一樣好。</strong>服務生、我們這些毛小孩、對面的大人物——完全一樣。</p>
+      <p>我自願跟去了。<strong>不是為了表現，而是為了看。</strong></p>
+      <p>那頓飯整場談判都是 Joe Chen 在處理——我在旁邊<em>沒什麼發言</em>。</p>
+      <p>最後 Joe Tsai 決定投我們<strong>一百萬美金</strong>。</p>
+      <p>但這筆錢<em>不是因為我</em>——是 Joe Chen 的功勞。</p>
+      <p>我帶走的是另一樣東西：</p>
+      <p><strong>整頓飯下來，我注意到 Joe Tsai 對每一個人的態度都一樣好。</strong>服務生、我們這些毛小孩、對面的大人物——完全一樣。</p>
       <p>那一刻我決定：<em>不管以後成功或失敗，我要讓自己永遠是這個樣子。</em></p>
-      <p>如果那天我沒去——這些我都不會學到。</p>
     `,
-    insight: "20 幾歲的你，每一個能跟「比你高」的人碰面的機會都要爭取。英文爛沒關係、緊張沒關係——進場，才有故事。"
+    insight: "20 幾歲最好的機會，常常是那些「你不是必要的」場合——因為沒人期待你，你能純粹學東西。只要能接近比你高的人，就爭取。"
   },
   {
     id: 5,
     year: "2020",
     location: "疫情爆發",
     icon: "hourglass",
-    photo: "./photos/station-6.jpg",
+    setupPhotos: [],
+    storyPhotos: ["./photos/s6-1.jpg"],
+    layout: "split-rl",
     title: "計畫被打亂的那一天",
     subtitle: "留學夢擋在海關前",
     pos: { x: 38, y: 22 },
@@ -1263,7 +1318,9 @@ const NODES = [
     year: "2020",
     location: "Spot 誕生",
     icon: "flame-symbol",
-    photo: "./photos/station-7.jpg",
+    setupPhotos: ["./photos/s7-1.jpg"],
+    storyPhotos: ["./photos/s7-2.jpg", "./photos/s7-3.jpg"],
+    layout: "hero",
     title: "一張 PPT，你敢出門提案嗎？",
     subtitle: "零產品零客戶零技術",
     pos: { x: 60, y: 78 },
@@ -1299,7 +1356,9 @@ const NODES = [
     year: "2026",
     location: "現在",
     icon: "crowned-heart",
-    photo: "./photos/station-8.jpg",
+    setupPhotos: ["./photos/s8-1.jpg", "./photos/s8-2.jpg", "./photos/s8-3.jpg"],
+    storyPhotos: [],
+    layout: "hero",
     title: "六年後，我在這裡",
     subtitle: "回頭看這張地圖",
     pos: { x: 86, y: 30 },
@@ -1476,6 +1535,73 @@ function updateScore(animate) {
   document.getElementById("stationCount").textContent = `第 ${Math.min(currentIdx + 1, NODES.length)} 站 / 共 ${NODES.length} 站`;
 }
 
+// ========== Helpers ==========
+function renderPhotoGrid(photos) {
+  if (!photos || photos.length === 0) return "";
+  const count = Math.min(photos.length, 5);
+  const items = photos.map(p => `<div class="story-photo" style="background-image:url('${p}')"></div>`).join("");
+  return `<div class="photo-grid count-${count}">${items}</div>`;
+}
+
+function renderRevealBanner(n) {
+  const picked = n.correct === "A" ? n.optionA : n.optionB;
+  const rejected = n.correct === "A" ? n.optionB : n.optionA;
+  const rejectedLabel = n.correct === "A" ? "B" : "A";
+  return `
+    <div class="reveal-banner">
+      <div class="picked-mini">
+        <div class="mini-tag">我當年選了 ${n.correct}</div>
+        <div class="mini-label">${n.correct}</div>
+        <div>
+          <h4>${picked.title}</h4>
+          <div class="desc">${picked.desc}</div>
+        </div>
+      </div>
+      <div class="rejected-mini">
+        <div class="mini-tag">另一條路 · WHAT IF</div>
+        <h4>${rejectedLabel}. ${rejected.title}</h4>
+        <div class="whatif-text">${rejected.whatif}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderChoiceGrid(n) {
+  return `
+    <div class="choice-grid">
+      <div class="option-card clickable" data-pick="A">
+        <div class="label">A</div>
+        <h3>${n.optionA.title}</h3>
+        <div class="desc">${n.optionA.desc}</div>
+      </div>
+      <div class="option-card clickable" data-pick="B">
+        <div class="label">B</div>
+        <h3>${n.optionB.title}</h3>
+        <div class="desc">${n.optionB.desc}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderScoreSection(status) {
+  if (status) {
+    return `
+      <div class="score-section scored">
+        <div class="score-prompt">${status === "hit" ? '<i class="ra ra-compass"></i> 多數跟我同路 · +1 站' : '<i class="ra ra-footprint"></i> 多數走了另一邊 · 走得好'}</div>
+      </div>
+    `;
+  }
+  return `
+    <div class="score-section">
+      <div class="score-prompt"><i class="ra ra-hand"></i> 全班多數選了哪邊？</div>
+      <div class="score-btns">
+        <button class="score-btn hit" data-score="hit"><i class="ra ra-compass"></i> 跟我同路 +1</button>
+        <button class="score-btn" data-score="miss"><i class="ra ra-footprint"></i> 走了另一條</button>
+      </div>
+    </div>
+  `;
+}
+
 // ========== Modal 渲染 ==========
 function renderModalBody(idx) {
   const n = NODES[idx];
@@ -1489,105 +1615,83 @@ function renderModalBody(idx) {
     </div>
   `;
 
+  const setupPhotos = n.setupPhotos || [];
+  const storyPhotos = n.storyPhotos || [];
+  const layout = n.layout || "split-lr";
+  const setupLayout = (layout === "split-rl") ? "split-rl" : "split-lr";
+
   let html = titleBlock;
 
   if (n.hasVote && !isRevealed) {
-    // Pre-reveal: setup + A/B 選項
-    html += `
+    // Pre-reveal: (photo+)setup + A/B
+    const setupBlock = `
       <div class="setup-section">
         <div class="section-tag setup">▸ 情境 · SETUP</div>
         <div class="setup-text">${n.setup}</div>
       </div>
-      <div class="choice-section">
-        <div class="choice-question">${n.question}</div>
-        <div class="choice-grid">
-          <div class="option-card clickable" data-pick="A">
-            <div class="label">A</div>
-            <h3>${n.optionA.title}</h3>
-            <div class="desc">${n.optionA.desc}</div>
-          </div>
-          <div class="option-card clickable" data-pick="B">
-            <div class="label">B</div>
-            <h3>${n.optionB.title}</h3>
-            <div class="desc">${n.optionB.desc}</div>
-          </div>
-        </div>
-      </div>
     `;
-  } else if (n.hasVote && isRevealed) {
-    // Post-reveal: compact picked/rejected banner + story + insight + score
-    const picked = n.correct === "A" ? n.optionA : n.optionB;
-    const rejected = n.correct === "A" ? n.optionB : n.optionA;
-    const rejectedLabel = n.correct === "A" ? "B" : "A";
-
-    const photoHtml = n.photo ? `<div class="story-photo" style="background-image:url('${n.photo}')"></div>` : "";
-    html += `
-      <div class="reveal-banner">
-        <div class="picked-mini">
-          <div class="mini-tag">我當年選了 ${n.correct}</div>
-          <div class="mini-label">${n.correct}</div>
-          <div>
-            <h4>${picked.title}</h4>
-            <div class="desc">${picked.desc}</div>
-          </div>
-        </div>
-        <div class="rejected-mini">
-          <div class="mini-tag">另一條路 · WHAT IF</div>
-          <h4>${rejectedLabel}. ${rejected.title}</h4>
-          <div class="whatif-text">${rejected.whatif}</div>
-        </div>
-      </div>
-      <div class="story-row">
-        ${photoHtml}
-        <div class="story-col">
-          <div class="story-section">
-            <div class="section-tag story">▸ 發生了什麼 · STORY</div>
-            <div class="story-text">${n.story || ""}</div>
-          </div>
-          <div class="insight-section">
-            <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
-            <div class="insight-card">${n.insight}</div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Score section inline (compact)
-    if (scoreStatus) {
+    if (setupPhotos.length > 0) {
       html += `
-        <div class="score-section scored">
-          <div class="score-prompt">${scoreStatus === "hit" ? '<i class="ra ra-compass"></i> 多數跟我同路 · +1 站' : '<i class="ra ra-footprint"></i> 多數走了另一邊 · 走得好'}</div>
+        <div class="setup-row ${setupLayout}">
+          ${renderPhotoGrid(setupPhotos)}
+          <div class="story-col">${setupBlock}</div>
         </div>
       `;
     } else {
-      html += `
-        <div class="score-section">
-          <div class="score-prompt"><i class="ra ra-hand"></i> 全班多數選了哪邊？</div>
-          <div class="score-btns">
-            <button class="score-btn hit" data-score="hit"><i class="ra ra-compass"></i> 跟我同路 +1</button>
-            <button class="score-btn" data-score="miss"><i class="ra ra-footprint"></i> 走了另一條</button>
-          </div>
-        </div>
-      `;
+      html += setupBlock;
     }
-  } else {
-    // Non-vote node: setup + photo + insight
-    const photoHtml = n.photo ? `<div class="story-photo" style="background-image:url('${n.photo}')"></div>` : "";
     html += `
-      <div class="story-row">
-        ${photoHtml}
-        <div class="story-col">
-          <div class="setup-section" style="flex:1 1 auto; min-height:0;">
-            <div class="section-tag setup">▸ 情境 · SETUP</div>
-            <div class="setup-text">${n.setup}</div>
-          </div>
-          <div class="insight-section">
-            <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
-            <div class="insight-card">${n.insight}</div>
-          </div>
-        </div>
+      <div class="choice-section">
+        <div class="choice-question">${n.question}</div>
+        ${renderChoiceGrid(n)}
       </div>
     `;
+  } else if (n.hasVote && isRevealed) {
+    // Post-reveal: banner + (photo+)story + score
+    html += renderRevealBanner(n);
+    const storyBlock = `
+      <div class="story-section">
+        <div class="section-tag story">▸ 發生了什麼 · STORY</div>
+        <div class="story-text">${n.story || ""}</div>
+      </div>
+      <div class="insight-section">
+        <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
+        <div class="insight-card">${n.insight}</div>
+      </div>
+    `;
+    if (storyPhotos.length > 0) {
+      html += `
+        <div class="story-row ${layout}">
+          ${renderPhotoGrid(storyPhotos)}
+          <div class="story-col">${storyBlock}</div>
+        </div>
+      `;
+    } else {
+      html += `<div class="story-col" style="flex:1 1 auto;">${storyBlock}</div>`;
+    }
+    html += renderScoreSection(scoreStatus);
+  } else {
+    // Non-vote: photos + setup + insight
+    const content = `
+      <div class="setup-section" style="flex:1 1 auto; min-height:0;">
+        <div class="section-tag setup">▸ 情境 · SETUP</div>
+        <div class="setup-text">${n.setup}</div>
+      </div>
+      <div class="insight-section">
+        <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
+        <div class="insight-card">${n.insight}</div>
+      </div>
+    `;
+    if (setupPhotos.length > 0) {
+      html += `
+        <div class="story-row ${layout}">
+          ${renderPhotoGrid(setupPhotos)}
+          <div class="story-col">${content}</div>
+        </div>
+      `;
+    } else {
+      html += content;
+    }
   }
 
   modalBody.innerHTML = html;
