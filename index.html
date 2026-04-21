@@ -568,14 +568,15 @@
   }
 
   .option-card {
-    padding: 20px 22px;
+    padding: 18px 22px;
     background: rgba(10, 14, 39, 0.5);
     border: 2px solid var(--line);
     position: relative;
     transition: all 0.4s ease;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
+    min-height: 0;
   }
   .option-card.clickable {
     cursor: pointer;
@@ -1087,30 +1088,31 @@
   .audience-vote-bar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 16px 24px;
+    gap: 14px;
+    padding: 10px 18px;
     background: rgba(251, 191, 36, 0.08);
     border: 2px dashed var(--amber);
     flex: 0 0 auto;
-    margin-top: 14px;
+    margin-top: 28px;
   }
   .audience-vote-bar .vote-prompt {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--amber);
     flex: 0 0 auto;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    white-space: nowrap;
   }
   .audience-vote-bar .vote-btn {
     flex: 1;
-    padding: 18px 24px;
+    padding: 10px 18px;
     background: transparent;
     border: 2px solid var(--amber);
     color: var(--amber);
     font-family: "Press Start 2P", monospace;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.15s;
