@@ -1628,6 +1628,46 @@ const NODES = [
   },
   {
     id: 1,
+    year: "101 年",
+    location: "中正 · 兵單來了",
+    icon: "crossed-sabres",
+    setupPhotos: ["./photos/draft.jpg"],
+    storyPhotos: [],
+    layout: "split-lr",
+    title: "海軍陸戰隊第三類・0022 號",
+    subtitle: "大學畢業前，兵單到了",
+    pos: { x: 18, y: 90 },
+    hasVote: true,
+    setup: `
+      <p>大學快畢業的某一天——<strong>兵單來了。</strong></p>
+      <p>我抽中 <em>海軍陸戰隊兵第三類</em>。就是這張——<strong>第 0022 號，洪頎茗</strong>，101 年 3 月 2 日。</p>
+      <p>現在你們可能覺得這沒什麼。</p>
+      <p>但當年——<em>海陸</em>那三個字，是大學男生的「終極噩夢」代名詞。</p>
+    `,
+    question: "你會？",
+    optionA: {
+      title: "認命去當海陸",
+      desc: "國家叫你去就去。男人嘛，吃苦當吃補",
+      whatif: "選這條路：你去服役三年，回來更成熟、體力更好——但你也晚兩年起步。很多人這樣過。"
+    },
+    optionB: {
+      title: "想辦法延畢避開",
+      desc: "延畢一年改服替代役。代價是——要動點腦筋",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>我選了 B。我做了一件<em>你們聽了會笑</em>的事——</p>
+      <p>我寫了一封信給我的教授，<strong>拜託他把我當掉。</strong></p>
+      <p>「老師，請您<em>務必</em>把我當掉。我真的不想去當海陸。」</p>
+      <p>（是的，認真寫的。寫得像情書。）</p>
+      <p>他真的把我當了。我真的延畢了一年。</p>
+      <p>後來改去服<strong>替代役</strong>——躲過海陸那三個字。</p>
+    `,
+    insight: "大學時，我們都差不多——沒人真的在「拚」，包括我。別急著評斷自己。你的 30 歲長什麼樣，現在還看不出來。"
+  },
+  {
+    id: 2,
     year: "畢業後",
     location: "臺北 · 玉山銀行",
     icon: "gem",
@@ -1665,7 +1705,7 @@ const NODES = [
     insight: "一條你能看到盡頭的路，不一定是你要走的路。"
   },
   {
-    id: 2,
+    id: 3,
     year: "2014 左右",
     location: "臺北 · 一場講座",
     icon: "lightning-bolt",
@@ -1705,7 +1745,7 @@ const NODES = [
     insight: "有些門只會為你開一次。那一晚如果我回家睡覺——你們今天就不會坐在這裡聽我講。"
   },
   {
-    id: 3,
+    id: 4,
     year: "2015-2018",
     location: "球學時期",
     icon: "trophy",
@@ -1755,7 +1795,7 @@ const NODES = [
     insight: "商業模式會來找你——前提是，你做的事情夠認真、夠純粹。"
   },
   {
-    id: 4,
+    id: 5,
     year: "那次機會",
     location: "要不要自願跟去？",
     icon: "crown",
@@ -1797,7 +1837,7 @@ const NODES = [
     insight: "20 幾歲最好的機會，常常是那些「你不是必要的」場合——因為沒人期待你，你能純粹學東西。只要能接近比你高的人，就爭取。"
   },
   {
-    id: 5,
+    id: 6,
     year: "蔡崇信之後",
     location: "公司空了 · COO 不會寫程式",
     icon: "anvil",
@@ -1838,7 +1878,7 @@ const NODES = [
     insight: "別人離開的時候，反而是你變強的時機。你不會寫程式沒關係——但不能不學。"
   },
   {
-    id: 6,
+    id: 7,
     year: "2020",
     location: "疫情爆發",
     icon: "hourglass",
@@ -1874,7 +1914,7 @@ const NODES = [
     insight: "你以為的「打斷」，常常是更大的機會。"
   },
   {
-    id: 7,
+    id: 8,
     year: "2020",
     location: "Spot 誕生",
     icon: "flame-symbol",
@@ -1912,7 +1952,7 @@ const NODES = [
     insight: "過去的每一步，都是未來的籌碼。沒有哪段經歷是白費的。"
   },
   {
-    id: 8,
+    id: 9,
     year: "2026",
     location: "現在",
     icon: "crowned-heart",
