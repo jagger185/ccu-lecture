@@ -646,6 +646,41 @@
     color: var(--dim);
     margin-bottom: 18px;
   }
+
+  /* Story + Photo row (post-reveal) */
+  .story-row {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  @media (max-width: 900px) {
+    .story-row { grid-template-columns: 1fr; }
+  }
+  .story-photo {
+    background-size: cover;
+    background-position: center;
+    background-color: var(--bg2);
+    border: 2px solid var(--amber);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 0 0 1px rgba(251,191,36,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .story-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(10,14,39,0.5));
+    pointer-events: none;
+  }
+  .story-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+    overflow: hidden;
+  }
   .option-card .label {
     font-family: "Press Start 2P", monospace;
     font-size: 22px;
@@ -1015,6 +1050,7 @@ const NODES = [
     year: "2008",
     location: "嘉義 · 中正大學",
     icon: "scroll-unfurled",
+    photo: "./photos/station-1.jpg",
     title: "起點：非我所願",
     subtitle: "法律系 · 大一",
     pos: { x: 10, y: 72 },
@@ -1050,6 +1086,7 @@ const NODES = [
     year: "畢業後",
     location: "臺北 · 玉山銀行",
     icon: "gem",
+    photo: "./photos/station-2.jpg",
     title: "六個月，看見 40 歲的自己",
     subtitle: "第一份工作",
     pos: { x: 26, y: 42 },
@@ -1083,6 +1120,7 @@ const NODES = [
     year: "2014 左右",
     location: "臺北 · 一場講座",
     icon: "lightning-bolt",
+    photo: "./photos/station-3.jpg",
     title: "一個晚上，改寫命運",
     subtitle: "聽了何凱成的演講",
     pos: { x: 44, y: 58 },
@@ -1116,6 +1154,7 @@ const NODES = [
     year: "2015-2018",
     location: "球學時期",
     icon: "trophy",
+    photo: "./photos/station-4.jpg",
     title: "六個月零薪水——繼續還是走？",
     subtitle: "第一次創業的十字路口",
     pos: { x: 58, y: 32 },
@@ -1150,6 +1189,7 @@ const NODES = [
     year: "那次機會",
     location: "要不要赴約？",
     icon: "crown",
+    photo: "./photos/station-5.jpg",
     title: "蔡崇信的飯局",
     subtitle: "全英文會議 · 我該去嗎？",
     pos: { x: 74, y: 54 },
@@ -1189,6 +1229,7 @@ const NODES = [
     year: "2020",
     location: "疫情爆發",
     icon: "hourglass",
+    photo: "./photos/station-6.jpg",
     title: "計畫被打亂的那一天",
     subtitle: "留學夢擋在海關前",
     pos: { x: 38, y: 22 },
@@ -1222,6 +1263,7 @@ const NODES = [
     year: "2020",
     location: "Spot 誕生",
     icon: "flame-symbol",
+    photo: "./photos/station-7.jpg",
     title: "一張 PPT，你敢出門提案嗎？",
     subtitle: "零產品零客戶零技術",
     pos: { x: 60, y: 78 },
@@ -1257,6 +1299,7 @@ const NODES = [
     year: "2026",
     location: "現在",
     icon: "crowned-heart",
+    photo: "./photos/station-8.jpg",
     title: "六年後，我在這裡",
     subtitle: "回頭看這張地圖",
     pos: { x: 86, y: 30 },
@@ -1477,6 +1520,7 @@ function renderModalBody(idx) {
     const rejected = n.correct === "A" ? n.optionB : n.optionA;
     const rejectedLabel = n.correct === "A" ? "B" : "A";
 
+    const photoHtml = n.photo ? `<div class="story-photo" style="background-image:url('${n.photo}')"></div>` : "";
     html += `
       <div class="reveal-banner">
         <div class="picked-mini">
@@ -1493,13 +1537,18 @@ function renderModalBody(idx) {
           <div class="whatif-text">${rejected.whatif}</div>
         </div>
       </div>
-      <div class="story-section">
-        <div class="section-tag story">▸ 發生了什麼 · STORY</div>
-        <div class="story-text">${n.story || ""}</div>
-      </div>
-      <div class="insight-section">
-        <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
-        <div class="insight-card">${n.insight}</div>
+      <div class="story-row">
+        ${photoHtml}
+        <div class="story-col">
+          <div class="story-section">
+            <div class="section-tag story">▸ 發生了什麼 · STORY</div>
+            <div class="story-text">${n.story || ""}</div>
+          </div>
+          <div class="insight-section">
+            <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
+            <div class="insight-card">${n.insight}</div>
+          </div>
+        </div>
       </div>
     `;
 
@@ -1522,15 +1571,21 @@ function renderModalBody(idx) {
       `;
     }
   } else {
-    // Non-vote node: setup + insight (no choice, no story)
+    // Non-vote node: setup + photo + insight
+    const photoHtml = n.photo ? `<div class="story-photo" style="background-image:url('${n.photo}')"></div>` : "";
     html += `
-      <div class="setup-section" style="flex:1 1 auto; min-height:0;">
-        <div class="section-tag setup">▸ 情境 · SETUP</div>
-        <div class="setup-text">${n.setup}</div>
-      </div>
-      <div class="insight-section">
-        <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
-        <div class="insight-card">${n.insight}</div>
+      <div class="story-row">
+        ${photoHtml}
+        <div class="story-col">
+          <div class="setup-section" style="flex:1 1 auto; min-height:0;">
+            <div class="section-tag setup">▸ 情境 · SETUP</div>
+            <div class="setup-text">${n.setup}</div>
+          </div>
+          <div class="insight-section">
+            <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
+            <div class="insight-card">${n.insight}</div>
+          </div>
+        </div>
       </div>
     `;
   }
