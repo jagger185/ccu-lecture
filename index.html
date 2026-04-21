@@ -702,6 +702,11 @@
   .photo-grid.count-5 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
   .photo-grid.count-5 > :nth-child(1) { grid-column: 1 / 3; }
   .photo-grid.count-6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
+  .photo-grid.count-7, .photo-grid.count-8, .photo-grid.count-9 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 6px;
+  }
 
   /* Featured layout: first photo is banner across top, rest below */
   .photo-grid.featured.count-4 {
@@ -1164,6 +1169,44 @@
     letter-spacing: 0.01em;
   }
 
+  /* Mosaic post-reveal: photos grid top (~70%), text strip in 3 cols below */
+  .story-row.layout-mosaic {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(360px, 1fr) minmax(180px, auto);
+    gap: 14px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .story-row.layout-mosaic .story-col.big-text-col {
+    flex-direction: row;
+    gap: 18px;
+    align-items: stretch;
+    overflow: hidden;
+    max-height: 220px;
+  }
+  .story-row.layout-mosaic .compact-reveal {
+    flex: 0 0 26%;
+    min-width: 0;
+  }
+  .story-row.layout-mosaic .story-big {
+    flex: 1 1 42%;
+    min-width: 0;
+    overflow-y: auto;
+  }
+  .story-row.layout-mosaic .insight-big {
+    flex: 0 0 32%;
+    min-width: 0;
+  }
+  .story-row.layout-mosaic .big-story-text {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .story-row.layout-mosaic .huge-quote {
+    font-size: 20px;
+  }
+
   /* No-photo post-reveal: centered bigger */
   .story-col.big-text-col.text-hero {
     max-width: 980px;
@@ -1604,8 +1647,19 @@ const NODES = [
     location: "球學時期",
     icon: "trophy",
     setupPhotos: ["./photos/s4-1.jpg"],
-    storyPhotos: ["./photos/s4-highlights.jpg", "./photos/s4-2.jpg", "./photos/s4-product.jpg"],
+    storyPhotos: [
+      "./photos/s4-highlights.jpg",
+      "./photos/s4-live.jpg",
+      "./photos/s4-student.jpg",
+      "./photos/s4-early.jpg",
+      "./photos/s4-product.jpg",
+      "./photos/s4-team-big.jpg",
+      "./photos/s4-2.jpg",
+      "./photos/s4-4.jpg",
+      "./photos/s4-5.jpg"
+    ],
     layout: "hero",
+    postLayout: "mosaic",
     title: "一年零薪水——繼續還是走？",
     subtitle: "第一次創業的十字路口",
     pos: { x: 58, y: 32 },
@@ -1940,7 +1994,7 @@ function updateScore(animate) {
 // ========== Helpers ==========
 function renderPhotoGrid(photos, extraClass) {
   if (!photos || photos.length === 0) return "";
-  const count = Math.min(photos.length, 6);
+  const count = Math.min(photos.length, 9);
   const items = photos.map(p => `<div class="story-photo" style="background-image:url('${p}')"></div>`).join("");
   const cls = extraClass ? ` ${extraClass}` : "";
   return `<div class="photo-grid count-${count}${cls}">${items}</div>`;
@@ -2116,9 +2170,10 @@ function renderModalBody(idx) {
     `;
 
     const stationClass = `s${idx + 1}-post`;
+    const postLayoutClass = n.postLayout === "mosaic" ? "layout-mosaic" : "layout-optionA";
     if (storyPhotos.length > 0) {
       html += `
-        <div class="story-row layout-optionA ${stationClass}">
+        <div class="story-row ${postLayoutClass} ${stationClass}">
           ${renderPhotoGrid(storyPhotos, n.photoLayout)}
           <div class="story-col big-text-col">${rightPanel}</div>
         </div>
