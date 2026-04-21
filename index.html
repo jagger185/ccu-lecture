@@ -238,23 +238,23 @@
 
   .node {
     position: absolute;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -32px);  /* Align dot center with node.pos, text below */
     cursor: pointer;
     transition: opacity 0.6s ease, transform 0.6s ease;
     text-align: center;
     z-index: 5;
   }
-  .node:hover { transform: translate(-50%, -50%) scale(1.08); z-index: 10; }
+  .node:hover { transform: translate(-50%, -32px) scale(1.08); z-index: 10; }
 
   /* Fog of war: undiscovered stations hidden */
   .node.hidden-node {
     opacity: 0;
     pointer-events: none;
-    transform: translate(-50%, -50%) scale(0.4);
+    transform: translate(-50%, -32px) scale(0.4);
   }
   /* Preview: next upcoming station shown as silhouette */
   .node.preview { opacity: 0.35; pointer-events: none; }
-  .node.preview:hover { transform: translate(-50%, -50%) scale(1); }
+  .node.preview:hover { transform: translate(-50%, -32px) scale(1); }
   .node.preview .node-dot {
     background: var(--bg2);
     border-color: var(--line);
@@ -393,9 +393,9 @@
     background-image: url('./jagger.jpg');
     background-size: cover;
     background-position: center top;
-    border: 3px solid var(--amber);
+    border: 3px solid var(--neon);
     box-shadow:
-      0 0 18px rgba(251, 191, 36, 0.6),
+      0 0 18px rgba(52, 211, 153, 0.7),
       0 6px 14px rgba(0, 0, 0, 0.7);
     animation: idleBob 1.4s ease-in-out infinite alternate;
     transform-origin: center bottom;
@@ -403,7 +403,7 @@
   .walker.walking .avatar {
     animation: walkBob 0.32s ease-in-out infinite alternate;
     box-shadow:
-      0 0 26px rgba(251, 191, 36, 0.85),
+      0 0 26px rgba(52, 211, 153, 0.95),
       0 8px 16px rgba(0, 0, 0, 0.7);
   }
   @keyframes idleBob {
@@ -418,13 +418,13 @@
   .walker::after {
     content: "";
     position: absolute;
-    bottom: -8px;
+    bottom: -6px;
     left: 50%;
     transform: translateX(-50%);
     width: 40px;
     height: 8px;
     border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(0,0,0,0.5), transparent 70%);
+    background: radial-gradient(ellipse, rgba(52, 211, 153, 0.35), transparent 70%);
     filter: blur(2px);
     animation: shadowPulse 1.4s ease-in-out infinite alternate;
   }
