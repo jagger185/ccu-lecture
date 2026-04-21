@@ -1717,6 +1717,47 @@ const NODES = [
   },
   {
     id: 5,
+    year: "蔡崇信之後",
+    location: "公司空了 · CEO 不會寫程式",
+    icon: "anvil",
+    setupPhotos: [],
+    storyPhotos: [],
+    layout: "split-lr",
+    title: "工程師全走那天",
+    subtitle: "我是 CEO，卻連 git commit 都不懂",
+    pos: { x: 90, y: 18 },
+    hasVote: true,
+    setup: `
+      <p>蔡崇信的 <strong>一百萬美金</strong> 進來——公司開始大幅擴張。</p>
+      <p>一切看起來要起飛了。</p>
+      <p>但我慢慢發現——<em>我跟不上</em>。</p>
+      <p>我是法律系的，對技術一竅不通。</p>
+      <p>更糟的是——<strong>工程師們突然全部離開</strong>。公司空了。</p>
+      <p>我是 CEO，卻連「git commit」是什麼都不知道。</p>
+    `,
+    question: "這時候你會？",
+    optionA: {
+      title: "坦白撐著，等新工程師",
+      desc: "CEO 能做的事繼續做，產品等人才到位再說",
+      whatif: "選這條路：你保持 CEO 身份，慢慢重招團隊。很多創辦人這樣撐過去——但你也會永遠失去「自己動手做」的能力。"
+    },
+    optionB: {
+      title: "從零學寫程式",
+      desc: "法律系出身也沒關係。工程師走了——那我自己來",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>我選了 B。從那時候——<strong>自學寫程式</strong>。</p>
+      <p>從零開始。每天幾小時。錯了重寫，重寫再錯。</p>
+      <p>那段時間我強烈感受到——<em>AI 跟 coding 即將改變這個世界。</em></p>
+      <p>這個決定為我後來在科技創業<strong>奠下最大的基礎</strong>。</p>
+      <p>沒有這一步——Spot 那張 PPT 我根本寫不出來。</p>
+    `,
+    insight: "別人離開的時候，反而是你變強的時機。你不會寫程式沒關係——但不能不學。"
+  },
+  {
+    id: 6,
     year: "2020",
     location: "疫情爆發",
     icon: "hourglass",
@@ -1752,7 +1793,7 @@ const NODES = [
     insight: "你以為的「打斷」，常常是更大的機會。"
   },
   {
-    id: 6,
+    id: 7,
     year: "2020",
     location: "Spot 誕生",
     icon: "flame-symbol",
@@ -1790,7 +1831,7 @@ const NODES = [
     insight: "過去的每一步，都是未來的籌碼。沒有哪段經歷是白費的。"
   },
   {
-    id: 7,
+    id: 8,
     year: "2026",
     location: "現在",
     icon: "crowned-heart",
@@ -1800,7 +1841,7 @@ const NODES = [
     photoLayout: "main-stack",
     title: "六年後，我在這裡",
     subtitle: "回頭看這張地圖",
-    pos: { x: 86, y: 30 },
+    pos: { x: 90, y: 64 },
     hasVote: false,
     setup: `
       <p>從那張 PPT 開始，六年了。</p>
