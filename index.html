@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rpg-awesome@0.2.0/css/rpg-awesome.min.css" />
 <style>
   :root {
     --bg: #0a0e27;
@@ -508,7 +509,7 @@
   }
   .option-card.clickable:hover .label { color: var(--amber); }
   .option-card.clickable::after {
-    content: "👆 點我公布";
+    content: "▸ 點我公布";
     position: absolute;
     bottom: 10px;
     right: 12px;
@@ -918,7 +919,7 @@
   <div class="topbar">
     <div class="logo">◆ 創業地圖</div>
     <div class="score-box">
-      <div class="score-label">🧭 與我同路</div>
+      <div class="score-label"><i class="ra ra-compass"></i> 與我同路</div>
       <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
       <div class="score-value" id="scoreValue">0 / 5</div>
     </div>
@@ -939,7 +940,7 @@
     <div class="modal-header">
       <div class="modal-tag">
         <div class="bullet"></div>
-        <span class="modal-icon" id="modalIcon">📍</span>
+        <span class="modal-icon" id="modalIcon"></span>
         <span id="modalMeta">2008 · 嘉義</span>
       </div>
       <button class="modal-close" id="modalClose">×</button>
@@ -981,7 +982,7 @@ const NODES = [
     id: 0,
     year: "2008",
     location: "嘉義 · 中正大學",
-    icon: "⚖️",
+    icon: "scroll-unfurled",
     title: "起點：非我所願",
     subtitle: "法律系 · 大一",
     pos: { x: 10, y: 72 },
@@ -1016,7 +1017,7 @@ const NODES = [
     id: 1,
     year: "畢業後",
     location: "臺北 · 玉山銀行",
-    icon: "🏦",
+    icon: "gem",
     title: "六個月，看見 40 歲的自己",
     subtitle: "第一份工作",
     pos: { x: 26, y: 42 },
@@ -1049,7 +1050,7 @@ const NODES = [
     id: 2,
     year: "2014 左右",
     location: "臺北 · 一場講座",
-    icon: "🎤",
+    icon: "lightning-bolt",
     title: "一個晚上，改寫命運",
     subtitle: "聽了何凱成的演講",
     pos: { x: 44, y: 58 },
@@ -1082,7 +1083,7 @@ const NODES = [
     id: 3,
     year: "2015-2018",
     location: "球學時期",
-    icon: "🏀",
+    icon: "trophy",
     title: "六個月零薪水——繼續還是走？",
     subtitle: "第一次創業的十字路口",
     pos: { x: 58, y: 32 },
@@ -1116,7 +1117,7 @@ const NODES = [
     id: 4,
     year: "那次機會",
     location: "要不要赴約？",
-    icon: "🍽️",
+    icon: "crown",
     title: "蔡崇信的飯局",
     subtitle: "全英文會議 · 我該去嗎？",
     pos: { x: 74, y: 54 },
@@ -1155,7 +1156,7 @@ const NODES = [
     id: 5,
     year: "2020",
     location: "疫情爆發",
-    icon: "✈️",
+    icon: "hourglass",
     title: "計畫被打亂的那一天",
     subtitle: "留學夢擋在海關前",
     pos: { x: 38, y: 22 },
@@ -1188,7 +1189,7 @@ const NODES = [
     id: 6,
     year: "2020",
     location: "Spot 誕生",
-    icon: "🎬",
+    icon: "flame-symbol",
     title: "一張 PPT，你敢出門提案嗎？",
     subtitle: "零產品零客戶零技術",
     pos: { x: 60, y: 78 },
@@ -1223,7 +1224,7 @@ const NODES = [
     id: 7,
     year: "2026",
     location: "現在",
-    icon: "🚀",
+    icon: "crowned-heart",
     title: "六年後，我在這裡",
     subtitle: "回頭看這張地圖",
     pos: { x: 86, y: 30 },
@@ -1262,6 +1263,11 @@ const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modalBody");
 const ending = document.getElementById("ending");
 
+// ========== 圖示 ==========
+function renderIcon(name) {
+  return `<i class="ra ra-${name}"></i>`;
+}
+
 // ========== 渲染地圖節點 ==========
 function renderNodes() {
   [...map.querySelectorAll(".node")].forEach(n => n.remove());
@@ -1275,11 +1281,11 @@ function renderNodes() {
     if (visited.has(i)) el.classList.add("visited");
     if (i === currentIdx) el.classList.add("current");
 
-    const voteBadge = n.hasVote ? `<div class="node-vote-badge">抉擇點</div>` : "";
+    const voteBadge = n.hasVote ? `<div class="node-vote-badge"><i class="ra ra-crossed-swords"></i> 抉擇點</div>` : "";
 
     el.innerHTML = `
       <div class="node-dot">
-        ${n.icon}
+        ${renderIcon(n.icon)}
         <div class="node-num">${i + 1}</div>
       </div>
       <div class="node-year">${n.year}</div>
@@ -1468,16 +1474,16 @@ function renderModalBody(idx) {
     if (scoreStatus) {
       html += `
         <div class="score-section scored">
-          <div class="score-prompt">${scoreStatus === "hit" ? "🧭 多數跟我同路 · +1 站" : "✨ 多數走了另一邊 · 走得好"}</div>
+          <div class="score-prompt">${scoreStatus === "hit" ? '<i class="ra ra-compass"></i> 多數跟我同路 · +1 站' : '<i class="ra ra-footprint"></i> 多數走了另一邊 · 走得好'}</div>
         </div>
       `;
     } else {
       html += `
         <div class="score-section">
-          <div class="score-prompt">📊 全班多數選了哪邊？</div>
+          <div class="score-prompt"><i class="ra ra-hand"></i> 全班多數選了哪邊？</div>
           <div class="score-btns">
-            <button class="score-btn hit" data-score="hit">🧭 跟我同路 +1</button>
-            <button class="score-btn" data-score="miss">✨ 走了另一條</button>
+            <button class="score-btn hit" data-score="hit"><i class="ra ra-compass"></i> 跟我同路 +1</button>
+            <button class="score-btn" data-score="miss"><i class="ra ra-footprint"></i> 走了另一條</button>
           </div>
         </div>
       `;
@@ -1543,7 +1549,7 @@ function openNode(idx, opts = {}) {
   const showModal = () => {
     const n = NODES[idx];
     document.getElementById("modalMeta").textContent = `${n.year} · ${n.location}`;
-    document.getElementById("modalIcon").textContent = n.icon;
+    document.getElementById("modalIcon").innerHTML = renderIcon(n.icon);
     renderModalBody(idx);
     updateNav(idx);
     modal.classList.add("visible");
