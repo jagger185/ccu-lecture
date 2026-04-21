@@ -42,12 +42,8 @@
     position: relative;
   }
 
-  /* Starfield */
   .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background-image:
       radial-gradient(1px 1px at 10% 20%, #fff, transparent),
       radial-gradient(1px 1px at 30% 70%, #fff, transparent),
@@ -63,38 +59,20 @@
   }
   @keyframes twinkle { from { opacity: 0.35; } to { opacity: 0.65; } }
 
-  /* Scanlines overlay */
   .scanlines {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.02) 0 2px,
-      transparent 2px 4px
-    );
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 4px);
     mix-blend-mode: overlay;
   }
 
   /* =============== 封面 =============== */
   .cover {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 4vw;
+    position: fixed; inset: 0; z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 4vw;
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
-  .cover.hidden {
-    opacity: 0;
-    transform: scale(1.05);
-    pointer-events: none;
-  }
+  .cover.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
   .cover-tag {
     font-family: "Press Start 2P", monospace;
     font-size: clamp(10px, 1.2vw, 14px);
@@ -125,8 +103,18 @@
     margin-bottom: 0.5em;
     letter-spacing: 0.15em;
   }
+  .cover-rule {
+    margin-top: 2em;
+    padding: 1em 1.6em;
+    border: 1px dashed var(--amber);
+    max-width: 580px;
+    color: var(--text);
+    font-size: clamp(13px, 1.4vw, 15px);
+    line-height: 1.8;
+  }
+  .cover-rule b { color: var(--amber); }
   .cover-speaker {
-    margin-top: 3em;
+    margin-top: 2em;
     font-family: "JetBrains Mono", monospace;
     color: var(--amber);
     font-size: clamp(11px, 1.1vw, 13px);
@@ -134,7 +122,7 @@
   }
   .cover-speaker span { color: var(--text); font-size: 1.3em; display: block; margin-top: 0.6em; letter-spacing: 0.05em; font-family: "Noto Sans TC"; font-weight: 700; }
   .start-btn {
-    margin-top: 4em;
+    margin-top: 2.4em;
     padding: 1.2em 3em;
     background: transparent;
     border: 2px solid var(--neon);
@@ -149,8 +137,7 @@
   }
   .start-btn::before {
     content: "";
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: var(--neon);
     transform: translateX(-101%);
     transition: transform 0.3s;
@@ -158,66 +145,73 @@
   }
   .start-btn:hover { color: var(--bg); }
   .start-btn:hover::before { transform: translateX(0); }
-  .start-hint {
-    margin-top: 1.5em;
-    color: var(--dim);
-    font-size: 13px;
-    letter-spacing: 0.1em;
-  }
 
   /* =============== 主畫面 =============== */
   .app {
-    position: relative;
-    z-index: 2;
+    position: relative; z-index: 2;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     opacity: 0;
     transition: opacity 0.8s ease 0.3s;
   }
   .app.visible { opacity: 1; }
 
   .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
     border-bottom: 1px solid var(--line);
     background: rgba(10, 14, 39, 0.6);
     backdrop-filter: blur(10px);
+    gap: 20px;
   }
   .logo {
     font-family: "Press Start 2P", monospace;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--neon);
     letter-spacing: 0.15em;
   }
-  .progress {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 13px;
-    color: var(--dim);
+  .score-box {
+    display: flex; align-items: center; gap: 14px;
+    padding: 8px 18px;
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+    flex: 1;
+    max-width: 420px;
   }
-  .progress-bar {
-    width: 200px;
-    height: 6px;
+  .score-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    white-space: nowrap;
+  }
+  .score-value {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    color: var(--amber);
+    font-size: 18px;
+    min-width: 60px;
+    text-align: right;
+    transition: transform 0.3s;
+  }
+  .score-value.bump { transform: scale(1.3); color: var(--neon); }
+  .score-bar {
+    flex: 1; height: 6px;
     background: var(--line);
     border-radius: 3px;
     overflow: hidden;
-    position: relative;
   }
-  .progress-fill {
+  .score-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--cyan), var(--neon));
+    background: linear-gradient(90deg, var(--amber), var(--neon));
     width: 0%;
-    transition: width 0.5s ease;
+    transition: width 0.6s ease;
   }
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 24px;
+  .station-count {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--dim);
+    white-space: nowrap;
   }
   .restart-btn {
     background: transparent;
@@ -233,23 +227,9 @@
   .restart-btn:hover { color: var(--text); border-color: var(--dim); }
 
   /* =============== 地圖 =============== */
-  .map-wrap {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-  .map {
-    position: absolute;
-    inset: 0;
-    padding: 5vh 5vw;
-  }
-  .map-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
+  .map-wrap { flex: 1; position: relative; overflow: hidden; }
+  .map { position: absolute; inset: 0; padding: 5vh 5vw; }
+  .map-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
   .node {
     position: absolute;
@@ -262,22 +242,15 @@
   .node:hover { transform: translate(-50%, -50%) scale(1.08); z-index: 10; }
 
   .node-dot {
-    width: 64px;
-    height: 64px;
+    width: 64px; height: 64px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     margin: 0 auto 10px;
     background: var(--panel);
     border: 2px solid var(--line);
     font-size: 28px;
     position: relative;
     transition: all 0.3s;
-  }
-  .node.locked .node-dot {
-    opacity: 0.4;
-    filter: grayscale(0.8);
   }
   .node.visited .node-dot {
     border-color: var(--cyan);
@@ -297,18 +270,14 @@
 
   .node-num {
     position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 22px;
-    height: 22px;
+    top: -8px; right: -8px;
+    width: 22px; height: 22px;
     background: var(--bg);
     border: 1px solid var(--line);
     border-radius: 50%;
     font-family: "JetBrains Mono", monospace;
     font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     color: var(--dim);
   }
   .node.visited .node-num, .node.current .node-num {
@@ -324,8 +293,7 @@
     margin-bottom: 2px;
   }
   .node-title {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 13px; font-weight: 700;
     color: var(--text);
     white-space: nowrap;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
@@ -335,53 +303,48 @@
     color: var(--dim);
     margin-top: 2px;
   }
-  .node.locked .node-title, .node.locked .node-sub, .node.locked .node-year {
-    color: var(--dim);
-    opacity: 0.6;
+  .node-vote-badge {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
   }
 
-  /* SVG path animation */
   .path-line {
-    stroke: var(--line);
-    stroke-width: 2;
-    stroke-dasharray: 6 6;
-    fill: none;
+    stroke: var(--line); stroke-width: 2;
+    stroke-dasharray: 6 6; fill: none;
   }
   .path-line.active {
     stroke: var(--cyan);
     animation: dashflow 2s linear infinite;
   }
-  @keyframes dashflow {
-    to { stroke-dashoffset: -24; }
-  }
+  @keyframes dashflow { to { stroke-dashoffset: -24; } }
 
-  /* =============== 故事卡片 modal =============== */
+  /* =============== 故事 modal =============== */
   .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(5, 8, 25, 0.85);
-    backdrop-filter: blur(8px);
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(5, 8, 25, 0.88);
+    backdrop-filter: blur(10px);
     display: none;
-    align-items: center;
-    justify-content: center;
+    align-items: center; justify-content: center;
     padding: 3vh 3vw;
     opacity: 0;
     transition: opacity 0.3s;
   }
-  .modal-backdrop.visible {
-    display: flex;
-    opacity: 1;
-  }
+  .modal-backdrop.visible { display: flex; opacity: 1; }
 
   .modal {
-    width: min(1100px, 100%);
-    max-height: 90vh;
+    width: min(1200px, 100%);
+    max-height: 92vh;
     background: var(--panel);
     border: 1px solid var(--cyan);
     box-shadow: 0 20px 80px rgba(34, 211, 238, 0.2), 0 0 40px rgba(34, 211, 238, 0.1) inset;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     overflow: hidden;
     transform: scale(0.95);
     transition: transform 0.3s;
@@ -389,17 +352,13 @@
   .modal-backdrop.visible .modal { transform: scale(1); }
 
   .modal-header {
-    padding: 20px 28px;
+    padding: 18px 28px;
     border-bottom: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     background: linear-gradient(90deg, rgba(34, 211, 238, 0.08), transparent);
   }
   .modal-tag {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    display: flex; align-items: center; gap: 14px;
     font-family: "JetBrains Mono", monospace;
     font-size: 12px;
     color: var(--amber);
@@ -411,41 +370,46 @@
     border-radius: 50%;
     animation: pulseCurrent 1.5s infinite;
   }
+  .modal-icon { font-size: 22px; }
   .modal-close {
     background: transparent;
     border: 1px solid var(--line);
     color: var(--dim);
-    width: 32px;
-    height: 32px;
+    width: 34px; height: 34px;
     cursor: pointer;
     font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
   }
   .modal-close:hover { color: var(--red); border-color: var(--red); }
 
   .modal-body {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
     overflow: auto;
     flex: 1;
-  }
-  @media (max-width: 900px) {
-    .modal-body { grid-template-columns: 1fr; }
+    padding: 30px 40px;
   }
 
-  .story-panel {
-    padding: 32px 36px;
-    border-right: 1px solid var(--line);
+  /* Section: setup (情境) */
+  .setup-section {
+    margin-bottom: 28px;
   }
-  .story-icon {
-    font-size: 44px;
-    margin-bottom: 12px;
+  .section-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--line);
+    color: var(--text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    margin-bottom: 14px;
   }
+  .section-tag.setup { background: var(--cyan); color: var(--bg); }
+  .section-tag.choice { background: var(--amber); color: var(--bg); }
+  .section-tag.story { background: var(--pink); color: var(--bg); }
+  .section-tag.insight { background: var(--neon); color: var(--bg); }
+
   .story-title {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 900;
     margin-bottom: 8px;
     line-height: 1.3;
@@ -453,97 +417,217 @@
   .story-subtitle {
     font-size: 15px;
     color: var(--dim);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-weight: 400;
   }
+  .setup-text {
+    font-size: 17px;
+    line-height: 1.85;
+    color: var(--text);
+  }
+  .setup-text p { margin-bottom: 1em; }
+  .setup-text strong { color: var(--cyan); }
+  .setup-text em { color: var(--pink); font-style: normal; font-weight: 700; }
+
+  /* Choice section */
+  .choice-section {
+    margin-bottom: 28px;
+  }
+  .choice-question {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 18px;
+  }
+  .choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 720px) {
+    .choice-grid { grid-template-columns: 1fr; }
+  }
+
+  .option-card {
+    padding: 24px 24px 22px;
+    background: rgba(10, 14, 39, 0.5);
+    border: 2px solid var(--line);
+    position: relative;
+    transition: all 0.4s ease;
+  }
+  .option-card .label {
+    font-family: "Press Start 2P", monospace;
+    font-size: 20px;
+    color: var(--dim);
+    margin-bottom: 10px;
+    letter-spacing: 0.1em;
+  }
+  .option-card h3 {
+    font-size: 19px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .option-card .desc {
+    font-size: 14px;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+  .option-card .whatif {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.6;
+    display: none;
+  }
+  .option-card .check-mark {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-family: "Press Start 2P", monospace;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  /* States */
+  .option-card.picked {
+    border-color: var(--neon);
+    background: rgba(52, 211, 153, 0.1);
+    box-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
+    transform: scale(1.03);
+  }
+  .option-card.picked .label,
+  .option-card.picked h3 { color: var(--neon); }
+  .option-card.picked .check-mark {
+    opacity: 1;
+    color: var(--neon);
+  }
+  .option-card.rejected {
+    opacity: 0.45;
+    filter: grayscale(0.6);
+  }
+  .option-card.rejected .whatif { display: block; }
+  .option-card.rejected .whatif::before {
+    content: "▸ 另一條路 · WHAT IF";
+    display: block;
+    color: var(--pink);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    margin-bottom: 6px;
+  }
+
+  /* Reveal button */
+  .reveal-wrap {
+    text-align: center;
+    margin: 10px 0 5px;
+  }
+  .reveal-btn {
+    padding: 16px 44px;
+    background: linear-gradient(135deg, var(--amber), var(--pink));
+    border: none;
+    color: var(--bg);
+    font-family: "Noto Sans TC";
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4);
+  }
+  .reveal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(251, 191, 36, 0.6);
+  }
+  .reveal-btn:active { transform: translateY(0); }
+
+  /* Story section (reveal后) */
+  .story-section, .insight-section, .score-section {
+    margin-top: 28px;
+    animation: fadeInUp 0.5s ease;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .story-text {
     font-size: 16px;
     line-height: 1.85;
     color: var(--text);
   }
   .story-text p { margin-bottom: 1em; }
-  .story-text em {
-    color: var(--pink);
-    font-style: normal;
-    font-weight: 700;
-  }
-  .story-text strong {
-    color: var(--cyan);
-    font-weight: 700;
-  }
+  .story-text strong { color: var(--cyan); font-weight: 700; }
+  .story-text em { color: var(--pink); font-style: normal; font-weight: 700; }
 
-  .side-panel {
-    padding: 32px 36px;
-    background: linear-gradient(180deg, rgba(167, 139, 250, 0.05), transparent);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .side-card {
-    background: rgba(10, 14, 39, 0.6);
-    border: 1px solid var(--line);
-    padding: 20px;
-    position: relative;
-  }
-  .side-card.whatif {
-    border-color: var(--pink);
-  }
-  .side-card.insight {
-    border-color: var(--neon);
-    background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(52, 211, 153, 0.02));
-  }
-  .side-card-tag {
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    padding: 4px 12px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--bg);
-    font-weight: 700;
-  }
-  .side-card.whatif .side-card-tag { background: var(--pink); }
-  .side-card.insight .side-card-tag { background: var(--neon); }
-
-  .side-card-body {
-    margin-top: 26px;
-    font-size: 15px;
-    line-height: 1.75;
-    color: var(--text);
-  }
-  .side-card.insight .side-card-body {
-    font-size: 17px;
+  .insight-card {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.12), rgba(52, 211, 153, 0.03));
+    border-left: 4px solid var(--neon);
+    font-size: 18px;
     font-weight: 700;
     color: var(--neon);
     line-height: 1.6;
   }
 
-  .vote-card {
-    background: rgba(251, 191, 36, 0.08);
+  /* Score buttons */
+  .score-section {
+    padding: 20px 24px;
+    background: rgba(251, 191, 36, 0.06);
     border: 1px dashed var(--amber);
-    padding: 16px 20px;
   }
-  .vote-card-title {
-    font-size: 11px;
+  .score-section.scored {
+    background: rgba(52, 211, 153, 0.06);
+    border-color: var(--neon);
+    border-style: solid;
+  }
+  .score-prompt {
+    font-size: 15px;
     color: var(--amber);
-    letter-spacing: 0.15em;
-    font-family: "JetBrains Mono", monospace;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    font-weight: 700;
   }
-  .vote-card-text {
-    font-size: 14px;
+  .score-btns {
+    display: flex; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .score-btn {
+    padding: 12px 20px;
+    background: transparent;
+    border: 1px solid var(--line);
     color: var(--text);
-    line-height: 1.6;
+    cursor: pointer;
+    font-family: "Noto Sans TC";
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 160px;
   }
+  .score-btn:hover:not(:disabled) { border-color: var(--amber); color: var(--amber); }
+  .score-btn.hit { border-color: var(--neon); color: var(--neon); }
+  .score-btn.hit:hover:not(:disabled) { background: rgba(52, 211, 153, 0.1); }
+  .score-btn.scored-pick {
+    background: var(--neon);
+    color: var(--bg);
+    border-color: var(--neon);
+  }
+  .score-btn.scored-pick.miss {
+    background: var(--line);
+    color: var(--dim);
+    border-color: var(--line);
+  }
+  .score-btn:disabled:not(.scored-pick) { opacity: 0.3; cursor: not-allowed; }
 
   .modal-footer {
-    padding: 18px 28px;
+    padding: 16px 28px;
     border-top: 1px solid var(--line);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center;
     gap: 14px;
     background: rgba(10, 14, 39, 0.5);
   }
@@ -556,27 +640,18 @@
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
   .nav-btn:hover:not(:disabled) {
     border-color: var(--cyan);
     color: var(--cyan);
   }
-  .nav-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .nav-btn.primary {
     border-color: var(--neon);
     color: var(--neon);
     font-weight: 700;
   }
-  .nav-btn.primary:hover {
-    background: var(--neon);
-    color: var(--bg);
-  }
+  .nav-btn.primary:hover:not(:disabled) { background: var(--neon); color: var(--bg); }
   .keyboard-hint {
     font-family: "JetBrains Mono", monospace;
     font-size: 11px;
@@ -594,52 +669,84 @@
     color: var(--text);
   }
 
+  /* Floating "+10" points */
+  .float-points {
+    position: fixed;
+    z-index: 500;
+    font-family: "Press Start 2P", monospace;
+    font-size: 32px;
+    color: var(--neon);
+    text-shadow: 0 0 20px var(--neon);
+    pointer-events: none;
+    animation: floatUp 1.6s ease-out forwards;
+  }
+  @keyframes floatUp {
+    0% { opacity: 0; transform: translateY(10px) scale(0.8); }
+    20% { opacity: 1; transform: translateY(0) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-60px) scale(1); }
+  }
+
   /* =============== Ending =============== */
   .ending {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
+    position: fixed; inset: 0; z-index: 200;
     background: radial-gradient(ellipse at center, #1a2255 0%, var(--bg) 70%);
     display: none;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 5vw;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 5vw;
     opacity: 0;
     transition: opacity 0.6s;
+    overflow: auto;
   }
   .ending.visible { display: flex; opacity: 1; }
-  .ending-title {
-    font-size: clamp(32px, 6vw, 72px);
-    font-weight: 900;
-    margin-bottom: 0.3em;
+  .ending-score-label {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--amber);
+    font-size: clamp(12px, 1.4vw, 14px);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.6em;
+  }
+  .ending-score {
+    font-family: "Press Start 2P", monospace;
+    font-size: clamp(60px, 12vw, 140px);
+    line-height: 1;
+    margin-bottom: 0.1em;
     background: linear-gradient(135deg, var(--amber), var(--pink), var(--cyan));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .ending-subtitle {
-    font-size: clamp(16px, 2vw, 22px);
+  .ending-score small {
+    font-size: 0.4em;
     color: var(--dim);
+    margin-left: 0.15em;
+    -webkit-text-fill-color: var(--dim);
+  }
+  .ending-title {
+    font-size: clamp(26px, 5vw, 56px);
+    font-weight: 900;
+    margin-bottom: 0.3em;
+    color: var(--text);
+  }
+  .ending-subtitle {
+    font-size: clamp(14px, 1.8vw, 18px);
+    color: var(--amber);
     margin-bottom: 2em;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
   }
   .ending-quote {
-    max-width: 700px;
-    font-size: clamp(18px, 2.2vw, 26px);
-    line-height: 1.7;
+    max-width: 720px;
+    font-size: clamp(16px, 2vw, 22px);
+    line-height: 1.8;
     color: var(--text);
     margin-bottom: 2em;
   }
-  .ending-quote strong {
-    color: var(--neon);
-  }
+  .ending-quote strong { color: var(--neon); }
   .ending-question {
-    margin-top: 2em;
-    padding: 24px 32px;
+    margin-top: 1em;
+    padding: 22px 30px;
     border: 2px dashed var(--amber);
-    font-size: clamp(18px, 2.4vw, 28px);
+    font-size: clamp(17px, 2.2vw, 24px);
     font-weight: 700;
     color: var(--amber);
   }
@@ -657,14 +764,16 @@
   }
   .ending-restart:hover { color: var(--text); border-color: var(--text); }
 
-  @media (max-width: 700px) {
-    .topbar { padding: 12px 16px; }
-    .progress-bar { width: 120px; }
-    .node-dot { width: 48px; height: 48px; font-size: 22px; }
+  @media (max-width: 720px) {
+    .topbar { padding: 10px 14px; flex-wrap: wrap; gap: 10px; }
+    .score-box { order: 99; width: 100%; max-width: none; }
+    .modal-body { padding: 20px; }
+    .story-title { font-size: 22px; }
+    .choice-question { font-size: 18px; }
+    .option-card h3 { font-size: 16px; }
+    .node-dot { width: 52px; height: 52px; font-size: 22px; }
     .node-title { font-size: 11px; }
     .node-sub { font-size: 10px; }
-    .story-panel, .side-panel { padding: 20px; }
-    .story-title { font-size: 22px; }
   }
 </style>
 </head>
@@ -678,31 +787,35 @@
   <div class="cover-tag">▸ PRESS START</div>
   <h1>創業地圖</h1>
   <h2>一個法律系學生，走去哪了？</h2>
+  <div class="cover-rule">
+    <b>遊戲規則：</b>每一站都是一個人生抉擇。
+    你們先看<b>情境</b>，再看 A / B 兩個選項，
+    投票猜「我當年選了哪個」。猜中 <b>+10 分</b>，
+    最後看全班的 <b>CEO 直覺值</b> 有多高。
+  </div>
   <div class="cover-speaker">
     SPEAKER
     <span>洪頎茗 Jagger Hung · Spot 創辦人</span>
   </div>
   <button class="start-btn" id="startBtn">點我開始遊戲</button>
-  <div class="start-hint">提示：點地圖上的每一站，都是一個決定</div>
 </div>
 
 <!-- 主畫面 -->
 <div class="app" id="app">
   <div class="topbar">
-    <div class="logo">◆ 創業地圖 v1.0</div>
-    <div class="progress">
-      <span id="progressText">0 / 8</span>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="logo">◆ 創業地圖</div>
+    <div class="score-box">
+      <div class="score-label">🎯 CEO 直覺值</div>
+      <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
+      <div class="score-value" id="scoreValue">0 / 50</div>
     </div>
-    <div class="topbar-right">
-      <button class="restart-btn" id="restartBtn">重新開始</button>
-    </div>
+    <div class="station-count" id="stationCount">第 1 站 / 共 8 站</div>
+    <button class="restart-btn" id="restartBtn">重來</button>
   </div>
 
   <div class="map-wrap">
     <div class="map" id="map">
       <svg class="map-svg" id="mapSvg" preserveAspectRatio="none"></svg>
-      <!-- nodes rendered here by JS -->
     </div>
   </div>
 </div>
@@ -713,31 +826,13 @@
     <div class="modal-header">
       <div class="modal-tag">
         <div class="bullet"></div>
-        <span id="modalMeta">2012 · 嘉義</span>
+        <span class="modal-icon" id="modalIcon">📍</span>
+        <span id="modalMeta">2008 · 嘉義</span>
       </div>
       <button class="modal-close" id="modalClose">×</button>
     </div>
-    <div class="modal-body">
-      <div class="story-panel">
-        <div class="story-icon" id="storyIcon">📍</div>
-        <div class="story-title" id="storyTitle">標題</div>
-        <div class="story-subtitle" id="storySubtitle">副標</div>
-        <div class="story-text" id="storyText"></div>
-      </div>
-      <div class="side-panel">
-        <div class="vote-card" id="voteCard">
-          <div class="vote-card-title">▸ 先問學生</div>
-          <div class="vote-card-text" id="voteText"></div>
-        </div>
-        <div class="side-card whatif">
-          <div class="side-card-tag">另一條路 · WHAT IF</div>
-          <div class="side-card-body" id="whatifText"></div>
-        </div>
-        <div class="side-card insight">
-          <div class="side-card-tag">回頭看 · INSIGHT</div>
-          <div class="side-card-body" id="insightText"></div>
-        </div>
-      </div>
+    <div class="modal-body" id="modalBody">
+      <!-- rendered by JS -->
     </div>
     <div class="modal-footer">
       <button class="nav-btn" id="prevBtn">← 上一站</button>
@@ -749,9 +844,11 @@
 
 <!-- 結局 -->
 <div class="ending" id="ending">
-  <div class="ending-title">謝謝你們聽到這裡</div>
-  <div class="ending-subtitle">TO BE CONTINUED...</div>
-  <div class="ending-quote">
+  <div class="ending-score-label">CEO 直覺值 · FINAL SCORE</div>
+  <div class="ending-score"><span id="finalScore">0</span><small>/50</small></div>
+  <div class="ending-title" id="endingTitle">—</div>
+  <div class="ending-subtitle" id="endingSubtitle">—</div>
+  <div class="ending-quote" id="endingQuote">
     六年了。<br />
     我<strong>問心無愧</strong>可以說，我花了大量的時間在自己的公司上。<br /><br />
     每一條路都沒有對錯。<br />
@@ -769,18 +866,18 @@ const NODES = [
   {
     id: 0,
     year: "2008",
-    location: "嘉義",
+    location: "嘉義 · 中正大學",
     icon: "⚖️",
     title: "起點：非我所願",
-    subtitle: "中正大學 · 法律系",
+    subtitle: "法律系 · 大一",
     pos: { x: 10, y: 72 },
-    vote: null,
-    story: `
-      <p>各位，我跟你們一樣，當年就坐在這個教室裡。</p>
-      <p>我念的是<strong>法律系</strong>——但不是因為我多嚮往法律，而是<em>情勢所逼</em>。加上當時的女朋友念中山大學，中正的距離剛剛好。</p>
-      <p>所以我的起點，其實是一個「半被動」的選擇。</p>
+    hasVote: false,
+    setup: `
+      <p>各位同學好。我跟你們一樣，當年就坐在這個教室裡。</p>
+      <p>我念的是<strong>中正大學法律系</strong>——但說實話，不是因為我多嚮往法律，而是<em>情勢所逼</em>。</p>
+      <p>再加上當時的女朋友念中山大學，中正的距離剛剛好。</p>
+      <p>所以——這整場故事的起點，其實是一個「半被動」的選擇。</p>
     `,
-    whatif: "如果當初選了自己真正想念的科系？也許更快樂、更順、但我不會認識後來那群改變我的人。",
     insight: "起點從來不決定終點。你現在坐在哪個科系，不代表你十年後會做什麼。"
   },
   {
@@ -791,15 +888,29 @@ const NODES = [
     title: "六個月，看見 40 歲的自己",
     subtitle: "第一份工作",
     pos: { x: 26, y: 42 },
-    vote: "你們覺得，做六個月、還不錯的工作，我會走還是留？",
-    story: `
-      <p>畢業之後我其實<em>非常徬徨</em>。沒什麼方向，就跟大部分人一樣，找了一份「看起來穩的」工作——<strong>玉山銀行</strong>。</p>
-      <p>做了六個月，我有個很恐怖的發現：</p>
+    hasVote: true,
+    setup: `
+      <p>畢業後我其實<em>非常徬徨</em>。沒什麼方向，就跟大部分人一樣，找了一份「看起來穩的」工作——<strong>玉山銀行</strong>。</p>
+      <p>做到第六個月，我有個很恐怖的發現：</p>
       <p><em>我已經可以預見自己 40 歲的樣子了。</em></p>
-      <p>升遷路徑、薪水級距、甚至我以後會在哪一層樓、坐哪一個位置，全部都能算出來。</p>
-      <p>那一瞬間我覺得：這不是我要的人生。於是我辭職了。</p>
+      <p>升遷路徑、薪水級距、甚至我以後會坐哪一層樓、哪一個位置，全部都能算出來。</p>
     `,
-    whatif: "如果留在玉山？現在可能是襄理、副理，房貸快繳完。穩定，但再也不會有後面的故事。",
+    question: "你會選？",
+    optionA: {
+      title: "撐下去",
+      desc: "六個月也許只是倦怠期，做滿一年再說，薪水穩定很重要",
+      whatif: "如果留下來——現在可能是襄理、副理，房貸快繳完。穩定，但再也不會有後面的故事。"
+    },
+    optionB: {
+      title: "直接辭職",
+      desc: "看得到盡頭的人生不是我要的，就算還沒找到下一步也要走",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>我選了 B。<strong>那一瞬間我覺得：這不是我要的人生。</strong></p>
+      <p>我沒有下一個工作、沒有方向，只是<em>想離開</em>。</p>
+    `,
     insight: "一條你能看到盡頭的路，不一定是你要走的路。"
   },
   {
@@ -808,38 +919,65 @@ const NODES = [
     location: "臺北 · 一場講座",
     icon: "🎤",
     title: "一個晚上，改寫命運",
-    subtitle: "聽了一場何凱成的演講",
+    subtitle: "聽了何凱成的演講",
     pos: { x: 44, y: 58 },
-    vote: "如果是你，聽完一個熱血演講，你會隔天辭職嗎？",
-    story: `
+    hasVote: true,
+    setup: `
       <p>辭職後的某個晚上，我去臺北聽了一場講座。</p>
-      <p>講者叫 <strong>何凱成（Cheng Ho）</strong>——他是<em>哈佛的跑鋒、林書豪的室友</em>，回台灣創了一間叫「球學」的公司，要改變台灣體育。</p>
-      <p>我聽完整場，腦袋只有一件事：<em>我想加入他們。</em></p>
-      <p>隔天，我就去球學報到了。<strong>零薪水，做了六個月。</strong></p>
+      <p>講者是<strong>何凱成（Cheng Ho）</strong>——<em>哈佛的跑鋒、林書豪的室友</em>，回台灣創了一間叫「球學」的公司，要改變台灣的體育。</p>
+      <p>整場聽下來，我整個人都被點燃了。</p>
+      <p>講座結束，他在現場招募。</p>
     `,
-    whatif: "如果那天我沒去聽那場演講？可能還在某個銀行櫃檯，看著學弟妹排隊辦存摺。",
-    insight: "你永遠不知道哪一扇門會改變你。所以——多出門、多聽、多見人。"
+    question: "講完剛點完火——你會？",
+    optionA: {
+      title: "回家睡，明天再說",
+      desc: "熱血是一回事，但沒薪水要怎麼活？先冷靜一下比較好",
+      whatif: "如果冷靜了——熱度就退了。過兩天你會說服自己回去投履歷，今晚的故事就結束。"
+    },
+    optionB: {
+      title: "隔天就去報到",
+      desc: "沒薪水沒關係，跟著有 vision 的人做事才是重點",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>隔天我就去球學報到了。<strong>零薪水，做了六個月。</strong></p>
+      <p>那是我人生第一次，<em>沒有因為現實而退一步</em>。</p>
+    `,
+    insight: "你永遠不知道哪一扇門會改變你——所以多出門、多聽、多見人。"
   },
   {
     id: 3,
     year: "2015-2018",
     location: "球學時期",
     icon: "🏀",
-    title: "第一次創業：沒模式，只有熱情",
-    subtitle: "幫運動員剪 Highlight，把人送出國",
+    title: "六個月零薪水——繼續還是走？",
+    subtitle: "第一次創業的十字路口",
     pos: { x: 58, y: 32 },
-    vote: null,
-    story: `
+    hasVote: true,
+    setup: `
       <p>球學在做一件事：<em>讓運動員有家族企業以外的選擇。</em></p>
-      <p>我們的做法其實很土——</p>
-      <p><strong>①</strong> 蒐集球員比賽影片<br/>
-         <strong>②</strong> 一刀一刀剪成 Highlight<br/>
-         <strong>③</strong> 寄給國外教練，爭取留學機會</p>
-      <p>這幾年下來，我們送出去的球員你們多半聽過：<em>高國豪、林庭謙、陳盈駿</em>……</p>
-      <p>有趣的是，我們<strong>完全沒有商業模式</strong>。就一群人憑熱情在做。</p>
-      <p>但後來——蔡崇信（阿里巴巴創辦人之一）投了我們<em>一百萬美金</em>。</p>
+      <p>我們的做法很土——蒐集球員比賽影片、一刀一刀剪成 Highlight、寄給國外教練爭取留學。</p>
+      <p>但撐到第六個月，<strong>我們還是零薪水、零商業模式。</strong></p>
+      <p>家人、同學開始問我：「你到底在做什麼？」</p>
     `,
-    whatif: "如果當時我們一開始就想商業模式？可能就不會這麼純粹，也就做不出讓投資人願意賭一把的東西。",
+    question: "這時候你會？",
+    optionA: {
+      title: "認清現實",
+      desc: "夢想是夢想，生存是生存。找個正常工作，存一點錢再說",
+      whatif: "如果走了——你會錯過蔡崇信的 $1M 投資，錯過高國豪、林庭謙這群被我們送出去的球員。"
+    },
+    optionB: {
+      title: "繼續撐",
+      desc: "商業模式會來找我們的，只要我們做的事情夠純粹",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>我們撐了下去。後來陸續送出去的球員你們多半聽過：<em>高國豪、林庭謙、陳盈駿</em>……</p>
+      <p>然後有一天，<strong>蔡崇信（阿里巴巴創辦人之一）投了我們一百萬美金</strong>。</p>
+      <p>我們完全沒有預料。我們只是<em>很認真在做一件我們相信的事</em>。</p>
+    `,
     insight: "商業模式會來找你——前提是，你做的事情夠認真、夠純粹。"
   },
   {
@@ -850,17 +988,15 @@ const NODES = [
     title: "蔡崇信那頓飯",
     subtitle: "25、26 歲那年，我學到的不是商業",
     pos: { x: 74, y: 54 },
-    vote: null,
-    story: `
-      <p>蔡崇信決定投我們的那一頓飯，地點在一間很高檔的餐廳。我當時大概<em>25、26 歲</em>——就跟你們現在差不多。</p>
+    hasVote: false,
+    setup: `
+      <p>蔡崇信決定投我們那一天，地點在一間很高檔的餐廳。我那時<em>25、26 歲</em>——<strong>就跟你們現在差不多。</strong></p>
       <p>整頓飯下來，我注意到一件事：</p>
-      <p><strong>他對每一個人的態度都一樣好。</strong></p>
-      <p>服務生、我們這些毛小孩、總經理——完全一樣。</p>
-      <p>那一刻我心裡默默決定：<em>不管以後成功或失敗，我要讓自己維持這個樣子。</em></p>
+      <p><strong>他對每一個人的態度都一樣好。</strong>服務生、我們這些毛小孩、總經理——完全一樣。</p>
+      <p>那一刻我心裡默默決定：<em>不管以後成功或失敗，我要讓自己永遠是這個樣子。</em></p>
       <p>還有當時的共同創辦人 Chen，他讓我第一次真的搞懂什麼叫「創業」——</p>
       <p><strong>原來創業沒那麼難，沒那麼遙遠。只要你有一件想做的事，開始做，總會找到出路。</strong></p>
     `,
-    whatif: "如果我沒遇到他們？可能還是覺得創業是「那些特別的人」才能做的事。",
     insight: "我們的教育很少教創業思維。所以——跟對的人吃飯，比上對的課重要。"
   },
   {
@@ -869,16 +1005,31 @@ const NODES = [
     location: "疫情爆發",
     icon: "✈️",
     title: "計畫被打亂的那一天",
-    subtitle: "留學夢，沒出成",
+    subtitle: "留學夢擋在海關前",
     pos: { x: 38, y: 22 },
-    vote: "你們覺得：如果出國留學的計畫被疫情擋下來，我會放棄還是轉彎？",
-    story: `
-      <p>其實在球學那段之後，我已經下定決心要<em>出國念書</em>。學校也考上了。</p>
+    hasVote: true,
+    setup: `
+      <p>其實在球學之後，我下定決心要<em>出國念書</em>。我也考上了。</p>
       <p>但——<strong>2020 年疫情爆發。</strong></p>
-      <p>我出不去。更巧的是，我的共同創辦人（也是現在 Spot 的 CTO）當時在美國，<em>也因為疫情回到台灣。</em></p>
-      <p>兩個被命運擋在台灣的人，坐在一起，開始想：「那要不要——來玩玩看？」</p>
+      <p>我出不去。更巧的是，我那位後來的共同創辦人（現在 Spot 的 CTO）當時在美國，<em>也因為疫情回到台灣。</em></p>
+      <p>兩個被命運擋在台灣的人，坐在一起。</p>
     `,
-    whatif: "如果疫情沒發生？我會順利出國，CTO 會留在美國。我們可能永遠不會創 Spot。",
+    question: "你會？",
+    optionA: {
+      title: "等疫情過",
+      desc: "留學規劃已經定了，做點過渡的工作，明年再出國",
+      whatif: "如果等了——你會錯過 PLG 剛成立的那個視窗。一年後市場上早就有其他玩家在做了。"
+    },
+    optionB: {
+      title: "既然出不去，就做點事",
+      desc: "留學可以晚點再說，現在手上有人、有時間，不如玩玩看",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>我們決定：<strong>既然出不去，就在台灣做點事。</strong></p>
+      <p>這個「玩玩看」的念頭，後來就變成了 Spot。</p>
+    `,
     insight: "你以為的「打斷」，常常是更大的機會。"
   },
   {
@@ -886,19 +1037,34 @@ const NODES = [
     year: "2020",
     location: "Spot 誕生",
     icon: "🎬",
-    title: "一張簡報，零個客戶",
-    subtitle: "拿著 PPT 去提案的那幾個月",
+    title: "一張 PPT，你敢出門提案嗎？",
+    subtitle: "零產品零客戶零技術",
     pos: { x: 60, y: 78 },
-    vote: null,
-    story: `
-      <p>我們開始創業時有什麼？</p>
-      <p><em>沒產品、沒客戶、沒技術團隊。</em>只有一份簡報。</p>
-      <p>但我們有一個別人沒有的東西——</p>
-      <p>我在球學時，<strong>親手剪過一兩百支 Highlight</strong>。我非常清楚，要在現場 Live 當下就產出影片讓觀眾看，<em>有多難。</em></p>
-      <p>那時候台灣職籃 PLG 剛成立，我想：<em>新的聯盟，會不會願意試試新的東西？</em></p>
-      <p>於是我們拿著那份 PPT，一家一家去提案。</p>
+    hasVote: true,
+    setup: `
+      <p>我們想做的是：<strong>用科技讓體育賽事的行銷做得更好。</strong></p>
+      <p>當時我們有什麼？</p>
+      <p><em>沒產品、沒客戶、沒技術成品。</em>只有一份簡報。</p>
+      <p>但那時候，台灣職籃 PLG 剛成立——一個全新的聯盟，也許會願意試新東西。</p>
     `,
-    whatif: "如果沒有球學那段「白工」？我根本不會理解這個產業的痛點，也寫不出那份簡報。",
+    question: "你會？",
+    optionA: {
+      title: "先做出 MVP",
+      desc: "至少要有個可以 demo 的東西再去提案吧？否則誰會信你？",
+      whatif: "如果先做產品——你會花 6 個月開發，然後發現你做的根本不是客戶要的。"
+    },
+    optionB: {
+      title: "PPT 直接衝",
+      desc: "沒產品沒關係，先讓對方相信我們是誰、懂什麼，他們才會告訴我們他們要什麼",
+      whatif: ""
+    },
+    correct: "B",
+    story: `
+      <p>我們就拿著那份 PPT，一家一家去提案。</p>
+      <p>關鍵是：我在球學時<strong>親手剪過一兩百支 Highlight</strong>。</p>
+      <p>我非常清楚，<em>要在現場 Live 當下就產出影片有多難</em>——這個痛點我比任何人都懂。</p>
+      <p>所以我不是在賣「未來的產品」，我是在賣「我理解你們的痛」。</p>
+    `,
     insight: "過去的每一步，都是未來的籌碼。沒有哪段經歷是白費的。"
   },
   {
@@ -909,8 +1075,8 @@ const NODES = [
     title: "六年後，我在這裡",
     subtitle: "回頭看這張地圖",
     pos: { x: 86, y: 30 },
-    vote: "現在換你們想：如果是你，站在嘉義中正法律系大二教室，你會怎麼走？",
-    story: `
+    hasVote: false,
+    setup: `
       <p>從那張 PPT 開始，六年過去了。</p>
       <p>這六年我能<em>問心無愧</em>地說：我花了大量時間在自己的公司上，我真的非常努力。</p>
       <p>回頭看這張地圖——法律系、玉山、球學、蔡崇信那頓飯、疫情、Spot——</p>
@@ -918,14 +1084,19 @@ const NODES = [
       <p>選另一邊可能更好、也可能更壞，都有可能。</p>
       <p>但現在回頭看，我會說：<em>相信自己選的那條路，然後堅持下去。</em></p>
     `,
-    whatif: "其實我不知道「另一條路」長什麼樣。但我也不想知道了——這條路已經夠有趣了。",
     insight: "既然選了，就走下去。走久了，那條路就會變成「對的路」。"
   }
 ];
 
+const VOTE_NODE_COUNT = NODES.filter(n => n.hasVote).length;
+const MAX_SCORE = VOTE_NODE_COUNT * 10;
+
 // ========== 狀態 ==========
 let currentIdx = -1;
 let visited = new Set();
+let revealed = {};   // idx -> true (公布過答案)
+let scored = {};     // idx -> "hit" | "miss" | null
+let score = 0;
 
 // ========== 元素 ==========
 const cover = document.getElementById("cover");
@@ -933,11 +1104,11 @@ const app = document.getElementById("app");
 const map = document.getElementById("map");
 const mapSvg = document.getElementById("mapSvg");
 const modal = document.getElementById("modal");
+const modalBody = document.getElementById("modalBody");
 const ending = document.getElementById("ending");
 
-// ========== 渲染節點 ==========
+// ========== 渲染地圖節點 ==========
 function renderNodes() {
-  // Clear (keep svg)
   [...map.querySelectorAll(".node")].forEach(n => n.remove());
 
   NODES.forEach((n, i) => {
@@ -949,6 +1120,8 @@ function renderNodes() {
     if (visited.has(i)) el.classList.add("visited");
     if (i === currentIdx) el.classList.add("current");
 
+    const voteBadge = n.hasVote ? `<div class="node-vote-badge">投票題 +10</div>` : "";
+
     el.innerHTML = `
       <div class="node-dot">
         ${n.icon}
@@ -957,13 +1130,14 @@ function renderNodes() {
       <div class="node-year">${n.year}</div>
       <div class="node-title">${n.title}</div>
       <div class="node-sub">${n.location}</div>
+      ${voteBadge}
     `;
     el.addEventListener("click", () => openNode(i));
     map.appendChild(el);
   });
 
   renderPaths();
-  updateProgress();
+  updateScore(false);
 }
 
 function renderPaths() {
@@ -978,56 +1152,181 @@ function renderPaths() {
     const y1 = (a.y / 100) * rect.height;
     const x2 = (b.x / 100) * rect.width;
     const y2 = (b.y / 100) * rect.height;
-    // Curved path
     const mx = (x1 + x2) / 2;
     const my = (y1 + y2) / 2 + (i % 2 === 0 ? -40 : 40);
     const d = `M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`;
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", d);
-    path.setAttribute("class", "path-line" + (visited.has(i) && visited.has(i + 1) ? " active" : visited.has(i) ? " active" : ""));
+    path.setAttribute("class", "path-line" + (visited.has(i) ? " active" : ""));
     mapSvg.appendChild(path);
   }
 }
 
-function updateProgress() {
-  const count = visited.size;
-  document.getElementById("progressText").textContent = `${count} / ${NODES.length}`;
-  document.getElementById("progressFill").style.width = `${(count / NODES.length) * 100}%`;
+function updateScore(animate) {
+  const scoreValue = document.getElementById("scoreValue");
+  const fill = document.getElementById("scoreFill");
+  scoreValue.textContent = `${score} / ${MAX_SCORE}`;
+  fill.style.width = `${(score / MAX_SCORE) * 100}%`;
+  if (animate) {
+    scoreValue.classList.add("bump");
+    setTimeout(() => scoreValue.classList.remove("bump"), 400);
+  }
+  document.getElementById("stationCount").textContent = `第 ${Math.min(currentIdx + 1, NODES.length)} 站 / 共 ${NODES.length} 站`;
 }
 
-// ========== Modal ==========
+// ========== Modal 渲染 ==========
+function renderModalBody(idx) {
+  const n = NODES[idx];
+  const isRevealed = !!revealed[idx] || !n.hasVote;
+  const scoreStatus = scored[idx]; // "hit" | "miss" | null
+
+  const setupHtml = `
+    <div class="setup-section">
+      <div class="section-tag setup">▸ 情境 · SETUP</div>
+      <div class="story-title">${n.title}</div>
+      <div class="story-subtitle">${n.subtitle}</div>
+      <div class="setup-text">${n.setup}</div>
+    </div>
+  `;
+
+  let choiceHtml = "";
+  if (n.hasVote) {
+    const aClass = isRevealed ? (n.correct === "A" ? "picked" : "rejected") : "";
+    const bClass = isRevealed ? (n.correct === "B" ? "picked" : "rejected") : "";
+    choiceHtml = `
+      <div class="choice-section">
+        <div class="section-tag choice">▸ 選擇 · CHOICE</div>
+        <div class="choice-question">${n.question}</div>
+        <div class="choice-grid">
+          <div class="option-card ${aClass}">
+            <div class="check-mark">${n.correct === "A" ? "✓ 我選了這個" : ""}</div>
+            <div class="label">A</div>
+            <h3>${n.optionA.title}</h3>
+            <div class="desc">${n.optionA.desc}</div>
+            <div class="whatif">${n.optionA.whatif}</div>
+          </div>
+          <div class="option-card ${bClass}">
+            <div class="check-mark">${n.correct === "B" ? "✓ 我選了這個" : ""}</div>
+            <div class="label">B</div>
+            <h3>${n.optionB.title}</h3>
+            <div class="desc">${n.optionB.desc}</div>
+            <div class="whatif">${n.optionB.whatif}</div>
+          </div>
+        </div>
+        ${!isRevealed ? `
+          <div class="reveal-wrap">
+            <button class="reveal-btn" id="revealBtn">🎲 公布答案</button>
+          </div>
+        ` : ""}
+      </div>
+    `;
+  }
+
+  let storyHtml = "";
+  if (isRevealed) {
+    storyHtml = `
+      <div class="story-section">
+        <div class="section-tag story">▸ 發生了什麼 · STORY</div>
+        <div class="story-text">${n.story || ""}</div>
+      </div>
+      <div class="insight-section">
+        <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
+        <div class="insight-card">${n.insight}</div>
+      </div>
+    `;
+  }
+
+  let scoreSectionHtml = "";
+  if (n.hasVote && isRevealed) {
+    if (scoreStatus) {
+      // Scored already
+      scoreSectionHtml = `
+        <div class="score-section scored">
+          <div class="score-prompt">這題結果：${scoreStatus === "hit" ? "🎯 大多數猜中 +10 分" : "🔄 大多數沒猜到（下次繼續）"}</div>
+          <div class="score-btns">
+            <button class="score-btn scored-pick ${scoreStatus === "miss" ? "miss" : ""}" disabled>${scoreStatus === "hit" ? "✓ +10 分已加" : "沒中 +0"}</button>
+          </div>
+        </div>
+      `;
+    } else {
+      scoreSectionHtml = `
+        <div class="score-section">
+          <div class="score-prompt">📊 目測全班：大多數學生猜對了嗎？</div>
+          <div class="score-btns">
+            <button class="score-btn hit" data-score="hit">📈 大多數猜中 +10</button>
+            <button class="score-btn" data-score="miss">沒猜到 +0</button>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  modalBody.innerHTML = setupHtml + choiceHtml + storyHtml + scoreSectionHtml;
+
+  // Wire up reveal button
+  const revealBtn = document.getElementById("revealBtn");
+  if (revealBtn) {
+    revealBtn.addEventListener("click", () => {
+      revealed[idx] = true;
+      renderModalBody(idx);
+      updateNav(idx);
+    });
+  }
+
+  // Wire up score buttons
+  modalBody.querySelectorAll(".score-btn[data-score]").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const status = btn.getAttribute("data-score");
+      scored[idx] = status;
+      if (status === "hit") {
+        score += 10;
+        floatPoints(btn);
+      }
+      updateScore(true);
+      renderModalBody(idx);
+    });
+  });
+}
+
+function floatPoints(sourceEl) {
+  const rect = sourceEl.getBoundingClientRect();
+  const el = document.createElement("div");
+  el.className = "float-points";
+  el.textContent = "+10";
+  el.style.left = rect.left + rect.width / 2 + "px";
+  el.style.top = rect.top + "px";
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1600);
+}
+
 function openNode(idx) {
   currentIdx = idx;
   visited.add(idx);
   const n = NODES[idx];
 
   document.getElementById("modalMeta").textContent = `${n.year} · ${n.location}`;
-  document.getElementById("storyIcon").textContent = n.icon;
-  document.getElementById("storyTitle").textContent = n.title;
-  document.getElementById("storySubtitle").textContent = n.subtitle;
-  document.getElementById("storyText").innerHTML = n.story;
-  document.getElementById("whatifText").textContent = n.whatif;
-  document.getElementById("insightText").textContent = n.insight;
+  document.getElementById("modalIcon").textContent = n.icon;
 
-  const voteCard = document.getElementById("voteCard");
-  if (n.vote) {
-    voteCard.style.display = "block";
-    document.getElementById("voteText").textContent = n.vote;
-  } else {
-    voteCard.style.display = "none";
-  }
-
-  document.getElementById("prevBtn").disabled = idx === 0;
-  const nextBtn = document.getElementById("nextBtn");
-  if (idx === NODES.length - 1) {
-    nextBtn.textContent = "看結局 →";
-  } else {
-    nextBtn.textContent = "下一站 →";
-  }
+  renderModalBody(idx);
+  updateNav(idx);
 
   modal.classList.add("visible");
   renderNodes();
+}
+
+function updateNav(idx) {
+  const n = NODES[idx];
+  const prev = document.getElementById("prevBtn");
+  const next = document.getElementById("nextBtn");
+  prev.disabled = idx === 0;
+  next.disabled = false;
+
+  if (idx === NODES.length - 1) {
+    next.textContent = "看結局 →";
+  } else {
+    next.textContent = "下一站 →";
+  }
 }
 
 function closeModal() {
@@ -1048,6 +1347,20 @@ function prevNode() {
 }
 
 function showEnding() {
+  document.getElementById("finalScore").textContent = score;
+
+  const titles = [
+    { min: 50, title: "🏆 完美預言家", subtitle: "天生創業人格 · 你跟我簡直同一個腦袋" },
+    { min: 40, title: "🎯 神準", subtitle: "創業基因很強 · 大概下一個就是你了" },
+    { min: 30, title: "⚡ 戰略型思考家", subtitle: "敢冒險，也會算風險" },
+    { min: 20, title: "🛡️ 穩健派", subtitle: "穩也是一種智慧 · 不是每個人都要當 CEO" },
+    { min: 10, title: "🧭 安全牌", subtitle: "你走的路會比我踏實" },
+    { min: 0, title: "🔄 你跟我完全相反", subtitle: "但說不定，這才是你該走的路" }
+  ];
+  const match = titles.find(t => score >= t.min);
+  document.getElementById("endingTitle").textContent = match.title;
+  document.getElementById("endingSubtitle").textContent = match.subtitle;
+
   ending.classList.add("visible");
 }
 
@@ -1068,18 +1381,17 @@ document.getElementById("restartBtn").addEventListener("click", () => location.r
 document.getElementById("endingRestart").addEventListener("click", () => location.reload());
 
 document.addEventListener("keydown", (e) => {
+  if (ending.classList.contains("visible")) return;
   if (!modal.classList.contains("visible")) return;
   if (e.key === "Escape") closeModal();
   if (e.key === "ArrowRight") nextNode();
   if (e.key === "ArrowLeft") prevNode();
 });
 
-// Re-render paths on resize
 window.addEventListener("resize", () => {
   if (app.classList.contains("visible")) renderPaths();
 });
 
-// Initial render (hidden until start)
 renderNodes();
 </script>
 </body>
