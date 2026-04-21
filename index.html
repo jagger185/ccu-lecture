@@ -359,34 +359,33 @@
   /* =============== 故事 modal =============== */
   .modal-backdrop {
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(5, 8, 25, 0.88);
+    background: rgba(5, 8, 25, 0.95);
     backdrop-filter: blur(10px);
     display: none;
-    align-items: center; justify-content: center;
-    padding: 3vh 3vw;
     opacity: 0;
     transition: opacity 0.3s;
   }
   .modal-backdrop.visible { display: flex; opacity: 1; }
 
   .modal {
-    width: min(1200px, 100%);
-    max-height: 92vh;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
     background: var(--panel);
-    border: 1px solid var(--cyan);
-    box-shadow: 0 20px 80px rgba(34, 211, 238, 0.2), 0 0 40px rgba(34, 211, 238, 0.1) inset;
     display: flex; flex-direction: column;
     overflow: hidden;
-    transform: scale(0.95);
+    transform: scale(0.98);
     transition: transform 0.3s;
+    border: none;
   }
   .modal-backdrop.visible .modal { transform: scale(1); }
 
   .modal-header {
-    padding: 18px 28px;
+    padding: 12px 28px;
     border-bottom: 1px solid var(--line);
     display: flex; align-items: center; justify-content: space-between;
     background: linear-gradient(90deg, rgba(34, 211, 238, 0.08), transparent);
+    flex: 0 0 auto;
   }
   .modal-tag {
     display: flex; align-items: center; gap: 14px;
@@ -415,24 +414,26 @@
   .modal-close:hover { color: var(--red); border-color: var(--red); }
 
   .modal-body {
-    overflow: auto;
-    flex: 1;
-    padding: 30px 40px;
+    overflow: hidden;
+    flex: 1 1 auto;
+    padding: 20px 40px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
   }
 
   /* Section: setup (情境) */
-  .setup-section {
-    margin-bottom: 28px;
-  }
+  .setup-section { flex: 0 0 auto; }
   .section-tag {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 3px 10px;
     background: var(--line);
     color: var(--text);
     font-family: "JetBrains Mono", monospace;
     font-size: 10px;
     letter-spacing: 0.2em;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
   .section-tag.setup { background: var(--cyan); color: var(--bg); }
   .section-tag.choice { background: var(--amber); color: var(--bg); }
@@ -440,61 +441,187 @@
   .section-tag.insight { background: var(--neon); color: var(--bg); }
 
   .story-title {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 900;
-    margin-bottom: 8px;
-    line-height: 1.3;
+    margin-bottom: 4px;
+    line-height: 1.25;
   }
   .story-subtitle {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--dim);
-    margin-bottom: 20px;
+    margin-bottom: 0;
     font-weight: 400;
   }
   .setup-text {
-    font-size: 17px;
-    line-height: 1.85;
+    font-size: 15px;
+    line-height: 1.7;
     color: var(--text);
   }
-  .setup-text p { margin-bottom: 1em; }
+  .setup-text p { margin-bottom: 0.7em; }
+  .setup-text p:last-child { margin-bottom: 0; }
   .setup-text strong { color: var(--cyan); }
   .setup-text em { color: var(--pink); font-style: normal; font-weight: 700; }
 
   /* Choice section */
   .choice-section {
-    margin-bottom: 28px;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
   .choice-question {
-    font-size: 22px;
+    font-size: 19px;
     font-weight: 700;
     color: var(--amber);
-    margin-bottom: 18px;
+    margin-bottom: 12px;
+    flex: 0 0 auto;
   }
   .choice-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 18px;
+    flex: 1 1 auto;
+    min-height: 0;
   }
   @media (max-width: 720px) {
     .choice-grid { grid-template-columns: 1fr; }
   }
 
   .option-card {
-    padding: 24px 24px 22px;
+    padding: 20px 22px;
     background: rgba(10, 14, 39, 0.5);
     border: 2px solid var(--line);
     position: relative;
     transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .option-card.clickable {
+    cursor: pointer;
+  }
+  .option-card.clickable:hover {
+    border-color: var(--amber);
+    background: rgba(251, 191, 36, 0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(251, 191, 36, 0.2);
+  }
+  .option-card.clickable:hover .label { color: var(--amber); }
+  .option-card.clickable::after {
+    content: "👆 點我公布";
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .option-card.clickable:hover::after {
+    opacity: 1;
+    color: var(--amber);
+  }
+
+  /* Post-reveal compact banner */
+  .reveal-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 720px) {
+    .reveal-banner { grid-template-columns: 1fr; }
+  }
+  .picked-mini {
+    padding: 14px 18px;
+    background: rgba(52, 211, 153, 0.08);
+    border: 2px solid var(--neon);
+    display: flex; gap: 14px; align-items: flex-start;
+    position: relative;
+  }
+  .picked-mini .mini-tag {
+    position: absolute;
+    top: -10px; left: 14px;
+    padding: 2px 10px;
+    background: var(--neon);
+    color: var(--bg);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+  .picked-mini .mini-label {
+    font-family: "Press Start 2P", monospace;
+    font-size: 22px;
+    color: var(--neon);
+    line-height: 1;
+    margin-top: 4px;
+  }
+  .picked-mini h4 {
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--neon);
+    margin-bottom: 2px;
+    line-height: 1.3;
+  }
+  .picked-mini .desc {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.5;
+  }
+  .rejected-mini {
+    padding: 14px 18px;
+    background: rgba(244, 114, 182, 0.05);
+    border: 1px dashed var(--pink);
+    position: relative;
+    opacity: 0.85;
+  }
+  .rejected-mini .mini-tag {
+    position: absolute;
+    top: -10px; left: 14px;
+    padding: 2px 10px;
+    background: var(--pink);
+    color: var(--bg);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+  .rejected-mini h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pink);
+    margin-bottom: 4px;
+    margin-top: 2px;
+  }
+  .rejected-mini .whatif-text {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.55;
+  }
+
+  /* Compact modal title when post-reveal */
+  .modal-title-compact {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .modal-subtitle-compact {
+    font-size: 13px;
+    color: var(--dim);
+    margin-bottom: 18px;
   }
   .option-card .label {
     font-family: "Press Start 2P", monospace;
-    font-size: 20px;
+    font-size: 22px;
     color: var(--dim);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     letter-spacing: 0.1em;
   }
   .option-card h3 {
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 900;
     margin-bottom: 8px;
     color: var(--text);
@@ -504,15 +631,7 @@
     font-size: 14px;
     color: var(--dim);
     line-height: 1.6;
-  }
-  .option-card .whatif {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px dashed var(--line);
-    font-size: 13px;
-    color: var(--dim);
-    line-height: 1.6;
-    display: none;
+    flex: 1 1 auto;
   }
   .option-card .check-mark {
     position: absolute;
@@ -524,62 +643,8 @@
     transition: opacity 0.5s;
   }
 
-  /* States */
-  .option-card.picked {
-    border-color: var(--neon);
-    background: rgba(52, 211, 153, 0.1);
-    box-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
-    transform: scale(1.03);
-  }
-  .option-card.picked .label,
-  .option-card.picked h3 { color: var(--neon); }
-  .option-card.picked .check-mark {
-    opacity: 1;
-    color: var(--neon);
-  }
-  .option-card.rejected {
-    opacity: 0.45;
-    filter: grayscale(0.6);
-  }
-  .option-card.rejected .whatif { display: block; }
-  .option-card.rejected .whatif::before {
-    content: "▸ 另一條路 · WHAT IF";
-    display: block;
-    color: var(--pink);
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    margin-bottom: 6px;
-  }
-
-  /* Reveal button */
-  .reveal-wrap {
-    text-align: center;
-    margin: 10px 0 5px;
-  }
-  .reveal-btn {
-    padding: 16px 44px;
-    background: linear-gradient(135deg, var(--amber), var(--pink));
-    border: none;
-    color: var(--bg);
-    font-family: "Noto Sans TC";
-    font-weight: 900;
-    font-size: 18px;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4);
-  }
-  .reveal-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(251, 191, 36, 0.6);
-  }
-  .reveal-btn:active { transform: translateY(0); }
-
-  /* Story section (reveal后) */
+  /* Post-reveal panels */
   .story-section, .insight-section, .score-section {
-    margin-top: 28px;
     animation: fadeInUp 0.5s ease;
   }
   @keyframes fadeInUp {
@@ -587,30 +652,46 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .story-text {
-    font-size: 16px;
-    line-height: 1.85;
-    color: var(--text);
+  .story-section {
+    flex: 1 1 auto;
+    overflow: hidden;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
-  .story-text p { margin-bottom: 1em; }
+  .story-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .story-text p { margin-bottom: 0.8em; }
+  .story-text p:last-child { margin-bottom: 0; }
   .story-text strong { color: var(--cyan); font-weight: 700; }
   .story-text em { color: var(--pink); font-style: normal; font-weight: 700; }
 
+  .insight-section { flex: 0 0 auto; }
   .insight-card {
-    padding: 20px 24px;
+    padding: 14px 20px;
     background: linear-gradient(135deg, rgba(52, 211, 153, 0.12), rgba(52, 211, 153, 0.03));
     border-left: 4px solid var(--neon);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: var(--neon);
-    line-height: 1.6;
+    line-height: 1.5;
   }
 
   /* Score buttons */
   .score-section {
-    padding: 20px 24px;
+    flex: 0 0 auto;
+    padding: 10px 18px;
     background: rgba(251, 191, 36, 0.06);
     border: 1px dashed var(--amber);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
   }
   .score-section.scored {
     background: rgba(52, 211, 153, 0.06);
@@ -618,27 +699,26 @@
     border-style: solid;
   }
   .score-prompt {
-    font-size: 15px;
+    font-size: 13px;
     color: var(--amber);
-    margin-bottom: 12px;
     font-weight: 700;
+    flex: 1 1 auto;
   }
   .score-btns {
-    display: flex; gap: 12px;
+    display: flex; gap: 10px;
     flex-wrap: wrap;
   }
   .score-btn {
-    padding: 12px 20px;
+    padding: 8px 16px;
     background: transparent;
     border: 1px solid var(--line);
     color: var(--text);
     cursor: pointer;
     font-family: "Noto Sans TC";
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     transition: all 0.2s;
-    flex: 1;
-    min-width: 160px;
+    white-space: nowrap;
   }
   .score-btn:hover:not(:disabled) { border-color: var(--amber); color: var(--amber); }
   .score-btn.hit { border-color: var(--neon); color: var(--neon); }
@@ -656,11 +736,12 @@
   .score-btn:disabled:not(.scored-pick) { opacity: 0.3; cursor: not-allowed; }
 
   .modal-footer {
-    padding: 16px 28px;
+    padding: 10px 28px;
     border-top: 1px solid var(--line);
     display: flex; justify-content: space-between; align-items: center;
     gap: 14px;
     background: rgba(10, 14, 39, 0.5);
+    flex: 0 0 auto;
   }
   .nav-btn {
     padding: 10px 22px;
@@ -1317,53 +1398,62 @@ function updateScore(animate) {
 function renderModalBody(idx) {
   const n = NODES[idx];
   const isRevealed = !!revealed[idx] || !n.hasVote;
-  const scoreStatus = scored[idx]; // "hit" | "miss" | null
+  const scoreStatus = scored[idx];
 
-  const setupHtml = `
+  const titleBlock = `
     <div class="setup-section">
-      <div class="section-tag setup">▸ 情境 · SETUP</div>
       <div class="story-title">${n.title}</div>
       <div class="story-subtitle">${n.subtitle}</div>
-      <div class="setup-text">${n.setup}</div>
     </div>
   `;
 
-  let choiceHtml = "";
-  if (n.hasVote) {
-    const aClass = isRevealed ? (n.correct === "A" ? "picked" : "rejected") : "";
-    const bClass = isRevealed ? (n.correct === "B" ? "picked" : "rejected") : "";
-    choiceHtml = `
+  let html = titleBlock;
+
+  if (n.hasVote && !isRevealed) {
+    // Pre-reveal: setup + A/B 選項
+    html += `
+      <div class="setup-section">
+        <div class="section-tag setup">▸ 情境 · SETUP</div>
+        <div class="setup-text">${n.setup}</div>
+      </div>
       <div class="choice-section">
-        <div class="section-tag choice">▸ 選擇 · CHOICE</div>
         <div class="choice-question">${n.question}</div>
         <div class="choice-grid">
-          <div class="option-card ${aClass}">
-            <div class="check-mark">${n.correct === "A" ? "這是我當年的路" : ""}</div>
+          <div class="option-card clickable" data-pick="A">
             <div class="label">A</div>
             <h3>${n.optionA.title}</h3>
             <div class="desc">${n.optionA.desc}</div>
-            <div class="whatif">${n.optionA.whatif}</div>
           </div>
-          <div class="option-card ${bClass}">
-            <div class="check-mark">${n.correct === "B" ? "這是我當年的路" : ""}</div>
+          <div class="option-card clickable" data-pick="B">
             <div class="label">B</div>
             <h3>${n.optionB.title}</h3>
             <div class="desc">${n.optionB.desc}</div>
-            <div class="whatif">${n.optionB.whatif}</div>
           </div>
         </div>
-        ${!isRevealed ? `
-          <div class="reveal-wrap">
-            <button class="reveal-btn" id="revealBtn">🎲 公布答案</button>
-          </div>
-        ` : ""}
       </div>
     `;
-  }
+  } else if (n.hasVote && isRevealed) {
+    // Post-reveal: compact picked/rejected banner + story + insight + score
+    const picked = n.correct === "A" ? n.optionA : n.optionB;
+    const rejected = n.correct === "A" ? n.optionB : n.optionA;
+    const rejectedLabel = n.correct === "A" ? "B" : "A";
 
-  let storyHtml = "";
-  if (isRevealed) {
-    storyHtml = `
+    html += `
+      <div class="reveal-banner">
+        <div class="picked-mini">
+          <div class="mini-tag">我當年選了 ${n.correct}</div>
+          <div class="mini-label">${n.correct}</div>
+          <div>
+            <h4>${picked.title}</h4>
+            <div class="desc">${picked.desc}</div>
+          </div>
+        </div>
+        <div class="rejected-mini">
+          <div class="mini-tag">另一條路 · WHAT IF</div>
+          <h4>${rejectedLabel}. ${rejected.title}</h4>
+          <div class="whatif-text">${rejected.whatif}</div>
+        </div>
+      </div>
       <div class="story-section">
         <div class="section-tag story">▸ 發生了什麼 · STORY</div>
         <div class="story-text">${n.story || ""}</div>
@@ -1373,44 +1463,53 @@ function renderModalBody(idx) {
         <div class="insight-card">${n.insight}</div>
       </div>
     `;
-  }
 
-  let scoreSectionHtml = "";
-  if (n.hasVote && isRevealed) {
+    // Score section inline (compact)
     if (scoreStatus) {
-      scoreSectionHtml = `
+      html += `
         <div class="score-section scored">
-          <div class="score-prompt">這一站：${scoreStatus === "hit" ? "🧭 多數跟我同路 · +1 站" : "✨ 多數走了另一邊 · 走得好"}</div>
+          <div class="score-prompt">${scoreStatus === "hit" ? "🧭 多數跟我同路 · +1 站" : "✨ 多數走了另一邊 · 走得好"}</div>
         </div>
       `;
     } else {
-      scoreSectionHtml = `
+      html += `
         <div class="score-section">
-          <div class="score-prompt">📊 目測一下，全班多數選了哪邊？</div>
+          <div class="score-prompt">📊 全班多數選了哪邊？</div>
           <div class="score-btns">
-            <button class="score-btn hit" data-score="hit">🧭 跟我同路（+1 站）</button>
-            <button class="score-btn" data-score="miss">✨ 走了另一條（也很好）</button>
+            <button class="score-btn hit" data-score="hit">🧭 跟我同路 +1</button>
+            <button class="score-btn" data-score="miss">✨ 走了另一條</button>
           </div>
         </div>
       `;
     }
+  } else {
+    // Non-vote node: setup + insight (no choice, no story)
+    html += `
+      <div class="setup-section" style="flex:1 1 auto; min-height:0;">
+        <div class="section-tag setup">▸ 情境 · SETUP</div>
+        <div class="setup-text">${n.setup}</div>
+      </div>
+      <div class="insight-section">
+        <div class="section-tag insight">▸ 回頭看 · INSIGHT</div>
+        <div class="insight-card">${n.insight}</div>
+      </div>
+    `;
   }
 
-  modalBody.innerHTML = setupHtml + choiceHtml + storyHtml + scoreSectionHtml;
+  modalBody.innerHTML = html;
 
-  // Wire up reveal button
-  const revealBtn = document.getElementById("revealBtn");
-  if (revealBtn) {
-    revealBtn.addEventListener("click", () => {
+  // Wire up option card clicks (pre-reveal)
+  modalBody.querySelectorAll(".option-card.clickable").forEach(card => {
+    card.addEventListener("click", () => {
       revealed[idx] = true;
       renderModalBody(idx);
       updateNav(idx);
     });
-  }
+  });
 
   // Wire up score buttons
   modalBody.querySelectorAll(".score-btn[data-score]").forEach(btn => {
-    btn.addEventListener("click", (e) => {
+    btn.addEventListener("click", () => {
       const status = btn.getAttribute("data-score");
       scored[idx] = status;
       if (status === "hit") {
