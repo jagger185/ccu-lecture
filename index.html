@@ -1169,42 +1169,22 @@
     letter-spacing: 0.01em;
   }
 
-  /* Mosaic post-reveal: photos grid top (~70%), text strip in 3 cols below */
-  .story-row.layout-mosaic {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(360px, 1fr) minmax(180px, auto);
-    gap: 14px;
-    flex: 1 1 auto;
+  /* Station 4 post-reveal: left is 9-photo mosaic (cover), right is standard panel */
+  .story-row.layout-optionA.s4-post {
+    grid-template-columns: 1.3fr 1fr;
+  }
+  .story-row.layout-optionA.s4-post .photo-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    height: 100%;
+    width: 100%;
+  }
+  .story-row.layout-optionA.s4-post .photo-grid .story-photo {
+    background-size: cover;
+    background-position: center;
     min-height: 0;
-    overflow: hidden;
-  }
-  .story-row.layout-mosaic .story-col.big-text-col {
-    flex-direction: row;
-    gap: 18px;
-    align-items: stretch;
-    overflow: hidden;
-    max-height: 220px;
-  }
-  .story-row.layout-mosaic .compact-reveal {
-    flex: 0 0 26%;
-    min-width: 0;
-  }
-  .story-row.layout-mosaic .story-big {
-    flex: 1 1 42%;
-    min-width: 0;
-    overflow-y: auto;
-  }
-  .story-row.layout-mosaic .insight-big {
-    flex: 0 0 32%;
-    min-width: 0;
-  }
-  .story-row.layout-mosaic .big-story-text {
-    font-size: 16px;
-    line-height: 1.6;
-  }
-  .story-row.layout-mosaic .huge-quote {
-    font-size: 20px;
+    aspect-ratio: auto;
   }
 
   /* No-photo post-reveal: centered bigger */
@@ -1659,7 +1639,6 @@ const NODES = [
       "./photos/s4-5.jpg"
     ],
     layout: "hero",
-    postLayout: "mosaic",
     title: "一年零薪水——繼續還是走？",
     subtitle: "第一次創業的十字路口",
     pos: { x: 58, y: 32 },
@@ -2170,10 +2149,9 @@ function renderModalBody(idx) {
     `;
 
     const stationClass = `s${idx + 1}-post`;
-    const postLayoutClass = n.postLayout === "mosaic" ? "layout-mosaic" : "layout-optionA";
     if (storyPhotos.length > 0) {
       html += `
-        <div class="story-row ${postLayoutClass} ${stationClass}">
+        <div class="story-row layout-optionA ${stationClass}">
           ${renderPhotoGrid(storyPhotos, n.photoLayout)}
           <div class="story-col big-text-col">${rightPanel}</div>
         </div>
