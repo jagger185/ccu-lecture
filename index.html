@@ -700,6 +700,17 @@
   .photo-grid.count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
   .photo-grid.count-5 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
   .photo-grid.count-5 > :nth-child(1) { grid-column: 1 / 3; }
+  .photo-grid.count-6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; }
+
+  /* Featured layout: first photo is banner across top, rest below */
+  .photo-grid.featured.count-4 {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1.3fr 1fr;
+  }
+  .photo-grid.featured.count-4 > :nth-child(1) { grid-column: 1 / -1; grid-row: 1; }
+  .photo-grid.featured.count-4 > :nth-child(2) { grid-column: 1; grid-row: 2; }
+  .photo-grid.featured.count-4 > :nth-child(3) { grid-column: 2; grid-row: 2; }
+  .photo-grid.featured.count-4 > :nth-child(4) { grid-column: 3; grid-row: 2; }
 
   .story-photo {
     background-size: contain;
@@ -1158,26 +1169,29 @@ const NODES = [
       <p>各位同學好。</p>
       <p>我 <strong>16 年前</strong>——就坐在你們這個位置。</p>
       <p>中正大學法律系。<em>情勢所逼</em>，加上當時女朋友念中山。</p>
-      <p>每個進大學時「非我所願」的人，心裡都有一個抉擇——</p>
+      <p>那四年，我大部分時間在<em>打球、談戀愛、想以後要幹嘛</em>。</p>
+      <p>每個進大學時「非我所願」的人，面對的抉擇——</p>
     `,
-    question: "你會選？",
+    question: "你會老實說？",
     optionA: {
       title: "既然選了就好好念",
-      desc: "法律系出路其實很穩：考律師、檢察官、公職——把四年念到底",
-      whatif: "選這條路：你走法律界的標準路線。踏實、被社會認可——不少同學就是這樣畢業的。"
+      desc: "走法律界的標準路線：考律師、檢察官、公職——把四年念扎實",
+      whatif: "選這條路：你走完標準路線。踏實、被社會認可——不少同學就是這樣畢業的。"
     },
     optionB: {
-      title: "遲早要走的",
-      desc: "法律只是起點。不管最後做什麼——我都不會做法律",
+      title: "老實說，我也不知道",
+      desc: "完全不知道自己在幹嘛——就渾渾噩噩，每天打球、想「以後要做什麼」",
       whatif: ""
     },
     correct: "B",
     story: `
-      <p>我沒明講——但我心裡一直知道：<strong>我不會做法律。</strong></p>
-      <p>那四年，我大部分時間在<em>打球、談戀愛、想以後要幹嘛</em>。</p>
-      <p>法律系給我的不是法條——是「<strong>我知道我不想要什麼</strong>」。</p>
+      <p>我選了 B。</p>
+      <p>我<strong>沒有決定「不做法律」</strong>——我只是整個人<em>渾渾噩噩</em>，完全不知道自己在幹嘛。</p>
+      <p>打球、談戀愛、每天在想「以後要幹嘛」——但沒有答案。</p>
+      <p>這聽起來很消極——但其實很重要。</p>
+      <p>因為我後來才發現：「<strong>不知道」沒關係</strong>。只要你一直在問「以後要幹嘛」——答案遲早會出現。</p>
     `,
-    insight: "起點從來不決定終點。知道自己不要什麼，是知道自己要什麼的起點。"
+    insight: "起點從來不決定終點。20 歲還不知道自己要什麼，很正常——但要一直問。"
   },
   {
     id: 1,
@@ -1248,12 +1262,12 @@ const NODES = [
     },
     correct: "B",
     story: `
-      <p>隔天早上——我做了<strong>兩件事</strong>：</p>
-      <p>① 寫了一封<em>辭職信</em>，遞給玉山。<br/>
-         ② 寫了一封<em>求職信</em>，寄給球學。</p>
-      <p><strong>（就是這張照片——我留了當年的信。）</strong></p>
-      <p>零薪水沒關係。我終於找到「要去哪」的那個答案了。</p>
-      <p>然後我真的加入了球學——做了<strong>六個月，一毛沒領。</strong></p>
+      <p>我當下就做了一件事——</p>
+      <p>直接衝到旁邊的 <strong>Subway</strong>，找到 <strong>Cheng</strong>（我後來的共同創辦人）。</p>
+      <p>跟她說：「<em>我超想加入你們。</em>」</p>
+      <p>她大概覺得我瘋了。她說：「我們現在也沒錢、沒薪水喔。」</p>
+      <p>我說：「<strong>沒關係。</strong>」</p>
+      <p>隔天早上——我寫了兩封信：一封辭職信給玉山，一封求職信給球學。<em>（就是這張照片——我留到現在。）</em></p>
     `,
     insight: "有些門只會為你開一次。那一晚如果我回家睡覺——你們今天就不會坐在這裡聽我講。"
   },
@@ -1263,17 +1277,18 @@ const NODES = [
     location: "球學時期",
     icon: "trophy",
     setupPhotos: ["./photos/s4-1.jpg"],
-    storyPhotos: ["./photos/s4-3.jpg", "./photos/s4-2.jpg", "./photos/s4-5.jpg"],
+    storyPhotos: ["./photos/s4-highlights.jpg", "./photos/s4-2.jpg", "./photos/s4-product.jpg"],
     layout: "hero",
-    title: "六個月零薪水——繼續還是走？",
+    title: "一年零薪水——繼續還是走？",
     subtitle: "第一次創業的十字路口",
     pos: { x: 58, y: 32 },
     hasVote: true,
     setup: `
-      <p>球學在做一件事：<em>讓運動員有家族企業以外的選擇。</em></p>
-      <p>我們的做法很土——蒐集球員比賽影片、一刀一刀剪成 Highlight、寄給國外教練爭取留學。</p>
-      <p>但撐到第六個月，<strong>我們還是零薪水、零商業模式。</strong></p>
-      <p>家人、同學開始問我：「你到底在做什麼？」</p>
+      <p>球學在做一件事：<em>讓運動員有更多元的學習環境。</em></p>
+      <p>台灣就是體育班——我們蒐集球員影片、去各地錄影、一隻一隻剪成 Highlight、寄給國外教練。</p>
+      <p>但——<strong>沒太多人願意真的付錢給我們</strong>。</p>
+      <p>做到第一年——<em>我住在辦公室</em>，大家還是<strong>零薪水、零商業模式</strong>。</p>
+      <p>家人全都開始懷疑我的決定。我們自己也在問：「<em>如果一直沒商業模式，該怎麼辦？</em>」</p>
     `,
     question: "這時候你會？",
     optionA: {
@@ -1288,9 +1303,11 @@ const NODES = [
     },
     correct: "B",
     story: `
-      <p>我們撐了下去。後來陸續送出去的球員你們多半聽過：<em>高國豪、林庭謙、陳盈駿</em>……</p>
-      <p>然後有一天，<strong>蔡崇信（阿里巴巴創辦人之一）投了我們一百萬美金</strong>。</p>
-      <p>我們完全沒有預料。我們只是<em>很認真在做一件我們相信的事</em>。</p>
+      <p>我們撐下去了。</p>
+      <p><strong>一年後</strong>才開始領薪水——<em>每個月一萬二</em>。（對，你沒聽錯，一萬二。）</p>
+      <p>後來陸續送出去的球員你們多半聽過：<em>高國豪、林庭謙、陳盈駿</em>……<strong>這幾支 Highlight，是我親手剪的。</strong></p>
+      <p>然後有一天——<strong>蔡崇信投了我們一百萬美金</strong>。</p>
+      <p>我們完全沒預料。我們只是<em>很認真在做一件我們相信的事</em>。</p>
     `,
     insight: "商業模式會來找你——前提是，你做的事情夠認真、夠純粹。"
   },
@@ -1309,14 +1326,14 @@ const NODES = [
     setup: `
       <p>球學做了一陣子，公司收到一個邀約——</p>
       <p><strong>蔡崇信</strong>（阿里巴巴創辦人之一、現在 Brooklyn Nets 的老闆）要跟我們見面。</p>
-      <p>但這場會議，<em>主要對口是 Joe Chen</em>——我們的共同創辦人。會議是<strong>全英文</strong>的，我那時候英文蠻爛的。</p>
+      <p>但這場會議，<em>主要對口是 Cheng</em>——我們的共同創辦人。會議是<strong>全英文</strong>的，我那時候英文蠻爛的。</p>
       <p>老實講——<em>公司不需要我去。</em></p>
       <p>我面臨的抉擇是：要不要<strong>自願跟去</strong>？</p>
     `,
     question: "你會？",
     optionA: {
       title: "留在辦公室",
-      desc: "Joe Chen 主導就夠了。我去只是多餘，英文又爛，還可能變成麻煩",
+      desc: "Cheng 主導就夠了。我去只是多餘，英文又爛，還可能變成麻煩",
       whatif: "選這條路：你避開了一次尷尬。很合理——你不該搶不屬於你的舞台。"
     },
     optionB: {
@@ -1327,9 +1344,9 @@ const NODES = [
     correct: "B",
     story: `
       <p>我自願跟去了。<strong>不是為了表現，而是為了看。</strong></p>
-      <p>那頓飯整場談判都是 Joe Chen 在處理——我在旁邊<em>沒什麼發言</em>。</p>
+      <p>那頓飯整場談判都是 Cheng 在處理——我在旁邊<em>沒什麼發言</em>。</p>
       <p>最後 Joe Tsai 決定投我們<strong>一百萬美金</strong>。</p>
-      <p>但這筆錢<em>不是因為我</em>——是 Joe Chen 的功勞。</p>
+      <p>但這筆錢<em>不是因為我</em>——是 Cheng 的功勞。</p>
       <p>我帶走的是另一樣東西：</p>
       <p><strong>整頓飯下來，我注意到 Joe Tsai 對每一個人的態度都一樣好。</strong>服務生、我們這些毛小孩、對面的大人物——完全一樣。</p>
       <p>那一刻我決定：<em>不管以後成功或失敗，我要讓自己永遠是這個樣子。</em></p>
@@ -1415,9 +1432,10 @@ const NODES = [
     year: "2026",
     location: "現在",
     icon: "crowned-heart",
-    setupPhotos: ["./photos/s8-1.jpg", "./photos/s8-2.jpg", "./photos/s8-3.jpg"],
+    setupPhotos: ["./photos/s8-0.jpg", "./photos/s8-1.jpg", "./photos/s8-2.jpg", "./photos/s8-3.jpg"],
     storyPhotos: [],
     layout: "hero",
+    photoLayout: "featured",
     title: "六年後，我在這裡",
     subtitle: "回頭看這張地圖",
     pos: { x: 86, y: 30 },
@@ -1595,11 +1613,12 @@ function updateScore(animate) {
 }
 
 // ========== Helpers ==========
-function renderPhotoGrid(photos) {
+function renderPhotoGrid(photos, extraClass) {
   if (!photos || photos.length === 0) return "";
-  const count = Math.min(photos.length, 5);
+  const count = Math.min(photos.length, 6);
   const items = photos.map(p => `<div class="story-photo" style="background-image:url('${p}')"></div>`).join("");
-  return `<div class="photo-grid count-${count}">${items}</div>`;
+  const cls = extraClass ? ` ${extraClass}` : "";
+  return `<div class="photo-grid count-${count}${cls}">${items}</div>`;
 }
 
 function renderRevealBanner(n) {
@@ -1692,7 +1711,7 @@ function renderModalBody(idx) {
     if (setupPhotos.length > 0) {
       html += `
         <div class="setup-row ${setupLayout}">
-          ${renderPhotoGrid(setupPhotos)}
+          ${renderPhotoGrid(setupPhotos, n.photoLayout)}
           <div class="story-col">${setupBlock}</div>
         </div>
       `;
@@ -1721,7 +1740,7 @@ function renderModalBody(idx) {
     if (storyPhotos.length > 0) {
       html += `
         <div class="story-row ${layout}">
-          ${renderPhotoGrid(storyPhotos)}
+          ${renderPhotoGrid(storyPhotos, n.photoLayout)}
           <div class="story-col">${storyBlock}</div>
         </div>
       `;
@@ -1744,7 +1763,7 @@ function renderModalBody(idx) {
     if (setupPhotos.length > 0) {
       html += `
         <div class="story-row ${layout}">
-          ${renderPhotoGrid(setupPhotos)}
+          ${renderPhotoGrid(setupPhotos, n.photoLayout)}
           <div class="story-col">${content}</div>
         </div>
       `;
