@@ -38,7 +38,9 @@ button{font:inherit;font-size:15px;font-weight:700;padding:12px;border:0;border-
 <input type="hidden" name="next" value="${esc(next)}">
 <div class="err">${error ? '密碼不正確' : ''}</div>
 <button type="submit">進入</button>
-</form></body></html>`;
+</form>
+<script>document.querySelector('[name=next]').value += location.hash;</script>
+</body></html>`;
 }
 
 function html(body, status, extra = {}) {
