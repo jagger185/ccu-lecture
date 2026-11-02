@@ -75,6 +75,11 @@ export default async function middleware(req) {
   }
 
   if (cookieValue(req, COOKIE) === token) {
+    // On the spot-talk project the root is the 11-03 deck, not the April talk.
+    if (url.pathname === '/' && url.hostname.startsWith('spot-talk')) {
+      url.pathname = '/scale.html';
+      return new Response(null, { headers: { 'x-middleware-rewrite': url.toString() } });
+    }
     return new Response(null, { headers: { 'x-middleware-next': '1' } });
   }
 
