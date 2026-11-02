@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>從產品驗證到規模化 · 一個法律系學生的創業地圖</title>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+<meta name="theme-color" content="#0A0F1E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Barlow:wght@600;700;800;900&family=Roboto+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0A0F1E;
+    --bg2: #111827;
+    --panel: #151D30;
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.22);
+    --text: #F3F4F6;
+    --dim: #8B94A7;
+    --dim2: #5B6478;
+    --red: #E81020;
+    --red-deep: #9B0A14;
+    --orange: #F7941D;
+    --green: #22c55e;
+    --W: 1920px;
+    --H: 1080px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%; overflow: hidden;
+    -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: "Noto Sans TC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(1200px 700px at 85% -10%, rgba(232,16,32,0.14), transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, rgba(247,148,29,0.08), transparent 60%);
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* ===== Stage: fixed 1920x1080, scaled to fit ===== */
+  #stage {
+    position: absolute; left: 50%; top: 50%;
+    width: var(--W); height: var(--H);
+    transform-origin: 0 0;
+    z-index: 1;
+  }
+  .slide {
+    position: absolute; inset: 0;
+    padding: 96px 120px 150px;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.45s ease;
+  }
+  .slide.active { opacity: 1; visibility: visible; }
+  .slide .in { opacity: 0; transform: translateY(22px); }
+  .slide.active .in { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+  .slide.active .in:nth-child(1) { animation-delay: 0.05s; }
+  .slide.active .in:nth-child(2) { animation-delay: 0.15s; }
+  .slide.active .in:nth-child(3) { animation-delay: 0.25s; }
+  .slide.active .in:nth-child(4) { animation-delay: 0.35s; }
+  .slide.active .in:nth-child(5) { animation-delay: 0.45s; }
+  .slide.active .in:nth-child(6) { animation-delay: 0.55s; }
+  .slide.active .in:nth-child(7) { animation-delay: 0.65s; }
+  .slide.active .in:nth-child(8) { animation-delay: 0.75s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== Type ===== */
+  .kicker {
+    font-family: "IBM Plex Mono", monospace; font-size: 20px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--red);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .kicker::before { content: ""; width: 36px; height: 2px; background: var(--red); }
+  .kicker.orange { color: var(--orange); } .kicker.orange::before { background: var(--orange); }
+  .kicker.dim { color: var(--dim); } .kicker.dim::before { background: var(--dim); }
+
+  h1 { font-size: 104px; font-weight: 900; line-height: 1.08; letter-spacing: -0.01em; }
+  h2 { font-size: 72px; font-weight: 900; line-height: 1.15; letter-spacing: -0.01em; }
+  h3 { font-size: 40px; font-weight: 700; line-height: 1.3; }
+  .lead { font-size: 34px; line-height: 1.6; color: var(--dim); font-weight: 400; }
+  .lead strong, p strong { color: var(--text); font-weight: 700; }
+  em { font-style: normal; color: var(--orange); }
+  .red { color: var(--red); }
+  .num {
+    font-family: "Barlow Condensed", "Noto Sans TC", sans-serif; font-weight: 800;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.01em; line-height: 0.9;
+  }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+
+  .head { margin-bottom: 56px; }
+  .head h2 { margin-top: 18px; }
+  .head .lead { margin-top: 18px; }
+
+  /* ===== Layout helpers ===== */
+  .cols { display: grid; gap: 64px; align-items: start; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .cols-57 { grid-template-columns: 5fr 7fr; }
+  .cols-75 { grid-template-columns: 7fr 5fr; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
+    padding: 40px 44px; position: relative; overflow: hidden;
+  }
+  .card .tag { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.16em; color: var(--dim); text-transform: uppercase; }
+  .card h3 { margin-top: 14px; }
+  .card p { margin-top: 16px; font-size: 26px; line-height: 1.6; color: var(--dim); }
+  .card.accent { border-color: rgba(232,16,32,0.5); }
+  .card.accent::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--red); }
+
+  .photo {
+    border-radius: 20px; overflow: hidden; border: 1px solid var(--line-strong);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    background: #000;
+  }
+  .photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .photo.tilt { transform: rotate(-1.5deg); }
+  .cap { margin-top: 18px; font-family: "IBM Plex Mono", monospace; font-size: 18px; color: var(--dim2); letter-spacing: 0.04em; }
+
+  .quote {
+    position: absolute; left: 120px; right: 120px; bottom: 170px;
+    font-size: 44px; font-weight: 700; line-height: 1.35;
+    padding-left: 36px; border-left: 6px solid var(--red);
+  }
+  .quote.inline { position: static; margin-top: 56px; }
+
+  .takeaway {
+    display: inline-flex; align-items: center; gap: 20px; margin-top: 48px; white-space: nowrap;
+    padding: 20px 32px; border-radius: 999px; background: rgba(232,16,32,0.12);
+    border: 1px solid rgba(232,16,32,0.4); font-size: 28px; font-weight: 700;
+  }
+  .takeaway .mono { color: var(--red); font-size: 18px; letter-spacing: 0.2em; white-space: nowrap; }
+  .slide.vc { display: flex; flex-direction: column; justify-content: center; }
+  .slide.vc .head { margin-bottom: 48px; }
+  .photo.short { height: 320px; aspect-ratio: auto; }
+
+  /* ===== Cover ===== */
+  .cover { padding: 0; }
+  .cover .grid-bg {
+    position: absolute; inset: 0; opacity: 0.35;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 120px 120px;
+    mask-image: radial-gradient(ellipse at 70% 40%, #000 20%, transparent 70%);
+  }
+  .cover .mark { position: absolute; right: 120px; top: 96px; }
+  .cover .mark img { height: 72px; width: auto; display: block; }
+  .cover .body { position: absolute; left: 120px; right: 120px; top: 240px; }
+  .cover h1 { margin-top: 36px; max-width: 1500px; }
+  .cover h1 .line2 { display: block; color: var(--dim); font-weight: 700; font-size: 60px; margin-top: 22px; letter-spacing: 0; }
+  .cover .who { position: absolute; left: 120px; bottom: 170px; display: flex; align-items: center; gap: 28px; }
+  .cover .who img { width: 112px; height: 112px; border-radius: 50%; object-fit: cover; border: 3px solid var(--line-strong); }
+  .cover .who .name { font-size: 34px; font-weight: 700; }
+  .cover .who .role { font-size: 22px; color: var(--dim); margin-top: 6px; }
+  .cover .event { position: absolute; right: 120px; bottom: 170px; text-align: right; font-family: "IBM Plex Mono", monospace; font-size: 20px; color: var(--dim); line-height: 1.8; letter-spacing: 0.06em; }
+  .cover .event b { color: var(--text); font-weight: 500; }
+
+  /* ===== Agenda ===== */
+  .agenda { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 12px; }
+  .agenda .step { border-top: 4px solid var(--line-strong); padding-top: 28px; min-height: 420px; position: relative; }
+  .agenda .step.hot { border-top-color: var(--red); }
+  .agenda .step .n { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 96px; line-height: 0.9; color: var(--dim2); }
+  .agenda .step.hot .n { color: var(--red); }
+  .agenda .step h3 { margin-top: 24px; font-size: 42px; }
+  .agenda .step p { margin-top: 18px; font-size: 26px; color: var(--dim); line-height: 1.55; }
+  .agenda .step .min { position: absolute; left: 0; bottom: 0; font-family: "IBM Plex Mono", monospace; font-size: 22px; color: var(--dim); letter-spacing: 0.1em; }
+  .agenda .step .min b { color: var(--text); font-size: 40px; font-weight: 500; margin-right: 8px; }
+
+  /* ===== Timeline (ch1) ===== */
+  .tl { position: relative; margin-top: 110px; padding-top: 70px; }
+  .tl::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, var(--dim2), var(--red)); border-radius: 2px; }
+  .tl .pts { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+  .tl .pt { position: relative; }
+  .tl .pt::before { content: ""; position: absolute; left: 0; top: -84px; width: 24px; height: 24px; border-radius: 50%; background: var(--bg); border: 5px solid var(--dim2); }
+  .tl .pt.hot::before { border-color: var(--red); background: var(--red); box-shadow: 0 0 0 10px rgba(232,16,32,0.18); }
+  .tl .pt .yr { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 64px; line-height: 1; color: var(--dim); }
+  .tl .pt.hot .yr { color: var(--red); }
+  .tl .pt h3 { margin-top: 14px; font-size: 38px; }
+  .tl .pt .role { font-size: 24px; color: var(--dim); margin-top: 8px; line-height: 1.5; }
+  .tl .pt .trade { margin-top: 28px; padding-top: 20px; border-top: 1px dashed var(--line-strong); font-size: 24px; line-height: 1.55; }
+  .tl .pt .trade .l { font-family: "IBM Plex Mono", monospace; font-size: 16px; letter-spacing: 0.18em; color: var(--orange); display: block; margin-bottom: 8px; }
+
+  /* ===== Story slides (ch1) ===== */
+  .story .cols { align-items: center; }
+  .story .photo { aspect-ratio: 4 / 3; }
+  .story .photo.portrait { aspect-ratio: 3 / 4; max-height: 600px; }
+  .story .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .story .pair .photo { aspect-ratio: 3 / 4; max-height: 600px; }
+  .story .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 28px; align-items: stretch; margin-top: 40px; }
+  .story .vs .opt { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 28px 32px; }
+  .story .vs .opt .l { font-family: "IBM Plex Mono", monospace; font-size: 16px; letter-spacing: 0.18em; color: var(--dim); }
+  .story .vs .opt .t { font-size: 30px; font-weight: 700; margin-top: 10px; }
+  .story .vs .opt .d { font-size: 22px; color: var(--dim); margin-top: 8px; line-height: 1.5; }
+  .story .vs .opt.pick { border-color: rgba(232,16,32,0.6); background: rgba(232,16,32,0.08); }
+  .story .vs .opt.pick .l { color: var(--red); }
+  .story .vs .or { align-self: center; font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 36px; color: var(--dim2); }
+
+  /* ===== Chapter 2 ===== */
+  .zero { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 10px; }
+  .zero .z { border: 1px solid var(--line); border-radius: 20px; padding: 32px 40px; background: var(--panel); }
+  .zero .z .big { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 140px; line-height: 0.85; color: var(--dim2); }
+  .zero .z .lbl { font-size: 32px; font-weight: 700; margin-top: 20px; }
+  .zero .z .sub { font-size: 22px; color: var(--dim); margin-top: 8px; }
+  .zero .z.one { border-color: rgba(232,16,32,0.6); }
+  .zero .z.one .big { color: var(--red); }
+
+  .pain { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 10px; }
+  .pain ul { list-style: none; }
+  .pain li { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); font-size: 28px; line-height: 1.5; }
+  .pain li:first-child { padding-top: 0; }
+  .pain li .k { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 40px; color: var(--red); line-height: 1; }
+  .pain li .s { display: block; font-size: 22px; color: var(--dim); margin-top: 6px; }
+
+  .signals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .signals .card .big { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 120px; line-height: 0.9; color: var(--text); margin-top: 20px; }
+  .signals .card .big small { font-size: 40px; color: var(--dim); font-weight: 700; margin-left: 10px; }
+
+  .no-list { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .no-list .side h3 { font-size: 30px; color: var(--dim); letter-spacing: 0.04em; }
+  .no-list .item { display: flex; gap: 24px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid var(--line); font-size: 32px; font-weight: 500; }
+  .no-list .item .x { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 36px; width: 48px; color: var(--dim2); }
+  .no-list .item .why { font-size: 22px; color: var(--dim); font-weight: 400; margin-left: auto; text-align: right; max-width: 420px; }
+  .no-list .keep .item .x { color: var(--red); }
+  .no-list .keep .item { font-weight: 900; font-size: 40px; border-bottom: none; }
+
+  /* ===== Chapter 3: manual day ===== */
+  .shift { margin-top: 10px; }
+  .shift .row { display: grid; grid-template-columns: 220px 1fr; gap: 36px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .shift .row .t { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 56px; color: var(--dim); line-height: 1; }
+  .shift .row .bar { height: 50px; border-radius: 10px; background: linear-gradient(90deg, rgba(232,16,32,0.55), rgba(232,16,32,0.15)); display: flex; align-items: center; padding: 0 24px; font-size: 26px; font-weight: 700; white-space: nowrap; }
+  .shift .row .bar span { color: var(--dim); font-weight: 400; margin-left: 16px; font-size: 22px; }
+  .shift .total { display: flex; align-items: baseline; gap: 24px; margin-top: 28px; }
+  .shift .total .big { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 120px; line-height: 0.9; color: var(--red); }
+  .shift .total p { font-size: 30px; color: var(--dim); line-height: 1.5; }
+  .shift .total p strong { color: var(--text); }
+
+  /* ===== Chapter 3: pipeline ===== */
+  .pipe { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 20px; position: relative; }
+  .pipe .st { position: relative; padding: 0 28px 0 0; }
+  .pipe .st + .st { padding-left: 28px; border-left: 1px dashed var(--line-strong); }
+  .pipe .st .idx { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.2em; color: var(--red); }
+  .pipe .st h3 { font-size: 40px; margin-top: 14px; }
+  .pipe .st .sub { font-size: 22px; color: var(--dim); margin-top: 6px; }
+  .pipe .st ul { list-style: none; margin-top: 28px; }
+  .pipe .st li { font-size: 24px; line-height: 1.45; padding: 12px 0 12px 22px; position: relative; color: var(--text); }
+  .pipe .st li::before { content: ""; position: absolute; left: 0; top: 22px; width: 8px; height: 8px; border-radius: 2px; background: var(--orange); }
+  .pipe .st li small { display: block; color: var(--dim); font-size: 19px; margin-top: 2px; }
+  .pipe .flow { position: absolute; left: 0; right: 0; top: -56px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--dim2) 0%, var(--red) 60%, var(--orange) 100%); }
+  .pipe .flow::after { content: ""; position: absolute; right: -4px; top: -9px; border: 12px solid transparent; border-left: 18px solid var(--orange); }
+  .human { margin-top: 44px; display: flex; gap: 20px; align-items: center; font-size: 26px; color: var(--dim); }
+  .human .pill { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.14em; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text); }
+
+  /* ===== Chapter 3: numbers ===== */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 10px; }
+  .stats .s { border-top: 4px solid var(--red); padding-top: 28px; }
+  .stats .s .big { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 150px; line-height: 0.85; }
+  .stats .s .big small { font-size: 48px; color: var(--dim); font-weight: 700; margin-left: 8px; }
+  .stats .s .l { font-size: 30px; font-weight: 700; margin-top: 22px; line-height: 1.4; }
+  .stats .s .d { font-size: 22px; color: var(--dim); margin-top: 8px; line-height: 1.5; }
+  .compare { margin-top: 64px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 40px; align-items: center; }
+  .compare .box { border: 1px solid var(--line); border-radius: 20px; padding: 32px 40px; background: var(--panel); }
+  .compare .box .l { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.18em; color: var(--dim); }
+  .compare .box .v { font-size: 40px; font-weight: 900; margin-top: 10px; }
+  .compare .box .v span { display: block; color: var(--dim); font-weight: 400; font-size: 26px; margin-top: 8px; }
+  .compare .box.now { border-color: rgba(232,16,32,0.6); background: rgba(232,16,32,0.08); }
+  .compare .arrow { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 72px; color: var(--red); }
+
+  /* ===== Chapter 3: clients ===== */
+  .clients { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-top: 10px; }
+  .clients .grp .g { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; padding-bottom: 16px; border-bottom: 1px solid var(--line-strong); }
+  .clients .chips { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+  .clients .chip { font-size: 26px; font-weight: 700; padding: 14px 24px; border-radius: 14px; background: var(--panel); border: 1px solid var(--line); }
+  .clients .chip.lite { color: var(--dim); font-weight: 500; }
+  .proof { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .proof .p { display: flex; align-items: baseline; gap: 24px; padding: 28px 36px; border-radius: 20px; background: linear-gradient(135deg, rgba(232,16,32,0.14), rgba(247,148,29,0.06)); border: 1px solid rgba(232,16,32,0.35); }
+  .proof .p .big { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 96px; line-height: 0.9; white-space: nowrap; }
+  .proof .p .t { font-size: 26px; line-height: 1.45; }
+  .proof .p .t small { display: block; color: var(--dim); font-size: 20px; margin-top: 4px; }
+
+  /* ===== Chapter 3: pits ===== */
+  .pits { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 56px; margin-top: 10px; }
+  .pits .pit { display: grid; grid-template-columns: 80px 1fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--line); }
+  .pits .pit .n { font-family: "Barlow Condensed", sans-serif; font-weight: 800; font-size: 64px; color: var(--dim2); line-height: 1; }
+  .pits .pit h3 { font-size: 34px; }
+  .pits .pit p { font-size: 24px; color: var(--dim); margin-top: 10px; line-height: 1.55; }
+
+  /* ===== Chapter 4 ===== */
+  .opps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 10px; }
+  .opps .card { min-height: 560px; }
+  .opps .card .big { font-family: "Barlow Condensed", "Noto Sans TC", sans-serif; font-weight: 800; font-size: 110px; line-height: 0.9; color: var(--red); }
+  .opps .card .big small { font-size: 36px; color: var(--dim); margin-left: 8px; }
+  .opps .card h3 { font-size: 34px; }
+  .opps .card .big small { white-space: nowrap; }
+  .opps .card ul { list-style: none; margin-top: 20px; }
+  .opps .card li { font-size: 22px; color: var(--dim); line-height: 1.5; padding: 8px 0 8px 22px; position: relative; }
+  .opps .card li::before { content: ""; position: absolute; left: 0; top: 22px; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+  .opps .card li strong { color: var(--text); }
+
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 56px; margin-top: 10px; }
+  .rules .r { padding: 36px 0; border-top: 2px solid var(--line-strong); }
+  .rules .r .n { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.22em; color: var(--red); }
+  .rules .r h3 { font-size: 42px; margin-top: 14px; line-height: 1.3; }
+  .rules .r p { font-size: 24px; color: var(--dim); margin-top: 14px; line-height: 1.6; }
+
+  .end .cols { align-items: center; }
+  .end .photo { aspect-ratio: 16 / 10; }
+  .end .vwall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .end .vwall video { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 16px; border: 1px solid var(--line-strong); background: #000; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .end .big-q { font-size: 64px; font-weight: 900; line-height: 1.3; }
+  .end .big-q em { color: var(--red); }
+  .end .contact { margin-top: 56px; font-family: "IBM Plex Mono", monospace; font-size: 24px; color: var(--dim); line-height: 2; letter-spacing: 0.04em; }
+  .end .contact b { color: var(--text); font-weight: 500; }
+
+  /* ===== Chrome: rail + counter ===== */
+  #chrome {
+    position: absolute; left: 120px; right: 120px; bottom: 60px; z-index: 5;
+    display: flex; justify-content: flex-end; align-items: end; gap: 48px;
+  }
+  #rail { display: none; }  /* 章節路徑列先藏起來（2026-11-02 Jagger），要開回來改成 display:grid */
+  #rail .ch { position: relative; padding-top: 16px; font-family: "IBM Plex Mono", monospace; font-size: 16px; letter-spacing: 0.18em; color: var(--dim2); text-transform: uppercase; }
+  #rail .ch::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--line); border-radius: 2px; }
+  #rail .ch .fill { position: absolute; left: 0; top: 0; height: 3px; width: 0; background: var(--red); border-radius: 2px; transition: width 0.4s ease; }
+  #rail .ch.on { color: var(--text); }
+  #rail .ch.done { color: var(--dim); }
+  #rail .ch.done .fill { width: 100%; background: var(--dim2); }
+  #counter { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 28px; color: var(--dim2); letter-spacing: 0.06em; }
+  #counter b { color: var(--text); font-weight: 800; }
+  .cover ~ #chrome { }
+  body.on-cover #chrome { opacity: 0; }
+  #chrome { transition: opacity 0.4s ease; }
+
+  /* ===== Timer ===== */
+  #timer {
+    position: absolute; right: 120px; top: 44px; z-index: 6;
+    font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 36px; letter-spacing: 0.08em;
+    color: var(--dim2); display: none;
+  }
+  #timer.show { display: block; }
+  #timer.warn { color: var(--orange); }
+  #timer.over { color: var(--red); }
+
+  /* ===== Notes ===== */
+  #notes {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    background: rgba(10,15,30,0.96); border-top: 1px solid var(--line-strong);
+    padding: 20px 32px 24px; font-size: 18px; line-height: 1.6; color: var(--text);
+    max-height: 30vh; overflow: auto; display: none;
+  }
+  #notes.show { display: block; }
+  #notes .l { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.2em; color: var(--red); margin-bottom: 8px; }
+  #notes ul { padding-left: 20px; }
+  #notes li { margin: 4px 0; }
+
+  #help {
+    position: fixed; left: 16px; bottom: 12px; z-index: 20; font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; color: var(--dim2); letter-spacing: 0.08em; opacity: 0.7;
+  }
+  /* ===== Ported from the Spot sales decks (spot-super-document/decks-銷售簡報, 1280-wide coordinates, zoomed to 1680) ===== */
+  .head.tight { margin-bottom: 30px; }
+  .sd {
+    --navy:#0D1529; --ink:#1D2E41; --red-d:#EF4444; --glass:rgba(20,30,56,.72);
+    --hair-d:rgba(255,255,255,.10); --hair-l:rgba(19,32,58,.12); --r:12px;
+    --sans:'Noto Sans TC',system-ui,sans-serif; --disp:'Barlow','Noto Sans TC',system-ui,sans-serif; --mono:'Roboto Mono',ui-monospace,monospace;
+    width: 1152px; zoom: 1.45833; font-family: var(--sans); color: #F2F5FA; font-synthesis-style: none; position: relative;
+  }
+  .slide:not(.active) .sd * { animation-play-state: paused; }
+  .sd .cjk { display: inline-block; }
+  .sd .mono { font-family: var(--sans); font-size: 13px; letter-spacing: .01em; opacity: .6; margin: 0; }
+  .sd .row { display: flex; gap: 20px; }
+  @keyframes camfan{0%,100%{opacity:.08}10%{opacity:.4}22%{opacity:.08}}
+  .sd .cf{animation:camfan 5.4s infinite}
+  @keyframes livedot{0%,100%{opacity:1}50%{opacity:.25}}
+  .sd .ld{animation:livedot 1.6s infinite}
+
+  /* .ptl 傳統流程時間軸（8s 一輪） */
+  .sd .ptl{display:flex;flex-direction:column;gap:26px}
+  .sd .tl-steps{display:flex;gap:12px;align-items:stretch}
+  .sd .tl-step{flex:1;border-radius:var(--r);border:1px solid var(--hair-d);background:var(--glass);
+    padding:24px 10px;text-align:center;font-family:var(--disp);font-weight:700;font-size:15px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;line-height:1.3;
+    opacity:.22;animation:tl-s0 8s infinite}
+  .sd .tl-step i{font-style:normal;font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.08em;opacity:.5}
+  .sd .tl-step.hot{color:var(--red-d);border-color:rgba(239,68,68,.45)}
+  @keyframes tl-s0{0%{opacity:.22}8%,90%{opacity:1}96%,100%{opacity:.22}}
+  @keyframes tl-s1{0%,13%{opacity:.22}17%,90%{opacity:1}96%,100%{opacity:.22}}
+  @keyframes tl-s2{0%,22%{opacity:.22}26%,90%{opacity:1}96%,100%{opacity:.22}}
+  @keyframes tl-s3{0%,31%{opacity:.22}35%,90%{opacity:1}96%,100%{opacity:.22}}
+  @keyframes tl-s4{0%,40%{opacity:.22}44%,90%{opacity:1}96%,100%{opacity:.22}}
+  @keyframes tl-s5{0%,49%{opacity:.22}53%,90%{opacity:1}96%,100%{opacity:.22}}
+  @keyframes tl-s6{0%,58%{opacity:.22}62%,90%{opacity:1}96%,100%{opacity:.22}}
+  .sd .tl-steps .tl-step:nth-child(1){animation-name:tl-s0}
+  .sd .tl-steps .tl-step:nth-child(2){animation-name:tl-s1}
+  .sd .tl-steps .tl-step:nth-child(3){animation-name:tl-s2}
+  .sd .tl-steps .tl-step:nth-child(4){animation-name:tl-s3}
+  .sd .tl-steps .tl-step:nth-child(5){animation-name:tl-s4}
+  .sd .tl-steps .tl-step:nth-child(6){animation-name:tl-s5}
+  .sd .tl-steps .tl-step:nth-child(7){animation-name:tl-s6}
+  .sd .tl-axis{display:flex;flex-direction:column;position:relative}
+  .sd .tl-heatlab{font-family:var(--mono);font-size:11px;letter-spacing:.06em;opacity:.55;margin:0 0 6px}
+  .sd .tl-heat{width:15.5%;height:88px;display:block}
+  .sd .tl-heat svg{width:100%;height:100%;display:block;clip-path:inset(0 100% 0 0);animation:tl-heat 8s infinite}
+  @keyframes tl-heat{0%{clip-path:inset(0 100% 0 0)}10%,100%{clip-path:inset(0 0 0 0)}}
+  .sd .tl-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:visible;position:relative}
+  .sd .tl-bar i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,var(--red-d),#F87171);
+    transform-origin:left;transform:scaleX(0);animation:tl-bar 8s infinite}
+  @keyframes tl-bar{0%{transform:scaleX(0);opacity:1}66%{transform:scaleX(1)}96%{opacity:1}100%{transform:scaleX(1);opacity:0}}
+  .sd .tl-tick{position:absolute;left:15.5%;top:-6px;width:2px;height:15px;background:#F87171;opacity:0;animation:tl-24 8s infinite}
+  .sd .tl-24{position:absolute;left:15.5%;top:14px;transform:translateX(-50%);white-space:nowrap;
+    font-family:var(--disp);font-weight:800;font-size:14.5px;color:var(--red-d);opacity:0;animation:tl-24 8s infinite}
+  @keyframes tl-24{0%,10%{opacity:0}14%,100%{opacity:1}}
+  .sd .tl-axlab{display:flex;justify-content:space-between;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;opacity:.45}
+  .sd .tl-note{display:flex;flex-direction:column;align-items:flex-end;gap:8px;margin:0;opacity:0;animation:tl-note 8s infinite}
+  .sd .tl-note p{display:flex;align-items:center;gap:12px;margin:0;font-family:var(--disp);font-weight:800;font-size:21px}
+  .sd .tl-note svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;flex:none}
+  .sd .tl-punch{color:var(--red-d);font-size:26px!important}
+  @keyframes tl-note{0%,66%{opacity:0}74%,96%{opacity:1}100%{opacity:0}}
+
+  /* .vs 傳統 vs Spot 雙車道（12s 一輪） */
+  .sd .vs{display:flex;flex-direction:column;justify-content:center;gap:18px}
+  .sd .vs-axis{display:grid;grid-template-columns:150px 1fr;align-items:end}
+  .sd .vs-ticks{position:relative;height:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;opacity:.5}
+  .sd .vs-ticks span{position:absolute;bottom:0;transform:translateX(-50%);white-space:nowrap}
+  .sd .vs-ticks span:first-child{transform:none}
+  .sd .vs-ticks span:last-child{transform:translateX(-100%)}
+  .sd .vs-lane{display:grid;grid-template-columns:150px 1fr;align-items:center}
+  .sd .vs-lab{font-family:var(--disp);font-weight:800;font-size:15px;line-height:1.25;padding-right:14px}
+  .sd .vs-lab small{display:block;font-family:var(--sans);font-weight:400;font-size:11px;opacity:.55;margin-top:3px}
+  .sd .vs-lab.dim{opacity:.62}
+  .sd .vs-lab.hot{color:var(--red-d)}
+  .sd .vs-track{position:relative;height:62px;border-radius:9px;background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+  .sd .vs-track::before{content:"";position:absolute;left:56%;top:-7px;bottom:-7px;width:1px;background:rgba(255,255,255,.22)}
+  .sd .vs-track::after{content:"";position:absolute;left:68%;top:-7px;bottom:-7px;width:1px;background:rgba(255,255,255,.10)}
+  .sd .vs-ticks .vs-break{left:82%;font-size:13px;opacity:.45;letter-spacing:-.12em}
+  .sd .vs-heat{height:78px;background:none;box-shadow:none}
+  .sd .vs-heat::before,.sd .vs-heat::after{top:0;bottom:0}
+  .sd .vs-heat svg{position:absolute;left:0;bottom:0;width:68%;height:100%;display:block}
+  .sd .vs-bar{position:absolute;left:56%;right:0;top:13px;bottom:13px;border-radius:6px;background:rgba(255,255,255,.13);transform-origin:left;transform:scaleX(0);animation:vs-bar 12s infinite}
+  @keyframes vs-bar{0%,46%{transform:scaleX(0)}90%,100%{transform:scaleX(1)}}
+  .sd .vs-steps{position:absolute;left:56%;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:space-evenly;padding:0 64px 0 4px}
+  .sd .vs-steps span{font-family:var(--mono);font-size:10px;letter-spacing:.03em;opacity:0;white-space:nowrap}
+  .sd .vs-steps span:nth-child(1){animation:vs-st1 12s infinite}
+  @keyframes vs-st1{0%,50%{opacity:0}53%,100%{opacity:.78}}
+  .sd .vs-steps span:nth-child(2){animation:vs-st2 12s infinite}
+  @keyframes vs-st2{0%,57%{opacity:0}60%,100%{opacity:.78}}
+  .sd .vs-steps span:nth-child(3){animation:vs-st3 12s infinite}
+  @keyframes vs-st3{0%,64%{opacity:0}67%,100%{opacity:.78}}
+  .sd .vs-steps span:nth-child(4){animation:vs-st4 12s infinite}
+  @keyframes vs-st4{0%,71%{opacity:0}74%,100%{opacity:.78}}
+  .sd .vs-steps span:nth-child(5){animation:vs-st5 12s infinite}
+  @keyframes vs-st5{0%,78%{opacity:0}81%,100%{opacity:.78}}
+  .sd .vs-steps span:nth-child(6){animation:vs-st6 12s infinite}
+  @keyframes vs-st6{0%,85%{opacity:0}88%,100%{opacity:.78}}
+  .sd .vs-pill{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--disp);font-weight:800;font-size:12px;padding:4px 10px;border-radius:999px;background:#0D1529;box-shadow:0 0 0 1px rgba(255,255,255,.28);white-space:nowrap;opacity:0;z-index:2}
+  .sd .vs-pill.grey{right:8px;animation:vs-pg 12s infinite}
+  @keyframes vs-pg{0%,89%{opacity:0}92%,100%{opacity:1}}
+  .sd .vs-pill.red{left:60.5%;color:#fff;background:#DC2626;box-shadow:none;animation:vs-pr 12s infinite}
+  @keyframes vs-pr{0%,55%{opacity:0}58%,100%{opacity:1}}
+  .sd .vs-dot{position:absolute;top:50%;width:13px;height:13px;border-radius:50%;background:#EF4444;box-shadow:0 0 0 3px rgba(239,68,68,.22);opacity:0;transform:translate(-50%,-50%) scale(.4)}
+  .sd .vs-dot.n1{left:4%;animation:vs-d1 12s infinite}
+  @keyframes vs-d1{0%,2.0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}3.6%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}5.2%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n2{left:8%;animation:vs-d2 12s infinite}
+  @keyframes vs-d2{0%,5.8%{opacity:0;transform:translate(-50%,-50%) scale(.4)}7.4%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}9.0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n3{left:13%;animation:vs-d3 12s infinite}
+  @keyframes vs-d3{0%,9.6%{opacity:0;transform:translate(-50%,-50%) scale(.4)}11.2%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}12.8%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n4{left:17%;animation:vs-d4 12s infinite}
+  @keyframes vs-d4{0%,13.4%{opacity:0;transform:translate(-50%,-50%) scale(.4)}15.0%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}16.6%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n5{left:22%;animation:vs-d5 12s infinite}
+  @keyframes vs-d5{0%,17.2%{opacity:0;transform:translate(-50%,-50%) scale(.4)}18.8%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}20.4%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n6{left:26%;animation:vs-d6 12s infinite}
+  @keyframes vs-d6{0%,21.0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}22.6%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}24.2%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n7{left:31%;animation:vs-d7 12s infinite}
+  @keyframes vs-d7{0%,24.8%{opacity:0;transform:translate(-50%,-50%) scale(.4)}26.4%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}28.0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n8{left:35%;animation:vs-d8 12s infinite}
+  @keyframes vs-d8{0%,28.6%{opacity:0;transform:translate(-50%,-50%) scale(.4)}30.2%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}31.8%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n9{left:40%;animation:vs-d9 12s infinite}
+  @keyframes vs-d9{0%,32.4%{opacity:0;transform:translate(-50%,-50%) scale(.4)}34.0%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}35.6%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n10{left:44%;animation:vs-d10 12s infinite}
+  @keyframes vs-d10{0%,36.2%{opacity:0;transform:translate(-50%,-50%) scale(.4)}37.8%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}39.4%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n11{left:49%;animation:vs-d11 12s infinite}
+  @keyframes vs-d11{0%,40.0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}41.6%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}43.2%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-dot.n12{left:53%;animation:vs-d12 12s infinite}
+  @keyframes vs-d12{0%,43.8%{opacity:0;transform:translate(-50%,-50%) scale(.4)}45.4%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}47.0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .sd .vs-fg{position:absolute;left:58%;top:50%;width:17px;height:17px;background:#F87171;border-radius:3px;transform:translate(-50%,-50%) rotate(45deg);opacity:0;animation:vs-fg 12s infinite;z-index:1}
+  @keyframes vs-fg{0%,51%{opacity:0}54%,100%{opacity:1}}
+  .sd .vs-live{position:absolute;top:-11px;left:0;transform:translateX(-50%);display:flex;align-items:center;gap:5px;font-family:var(--disp);font-weight:800;font-size:10px;letter-spacing:.05em;color:#fff;background:#DC2626;border-radius:999px;padding:3px 9px;z-index:3;animation:vs-live 12s linear infinite}
+  @keyframes vs-live{0%{left:0;opacity:1}46%{left:56%;opacity:1}49%,100%{left:56%;opacity:0}}
+  .sd .vs-live i{width:5px;height:5px;border-radius:50%;background:#fff;animation:livedot 1.6s infinite}
+  .sd .vs-foot{display:flex;gap:16px;align-items:stretch;margin-top:6px}
+  .sd .vs-foot .ba{flex:1;justify-content:center;gap:14px}
+  .sd .vs-foot .ba .fig{font-size:24px}
+  .sd .ba{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:var(--r);border:1px solid var(--hair-d);background:rgba(255,255,255,.04);flex-shrink:0}
+  .sd .ba .lab{font-family:var(--sans);font-weight:500;font-size:10.5px;letter-spacing:.07em;opacity:.5;line-height:1.3}
+  .sd .ba .fig{font-family:var(--disp);font-weight:800;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+  .sd .ba .was{opacity:.42}
+  .sd .ba .arw{font-size:17px;opacity:.4}
+  .sd .ba .up{color:var(--red-d);font-family:var(--disp);font-weight:800;font-size:17px}
+
+  /* 三個引擎 白卡 */
+  .sd .row.engines{height:404px;align-items:stretch}
+  .sd .bcard{background:#fff;border:1px solid var(--hair-l);border-radius:var(--r);color:var(--ink);padding:22px 26px;display:flex;flex-direction:column;gap:8px;flex:1;
+    box-shadow:0 1px 3px rgba(19,32,58,.06),0 8px 24px rgba(19,32,58,.05)}
+  .sd .bc-diag{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px 0 14px}
+  .sd .bc-diag svg{width:100%;height:100%;max-height:190px;display:block}
+  .sd .sb{height:38px;width:auto;object-fit:contain;object-position:left center;align-self:flex-start;display:block}
+  .sd .bcard p{margin:0;font-family:var(--disp);font-weight:900;font-size:17px;line-height:1.34;opacity:.9}
+  .sd .bcard .m{font-family:var(--sans);font-weight:400;font-size:13px;line-height:1.5;opacity:.62;margin-top:2px}
+
+  /* .ma Marketing Agent 產線（12s 一輪） */
+  .sd .ma{display:flex;flex-direction:column;gap:14px}
+  .sd .ma-agent{display:flex;align-items:center;justify-content:center;gap:12px}
+  .sd .ma-agent img{height:20px;width:auto}
+  .sd .ma-agent-lab{font-family:var(--disp);font-weight:800;font-size:15px}
+  .sd .ma-dot{width:8px;height:8px;border-radius:50%;background:var(--red-d);animation:livedot 1.6s infinite}
+  .sd .ma-rules{display:flex;justify-content:space-between;padding:0 1%}
+  .sd .ma-rule{font-family:var(--mono);font-size:11px;letter-spacing:.01em;padding:8px 12px;border-radius:999px;border:1px solid var(--hair-d);background:var(--glass);opacity:.4}
+  .sd .ma-rule.r1{animation:ma-r1 12s infinite}
+  .sd .ma-rule.r3{animation:ma-r3 12s infinite}
+  .sd .ma-rule.r4{animation:ma-r4 12s infinite}
+  @keyframes ma-r1{0%,17%{opacity:.4;color:inherit;border-color:var(--hair-d)}21%,95%{opacity:1;color:#FCA5A5;border-color:rgba(239,68,68,.55)}100%{opacity:.4}}
+  @keyframes ma-r3{0%,45%{opacity:.4;color:inherit;border-color:var(--hair-d)}49%,95%{opacity:1;color:#FCA5A5;border-color:rgba(239,68,68,.55)}100%{opacity:.4}}
+  @keyframes ma-r4{0%,71%{opacity:.4;color:inherit;border-color:var(--hair-d)}75%,95%{opacity:1;color:#FCA5A5;border-color:rgba(239,68,68,.55)}100%{opacity:.4}}
+  .sd .ma-links{height:44px;width:100%;display:block}
+  .sd .ma-links path{fill:none;stroke:#F87171;stroke-width:1.6;stroke-dasharray:100;stroke-dashoffset:100;opacity:0}
+  .sd .ma-links .lk1{animation:ma-b1 12s infinite}
+  .sd .ma-links .lk2{animation:ma-b2 12s infinite}
+  .sd .ma-links .lk3{animation:ma-b3 12s infinite}
+  @keyframes ma-b1{0%,13%{stroke-dashoffset:100;opacity:0}14%{opacity:.9}21%{stroke-dashoffset:0}34%{opacity:0}100%{stroke-dashoffset:0;opacity:0}}
+  @keyframes ma-b2{0%,41%{stroke-dashoffset:100;opacity:0}42%{opacity:.9}49%{stroke-dashoffset:0}62%{opacity:0}100%{stroke-dashoffset:0;opacity:0}}
+  @keyframes ma-b3{0%,67%{stroke-dashoffset:100;opacity:0}68%{opacity:.9}75%{stroke-dashoffset:0}88%{opacity:0}100%{stroke-dashoffset:0;opacity:0}}
+  .sd .ma-feed{position:relative}
+  .sd .ma-ruler{display:flex;margin-bottom:6px}
+  .sd .ma-ruler span{flex:1;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;opacity:.38;border-left:1px solid rgba(255,255,255,.16);padding:2px 0 4px 6px}
+  .sd .ma-track{position:relative;height:74px;border-radius:9px;background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+  .sd .ma-clip{position:absolute;left:0;top:0;bottom:0;width:3%;overflow:hidden;border-radius:9px;background:#131C33;box-shadow:inset 0 0 0 1.5px #EF4444;animation:ma-grow 12s linear infinite}
+  @keyframes ma-grow{0%{width:3%;opacity:1}62%,96%{width:100%;opacity:1}99%,100%{width:100%;opacity:0}}
+  .sd .ma-wavef{position:absolute;left:0;top:9px;width:1128px;height:56px}
+  .sd .ma-wavef path{stroke:rgba(226,233,244,.42);stroke-width:3;stroke-linecap:round;fill:none}
+  .sd .ma-cliplab{position:absolute;left:12px;bottom:7px;font-family:var(--mono);font-size:10px;letter-spacing:.04em;opacity:.72;white-space:nowrap}
+  .sd .ma-live{position:absolute;top:-13px;left:3%;transform:translateX(-100%);display:flex;align-items:center;gap:6px;font-family:var(--disp);font-weight:800;font-size:10.5px;letter-spacing:.05em;color:#fff;background:#DC2626;border-radius:999px;padding:4px 11px;z-index:2;min-width:max-content;animation:ma-livehead 12s linear infinite}
+  @keyframes ma-livehead{0%{left:3%;opacity:1}62%{left:100%;opacity:1}64%,100%{left:100%;opacity:0}}
+  .sd .ma-live i{width:6px;height:6px;border-radius:50%;background:#fff;animation:livedot 1.6s infinite}
+  .sd .ma-watch{position:absolute;right:0;top:-24px;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;opacity:.75}
+  .sd .ma-watch i{width:6px;height:6px;border-radius:50%;background:var(--red-d);animation:livedot 1.6s infinite}
+  .sd .ma-mark{position:absolute;top:-4px;bottom:-4px;width:2px;background:#EF4444;border-radius:1px;opacity:0;z-index:1}
+  .sd .ma-mark::after{content:"";position:absolute;left:50%;top:-5px;transform:translateX(-50%) rotate(45deg);width:7px;height:7px;background:#EF4444;border-radius:1.5px}
+  .sd .ma-mtag{position:absolute;top:4px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:#F87171;opacity:0;z-index:1;white-space:nowrap}
+  .sd .ma-mtag.g1{left:212px;animation:ma-m1 12s infinite}
+  .sd .ma-mtag.g2{left:584px;animation:ma-m2 12s infinite}
+  .sd .ma-mtag.g3{left:1112px;transform:translateX(-100%);animation:ma-m3 12s infinite}
+  .sd .ma-flashx{position:absolute;top:-8px;bottom:-8px;width:150px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(239,68,68,.4),rgba(239,68,68,0));opacity:0}
+  .sd .ma-mark.m1{left:204px;animation:ma-m1 12s infinite}
+  .sd .ma-mark.m2{left:576px;animation:ma-m2 12s infinite}
+  .sd .ma-mark.m3{left:1120px;animation:ma-m3 12s infinite}
+  @keyframes ma-m1{0%,10%{opacity:0}12%,96%{opacity:1}100%{opacity:0}}
+  @keyframes ma-m2{0%,39%{opacity:0}41%,96%{opacity:1}100%{opacity:0}}
+  @keyframes ma-m3{0%,65%{opacity:0}67%,96%{opacity:1}100%{opacity:0}}
+  .sd .ma-flashx.f1{left:204px;animation:ma-fx1 12s infinite}
+  .sd .ma-flashx.f2{left:576px;animation:ma-fx2 12s infinite}
+  .sd .ma-flashx.f3{left:1120px;animation:ma-fx3 12s infinite}
+  @keyframes ma-fx1{0%,9%{opacity:0}12%{opacity:1}18%{opacity:0}100%{opacity:0}}
+  @keyframes ma-fx2{0%,38%{opacity:0}41%{opacity:1}47%{opacity:0}100%{opacity:0}}
+  @keyframes ma-fx3{0%,64%{opacity:0}67%{opacity:1}73%{opacity:0}100%{opacity:0}}
+  .sd .ma-outs{display:flex;gap:20px;justify-content:center;align-items:stretch;min-height:150px}
+  .sd .ma-card{display:flex;gap:13px;align-items:center;padding:12px 14px;border-radius:var(--r);border:1px solid var(--hair-d);background:var(--glass);opacity:0;transform:translateY(14px)}
+  .sd .ma-card img{height:116px;width:auto;border-radius:8px;box-shadow:0 0 0 1px var(--hair-d)}
+  .sd .ma-card.c1{animation:ma-c1 12s infinite}
+  .sd .ma-card.c2{animation:ma-c2 12s infinite}
+  .sd .ma-card.c3{animation:ma-c3 12s infinite}
+  @keyframes ma-c1{0%,20%{opacity:0;transform:translateY(14px)}24%,96%{opacity:1;transform:none}100%{opacity:0}}
+  @keyframes ma-c2{0%,48%{opacity:0;transform:translateY(14px)}52%,96%{opacity:1;transform:none}100%{opacity:0}}
+  @keyframes ma-c3{0%,74%{opacity:0;transform:translateY(14px)}78%,96%{opacity:1;transform:none}100%{opacity:0}}
+  .sd .ma-cap{display:flex;flex-direction:column;gap:8px}
+  .sd .ma-type{font-family:var(--disp);font-weight:700;font-size:13.5px;line-height:1.4;white-space:nowrap;overflow:hidden;width:0}
+  .sd .ma-type.t1{animation:ma-t1 12s steps(14) infinite}
+  .sd .ma-type.t2{animation:ma-t2 12s steps(16) infinite}
+  .sd .ma-type.t3{animation:ma-t3 12s steps(13) infinite}
+  @keyframes ma-t1{0%,25%{width:0}40%,100%{width:13.5em}}
+  @keyframes ma-t2{0%,53%{width:0}66%,100%{width:15em}}
+  @keyframes ma-t3{0%,79%{width:0}90%,100%{width:14.4em}}
+  .sd .ma-tags{font-family:var(--mono);font-size:10px;letter-spacing:.02em;opacity:.55}
+  .sd .ma-done{align-self:flex-start;font-family:var(--disp);font-weight:800;font-size:11px;color:#4ADE80;border:1px solid rgba(74,222,128,.4);border-radius:999px;padding:3px 11px;opacity:0}
+  .sd .ma-done.d1{animation:ma-d1 12s infinite}
+  .sd .ma-done.d2{animation:ma-d2 12s infinite}
+  .sd .ma-done.d3{animation:ma-d3 12s infinite}
+  @keyframes ma-d1{0%,42%{opacity:0}46%,96%{opacity:1}100%{opacity:0}}
+  @keyframes ma-d2{0%,68%{opacity:0}72%,96%{opacity:1}100%{opacity:0}}
+  @keyframes ma-d3{0%,90%{opacity:0}93%,96%{opacity:1}100%{opacity:0}}
+
+  /* SpotCrop：三要點 ＋ 16:9 → 追球 → 4:5 / 9:16 */
+  .sd .checks.cards{display:flex;flex-direction:row;gap:16px;text-align:left}
+  .sd .check{flex:1 1 0;min-width:0;display:flex;gap:11px;background:var(--glass);border:1px solid var(--hair-d);border-radius:var(--r);padding:14px 18px}
+  .sd .check .tick{color:#22C55E;font-size:15px;flex:none;line-height:1.3}
+  .sd .check h4{font-family:var(--disp);font-weight:900;font-size:17px;margin:0 0 4px;line-height:1.35}
+  .sd .check p{margin:0;font-size:12.5px;line-height:1.65;opacity:.7}
+  .sd .spotcrop{color:var(--red-d);font-weight:700}
+  .sd .spipe{display:flex;align-items:stretch;justify-content:center;gap:20px;margin-top:30px}
+  .sd .pipe-step{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:23px}
+  .sd .pipe-step .clip{flex:none}
+  .sd .pipe-outs{display:flex;align-items:stretch;gap:14px}
+  .sd .pipe-lab{position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-family:var(--sans);font-size:11.5px;letter-spacing:.06em;opacity:.5;margin:0;white-space:nowrap}
+  .sd .pipe-arrow{flex:none;align-self:center;margin-bottom:23px;width:30px;height:30px;color:var(--red-d);opacity:.55}
+  .sd .pipe-arrow svg{width:100%;height:100%;display:block}
+  .sd .pipe-ai{height:264px;align-self:center;margin-bottom:23px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px;background:var(--glass);border:1px solid var(--hair-d);border-radius:var(--r);padding:17px 21px}
+  .sd .pipe-ai .pipe-lab{position:static;transform:none;opacity:.45;font-size:10.5px}
+  .sd .pipe-trk{position:relative;width:284px;height:160px;border-radius:11px;overflow:hidden;background:linear-gradient(135deg,#1E2C4C,#111B33)}
+  .sd .pipe-trk .track{position:absolute;top:0;height:100%;border:2.5px solid var(--red);border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,.22);animation:trk-crop 9s ease-in-out infinite}
+  .sd .pipe-trk .ball{position:absolute;width:15px;height:15px;border-radius:50%;background:#F59E0B;box-shadow:0 0 16px #F59E0B;animation:trk-ball 9s ease-in-out infinite}
+  .sd .pipe-trk .crop-lbl{position:absolute;top:6px;left:6px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--red);padding:2px 7px;border-radius:5px}
+  .sd .pipe-trk .l45 {animation:trk-lbl45  9s linear infinite}
+  .sd .pipe-trk .l916{animation:trk-lbl916 9s linear infinite}
+  @keyframes trk-crop{0%{width:128px;left:36px;opacity:1}25%{width:128px;left:126px;opacity:1}46%{width:128px;left:70px;opacity:1}48%{width:128px;left:66px;opacity:0}48.01%{width:90px;left:78px;opacity:0}50%{width:90px;left:80px;opacity:1}75%{width:90px;left:15px;opacity:1}93%{width:90px;left:100px;opacity:1}95%{width:90px;left:105px;opacity:0}95.01%{width:128px;left:60px;opacity:0}97%{width:128px;left:52px;opacity:1}100%{width:128px;left:36px;opacity:1}}
+  @keyframes trk-ball{0%{left:92.5px;top:72px}22%{left:182.5px;top:60px}45%{left:122.5px;top:85px}50%{left:122.5px;top:83px}72%{left:52.5px;top:65px}92%{left:142.5px;top:78px}100%{left:92.5px;top:72px}}
+  @keyframes trk-lbl45 {0%,47.99%{opacity:1} 48%,94.99%{opacity:0} 95%,100%{opacity:1}}
+  @keyframes trk-lbl916{0%,47.99%{opacity:0} 48%,94.99%{opacity:1} 95%,100%{opacity:0}}
+  .sd .clip{position:relative;margin:0;border-radius:var(--r);overflow:hidden;box-shadow:0 0 0 1px var(--hair-d);background:#050A16;line-height:0}
+  .sd .clip video{width:100%;height:100%;object-fit:cover;display:block}
+  .sd .ar-169{aspect-ratio:1280/720}
+  .sd .ar-45{aspect-ratio:720/900}
+  .sd .ar-916{aspect-ratio:720/1280}
+
+  /* 世足產線範例 .pl */
+  .sd .pl{display:flex;align-items:stretch;justify-content:center;gap:15px;height:306px}
+  .sd .pl-node{background:var(--glass);border:1px solid var(--hair-d);border-radius:var(--r);padding:19px 22px;display:flex;flex-direction:column;justify-content:center;gap:6px;text-align:center}
+  .sd .pl-node b{font-family:var(--disp);font-weight:800;font-size:18px;line-height:1.2}
+  .sd .pl-node span{font-family:var(--sans);font-weight:500;font-size:12px;line-height:1.5;opacity:.62}
+  .sd .pl-node img.ip{height:34px;width:auto;margin:0 auto 6px;display:block;background:#fff;border-radius:8px;padding:5px 9px}
+  .sd .pl-col{display:flex;flex-direction:column;align-items:center}
+  .sd .pl-stack{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
+  .sd .pl-stack .pl-node{flex:1;padding:12px 20px;background:#fff;border-color:var(--hair-l);box-shadow:0 8px 22px rgba(0,0,0,.35)}
+  .sd .pl-stack img{height:40px;width:auto;display:block;margin:0 auto}
+  .sd .pl-cap{flex:none;font-family:var(--sans);font-weight:500;font-size:12.5px;line-height:1.5;text-align:center;opacity:.6;margin:9px auto 0;max-width:280px}
+  .sd .pl-arrow{flex:none;align-self:center;width:26px;height:26px;color:var(--red-d);opacity:.62}
+  .sd .pl-arrow svg{width:100%;height:100%;display:block}
+  .sd .pl-fan{flex:none;position:relative;width:46px;color:var(--red-d);opacity:.5}
+  .sd .pl-fan::before{content:'';position:absolute;left:14px;top:16.67%;bottom:16.67%;width:1.8px;background:currentColor;border-radius:2px}
+  .sd .pl-fan em{position:absolute;left:0;width:15px;height:1.8px;top:50%;margin-top:-.9px;background:currentColor;border-radius:2px}
+  .sd .pl-fan i{position:absolute;left:14px;right:0;height:1.8px;margin-top:-.9px;background:currentColor;border-radius:2px}
+  .sd .pl-fan i:nth-of-type(1){top:16.67%}
+  .sd .pl-fan i:nth-of-type(2){top:50%}
+  .sd .pl-fan i:nth-of-type(3){top:83.33%}
+  .sd .pl-outs{display:flex;flex-direction:column;gap:13px}
+  .sd .pl-out{flex:1;background:var(--glass);border:1px solid var(--hair-d);border-radius:var(--r);padding:13px 17px;display:flex;align-items:center;gap:14px;
+    opacity:0;transform:translateX(-10px);animation:plin .6s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(.5s + var(--i) * .25s)}
+  @keyframes plin{to{opacity:1;transform:none}}
+  .sd .pl-out b{font-family:var(--disp);font-weight:800;font-size:16px;line-height:1.2;display:block}
+  .sd .pl-out span{font-family:var(--sans);font-weight:500;font-size:12px;line-height:1.45;opacity:.6;display:block;margin-top:3px}
+  .sd .pl-out .icon{flex:none;width:26px;height:26px;color:var(--red-d);opacity:.8}
+  .sd .pl-out .icon svg{width:100%;height:100%;display:block;fill:currentColor}
+  .sd .pl-out .socials{display:flex;align-items:center;gap:11px;margin-top:6px}
+  .sd .pl-out .socials svg{width:17px;height:17px;fill:currentColor;display:block;opacity:.72}
+  .sd .pl-clip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+  .sd .caption{font-family:var(--disp);font-weight:700;font-size:13px;line-height:1.3;text-align:center;margin:0}
+  .sd .caption small{display:block;font-weight:500;font-size:11px;opacity:.6;margin-top:3px}
+
+  /* 支援運動 bento（深底版） */
+  .sd .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);gap:12px;height:400px}
+  .sd .bcell{border-radius:var(--r);border:1px solid var(--hair-d);background:var(--glass);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+    opacity:0;transform:translateY(12px);animation:plin .55s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(.3s + var(--i,0) * .07s)}
+  .sd .bcell svg{width:46px;height:46px;fill:#F2F5FA;stroke:none}
+  .sd .bcell span{font-family:var(--disp);font-weight:900;font-size:15px;text-align:center;line-height:1.15}
+  .sd .bcell em{font-family:var(--sans);font-weight:400;font-style:normal;font-size:10.5px;letter-spacing:.03em;opacity:.55;text-align:center;line-height:1.35;max-width:94%}
+  .sd .bhero{grid-column:2/4;grid-row:2/3;background:#fff;border-color:rgba(220,38,38,.38);gap:10px;color:var(--ink)}
+  .sd .bhero p{margin:0;font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.04em;opacity:.6;text-align:center;line-height:1.5}
+
+  /* 客戶牆 kpis + orgs */
+  .sd .kpis{display:flex;gap:30px;justify-content:center;text-align:center}
+  .sd .kpi{width:230px}
+  .sd .kpi b{display:block;font-family:var(--disp);font-weight:800;font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
+  .sd .kpi b small{font-size:22px;font-weight:700;opacity:.6;margin-left:4px}
+  .sd .kpi b span{display:inline}
+  .sd .kpi > span{display:block;font-family:var(--sans);font-weight:400;font-size:11.5px;letter-spacing:.02em;opacity:.6;margin-top:6px;line-height:1.5}
+  .sd .kpi.hot b{color:var(--red-d)}
+  .sd .orgs{--org:64px;display:grid;grid-template-columns:repeat(4,1fr)}
+  .sd .org{display:flex;align-items:center;gap:13px;min-width:0;
+    opacity:0;transform:translateY(10px);animation:plin .5s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(.25s + var(--i,0) * .05s)}
+  .sd .org img{width:var(--org,66px);height:var(--org,66px);flex:none;border-radius:18%;object-fit:cover;background:#fff;box-shadow:0 0 0 1px var(--hair-d)}
+  .sd .org .t{height:var(--org,66px);display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0}
+  .sd .team-cluster{width:var(--org,66px);height:var(--org,66px);flex:none;display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-content:center}
+  .sd .team-cluster img{width:calc((var(--org,66px) - 6px)/3);height:calc((var(--org,66px) - 6px)/3);border-radius:5px;object-fit:cover;background:#fff;display:block;box-shadow:0 0 0 1px var(--hair-d)}
+  .sd .org .zh{font-family:var(--disp);font-weight:900;font-size:16px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sd .org .en{font-family:var(--sans);font-weight:400;font-size:11px;letter-spacing:.05em;line-height:1.15;opacity:.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+</style>
+</head>
+<body class="on-cover">
+
+<div id="stage">
+
+  <!-- 0 · 封面 -->
+  <section class="slide cover" data-ch="0" data-notes="開場不用自我介紹太久。一句話：我是法律系畢業的，今天要講的是一條沒有照劇本走的路，和它怎麼走到「用 AI 讓一個人做到一個團隊的事」。|把主題掛到活動主軸：從產品驗證到規模化應用。今天四段就是照這條軸排的。">
+    <div class="grid-bg"></div>
+    <div class="mark">
+      <img src="./media/spot-logo-light.svg" alt="Spot">
+    </div>
+    <div class="body">
+      <div class="kicker in">從產品驗證到規模化應用的路徑</div>
+      <h1 class="in">一個法律系學生的<br/>創業地圖
+        <span class="line2">從球學到 Spot，用 AI 讓一個人做到過去一個團隊的事</span>
+      </h1>
+    </div>
+    <div class="who in">
+      <img src="./jagger.jpg" alt="" />
+      <div>
+        <div class="name">洪頎茗 Jagger Hung</div>
+        <div class="role">超妡科技 Spot · 共同創辦人暨執行長</div>
+      </div>
+    </div>
+    <div class="event in">
+      <b>產業交流 · 20 分鐘</b><br/>
+      中正大學法律系 → 玉山銀行 → 球學 → Spot
+    </div>
+  </section>
+
+  <!-- 1 · 今天的地圖 -->
+  <section class="slide" data-ch="0" data-notes="20 分鐘的配速：3 / 5 / 9 / 3。第三段是主菜，前兩段是為了讓第三段有重量。|講清楚今天不是勵志演講：每個轉折我都會講「當下的取捨」，因為那就是驗證期的真實樣子。">
+    <div class="head">
+      <div class="kicker in">今天 20 分鐘</div>
+      <h2 class="in">四段路，一條軸：<span class="red">先驗證，再規模化</span></h2>
+    </div>
+    <div class="agenda">
+      <div class="step in">
+        <div class="n">01</div>
+        <h3>非典型路徑</h3>
+        <p>法律系、銀行、運動新創、自學程式。每個轉折當下的選擇與取捨。</p>
+        <div class="min"><b>3</b>MIN</div>
+      </div>
+      <div class="step in">
+        <div class="n">02</div>
+        <h3>一份簡報出門</h3>
+        <p>零產品、零客戶。用「理解客戶的痛」取代「賣未來的產品」，怎麼知道驗證過了。</p>
+        <div class="min"><b>5</b>MIN</div>
+      </div>
+      <div class="step hot in">
+        <div class="n">03</div>
+        <h3>人工剪輯 → AI 產線</h3>
+        <p>賽事影音怎麼從人工剪輯走到自動偵測、自動產出、自動發布。台灣聯盟與媒體的實戰。</p>
+        <div class="min"><b>9</b>MIN</div>
+      </div>
+      <div class="step in">
+        <div class="n">04</div>
+        <h3>機會在哪裡</h3>
+        <p>給想踏入運動 × AI 的人：缺口在哪、創業者可以怎麼選。</p>
+        <div class="min"><b>3</b>MIN</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · 時間軸 -->
+  <section class="slide" data-ch="1" data-notes="一張圖講完 12 年。重點不是履歷，是每個節點下面那一行「取捨」。|法律系那四年我是渾渾噩噩的，但一直在問「以後要幹嘛」。先講這個，後面的轉折才合理。">
+    <div class="head">
+      <div class="kicker in">01 · 非典型路徑</div>
+      <h2 class="in">沒有一步是規劃好的，<br/>但每一步都有一個取捨</h2>
+    </div>
+    <div class="tl in">
+      <div class="pts">
+        <div class="pt">
+          <div class="yr">2008</div>
+          <h3>中正大學法律系</h3>
+          <div class="role">情勢所逼。四年在打球、想以後要幹嘛。</div>
+          <div class="trade"><span class="l">取捨</span>好好念法律，還是承認「我不知道」。我選了後者。</div>
+        </div>
+        <div class="pt">
+          <div class="yr">2013</div>
+          <h3>玉山銀行</h3>
+          <div class="role">畢業後第一份工作。穩定、看得見。</div>
+          <div class="trade"><span class="l">取捨</span>六個月就看見 40 歲的自己。穩定 vs 一條看不見盡頭的路。</div>
+        </div>
+        <div class="pt hot">
+          <div class="yr">2014</div>
+          <h3>球學 · 創始團隊</h3>
+          <div class="role">聽完一場講座，隔天寫辭職信。一年零薪水。</div>
+          <div class="trade"><span class="l">取捨</span>家人全反對。撐下去，直到蔡崇信投了 100 萬美金。</div>
+        </div>
+        <div class="pt hot">
+          <div class="yr">2018</div>
+          <h3>工程師全走那天</h3>
+          <div class="role">我是 COO，連 git commit 都不會。</div>
+          <div class="trade"><span class="l">取捨</span>等新工程師，還是自己學。我從零開始寫程式。</div>
+        </div>
+        <div class="pt hot">
+          <div class="yr">2020</div>
+          <h3>Spot</h3>
+          <div class="role">疫情出不去。兩個被擋在台灣的人，一份簡報。</div>
+          <div class="trade"><span class="l">取捨</span>等疫情過再出國，還是現在做點事。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · 球學：一封信與一百支 Highlight -->
+  <section class="slide story" data-ch="1" data-notes="左邊那封信是真的，寫給何凱成的求職信，我留到現在。講座結束我衝到 Subway 找 Cheng 說我想加入，她說沒錢沒薪水，我說沒關係。|右邊是我親手剪的球員 Highlight：高國豪、林庭謙、蕭順議。一兩百支。這件事六年後變成 Spot 的全部籌碼：我比任何人都知道賽後剪片有多痛。|一年後才開始領薪水，一個月一萬二。">
+    <div class="cols cols-2">
+      <div>
+        <div class="kicker in">01 · 球學 2014–2018</div>
+        <h2 class="in" style="font-size:60px">一封信，<br/>和一百多支親手剪的 Highlight</h2>
+        <p class="lead in" style="margin-top:24px; font-size:28px">全台去錄、一支一支剪成 Highlight，寄給國外教練。<strong>一年零薪水、零商業模式</strong>，我住在辦公室。</p>
+        <div class="vs in" style="margin-top:28px">
+          <div class="opt"><div class="l">選項 A</div><div class="t">認清現實</div><div class="d">找份正常工作，存一點錢再說。</div></div>
+          <div class="or">OR</div>
+          <div class="opt pick"><div class="l">我選的</div><div class="t">繼續撐</div><div class="d">做的事夠純粹，商業模式會來找我們。一年後蔡崇信投了 100 萬美金。</div></div>
+        </div>
+        <div class="takeaway in" style="margin-top:32px"><span class="mono">SEED</span>這些影片，是六年後 Spot 唯一的籌碼。</div>
+      </div>
+      <div class="pair in">
+        <div class="photo portrait"><img src="./photos/s3-1.jpg" alt="寫給何凱成的求職信" /></div>
+        <div class="photo portrait"><img src="./photos/s4-highlights.jpg" alt="親手剪的球員 Highlight" style="object-position: left top" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · 工程師全走那天 -->
+  <section class="slide story vc" data-ch="1" data-notes="蔡崇信的錢進來，公司擴張，然後工程師突然全部離開。我是 COO，法律系，連 git commit 是什麼都不知道。|選擇：撐著等人，還是自己學。我每天幾小時從零開始，錯了重寫。|這一步是今天整場最重要的伏筆：沒有它，Spot 那份 PPT 我寫不出來；現在用 AI 寫產品也不可能。">
+    <div class="cols cols-2">
+      <div>
+        <div class="kicker in">01 · 2018</div>
+        <h2 class="in">工程師全走那天，<br/>COO 不會 git commit</h2>
+        <p class="lead in" style="margin-top:28px">100 萬美金進來、公司開始擴張，然後工程師<strong>全部離開</strong>。公司空了，我跟不上。</p>
+      </div>
+      <div>
+        <div class="vs in" style="margin-top:0; grid-template-columns: 1fr; gap: 20px">
+          <div class="opt"><div class="l">選項 B</div><div class="t">坦白撐著，等新工程師</div><div class="d">COO 能做的事繼續做，產品等人才到位。很多創辦人這樣撐過去，但也永遠失去自己動手的能力。</div></div>
+          <div class="opt pick"><div class="l">我選的</div><div class="t">從零學寫程式</div><div class="d">每天幾小時。錯了重寫，重寫再錯。那段時間我強烈感覺到：AI 跟 coding 會改變這個世界。</div></div>
+        </div>
+        <div class="takeaway in"><span class="mono">WHY IT MATTERS</span>沒有這一步，Spot 那份 PPT 我根本寫不出來。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · 2020 零產品零客戶 -->
+  <section class="slide" data-ch="2" data-notes="2020 我考上了要出國念書，疫情把我擋在海關前。後來的 CTO 也因為疫情從美國回台灣。兩個人坐在一起：既然出不去，就做點事。|當時手上有什麼：沒有產品、沒有客戶、沒有技術成品。只有這份簡報。|選擇：先花幾個月做 MVP 再出門，還是拿 PPT 直接衝。我們選了直接衝。">
+    <div class="head">
+      <div class="kicker in">02 · 2020 · 驗證期</div>
+      <h2 class="in">出門提案那天，我們有什麼</h2>
+    </div>
+    <div class="zero">
+      <div class="z in"><div class="big">0</div><div class="lbl">產品</div><div class="sub">沒有任何可以 demo 的東西</div></div>
+      <div class="z in"><div class="big">0</div><div class="lbl">客戶</div><div class="sub">沒有人聽過 Spot</div></div>
+      <div class="z one in"><div class="big">1</div><div class="lbl">份簡報</div><div class="sub">以及一兩百支親手剪過的 Highlight 經驗</div></div>
+    </div>
+    <div class="cols cols-2 in" style="margin-top:48px; align-items:center">
+      <div class="photo short"><img src="./photos/s7-1.jpg" alt="2020 年出門提案的簡報" /></div>
+      <div>
+        <h3>台灣職籃 PLG 剛成立</h3>
+        <p class="lead" style="font-size:28px; margin-top:14px">一個全新的聯盟，也許願意試新東西。我們就拿著這份簡報，一家一家去。</p>
+        <div class="takeaway" style="margin-top:28px"><span class="mono">CHOICE</span>不是「先做 MVP」，是「先出門」。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · 賣的是理解 -->
+  <section class="slide vc" data-ch="2" data-notes="這一頁是驗證期的核心。我不是在賣未來的產品，我是在賣「我懂你的痛」。|左邊三個痛點，我在球學親身經歷過：一場比賽結束，人要跟賽、選片、剪、換比例、上字卡、上傳；多場同時結束人手不夠；等做完社群黃金時間已經過了。|右邊是結論：第一版 Spot 不是 AI。它只是把這些事做快，讓一個人在現場就能產出。AI 是後面才長出來的。">
+    <div class="head">
+      <div class="kicker in">02 · 驗證期</div>
+      <h2 class="in">我們賣的不是產品，是<span class="red">「我懂你的痛」</span></h2>
+    </div>
+    <div class="pain">
+      <ul class="in">
+        <li><span class="k">01</span><div>賽後要人跟賽選片、剪輯、換比例、上字卡、上傳<span class="s">一場比賽，一個人一個晚上</span></div></li>
+        <li><span class="k">02</span><div>多場同時結束，人手永遠不夠<span class="s">聯盟一個週末六場，每隊都要自己的版本</span></div></li>
+        <li><span class="k">03</span><div>做完的時候，社群的黃金時間已經過了<span class="s">球迷在終場哨響後 30 分鐘內最想看</span></div></li>
+      </ul>
+      <div class="in">
+        <div class="card accent">
+          <div class="tag">所以第一版 Spot</div>
+          <h3>不是 AI，是「讓一個人在現場就做得完」</h3>
+          <p>雲端剪輯、多比例輸出、綁 YouTube 直接發。把我在球學熬夜做的事，壓成比賽當下可以完成的事。</p>
+          <p style="margin-top:24px; color: var(--text)">對方聽到的不是功能清單，是「這個人知道我每個週末在幹嘛」。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · 驗證過了的三個訊號 -->
+  <section class="slide" data-ch="2" data-notes="怎麼知道驗證過了？不是 demo 有沒有 wow，是三件事。|一：有人付錢。公司成立一個月內簽了第一份合約。|二：2021 年秋天，PLG 和 T1 兩個職籃聯盟都簽了。拿下一個聯盟，等於拿下聯盟底下所有球隊的場景，這是從「一個客戶」變「一個市場」的時刻。|三：客戶回來要更多。直式、Shorts、自動發布。客戶開口要的功能，就是 roadmap。">
+    <div class="head">
+      <div class="kicker in">02 · 驗證期</div>
+      <h2 class="in">怎麼知道驗證過了：三個訊號</h2>
+    </div>
+    <div class="signals">
+      <div class="card in">
+        <div class="tag">Signal 01 · 付錢</div>
+        <div class="big">1<small>個月</small></div>
+        <h3>公司成立一個月內，第一份合約</h3>
+        <p>2020 年 11 月成立，12 月簽下第一份影片資料庫合約。有人願意為「還很醜的東西」付錢，才叫驗證。</p>
+      </div>
+      <div class="card accent in">
+        <div class="tag">Signal 02 · 一個客戶變一個市場</div>
+        <div class="big">2<small>個聯盟</small></div>
+        <h3>2021 秋天，PLG 與 T1 都簽了</h3>
+        <p>拿下聯盟，等於拿下聯盟底下每支球隊的使用場景。這是「一份合約」變「一條產線」的轉折。</p>
+      </div>
+      <div class="card in">
+        <div class="tag">Signal 03 · 回來要更多</div>
+        <div class="big">9:16</div>
+        <h3>客戶開始開口要功能</h3>
+        <p>直式影片、Shorts、自動發布。沒有人要的功能我們不做；客戶催著要的，就是 roadmap。</p>
+      </div>
+    </div>
+    <div class="takeaway in"><span class="mono">RULE</span>驗證不是「對方說很酷」，是「對方付錢，而且回來要更多」。</div>
+  </section>
+
+  <!-- 8 · 說不的東西 -->
+  <section class="slide vc" data-ch="2" data-notes="驗證期最難的不是做什麼，是不做什麼。我們當年試過很多：虛擬廣告地貼、電競、分潤模式、贊助換資源。|每一個都是真的機會，也都會把兩個人的團隊拆散。|最後只留一條：賽事影音產線。路收窄了，後面才有辦法規模化。">
+    <div class="head">
+      <div class="kicker in">02 · 驗證期</div>
+      <h2 class="in">規模化之前，先把路收窄</h2>
+    </div>
+    <div class="no-list">
+      <div class="side in">
+        <h3>2021–2022 我們試過、然後說不的</h3>
+        <div class="item"><span class="x">✕</span>廣告業務<span class="why">虛擬地貼。是生意，但不是我們的生意</span></div>
+        <div class="item"><span class="x">✕</span>電競聯盟<span class="why">兩次接觸，流程跟運動差太多</span></div>
+        <div class="item"><span class="x">✕</span>分潤模式<span class="why">球團提案試過，不可預測、難規模</span></div>
+        <div class="item"><span class="x">✕</span>贊助換資源<span class="why">沒有現金流的合作，撐不住團隊</span></div>
+      </div>
+      <div class="side keep in">
+        <h3>只留下一條</h3>
+        <div class="item"><span class="x">→</span>賽事影音產線：訊號進、片子出</div>
+        <p class="lead" style="font-size:28px; margin-top:12px">年度訂閱、多年約。每一場比賽都要跑一次的流程，才值得被自動化。</p>
+        <div class="takeaway" style="margin-top:36px"><span class="mono">WHY</span>能被規模化的，是「每場都會發生」的事。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · 人工：賽後才開始 -->
+  <section class="slide" data-ch="3" data-notes="進入主菜。先讓大家感受人工流程：終場哨響，人工才能開工。|七個步驟每一段都要人盯：下載、跟賽選片兩小時、剪輯排序、換比例、字卡縮圖、上傳歸檔。一個人一個晚上趕出個位數影片；整場做完、歸檔，通常是賽後 5 到 7 天。|紅線是比賽熱度，24 小時就歸零。做出來的時候，熱度早就沒了。這就是我們要拆掉的東西。">
+    <div class="head tight">
+      <div class="kicker in">03 · 規模化</div>
+      <h2 class="in">人工剪輯：<span class="red">終場哨響之後</span>才開始</h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="ptl">
+        <div class="tl-steps">
+          <div class="tl-step hot"><i>01</i><span class="cjk">終場哨響</span></div>
+          <div class="tl-step"><i>02</i><span class="cjk">下載檔案</span></div>
+          <div class="tl-step"><i>03</i><span class="cjk">跟賽選片</span></div>
+          <div class="tl-step"><i>04</i><span class="cjk">剪輯排序</span></div>
+          <div class="tl-step"><i>05</i><span class="cjk">換比例</span></div>
+          <div class="tl-step"><i>06</i><span class="cjk">字卡縮圖</span></div>
+          <div class="tl-step"><i>07</i><span class="cjk">上傳歸檔</span></div>
+        </div>
+        <div class="tl-axis">
+      <p class="tl-heatlab">比賽熱度</p>
+      <div class="tl-heat"><svg viewBox="0 0 180 88" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="tlHeatGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#EF4444" stop-opacity=".38"/>
+          <stop offset="1" stop-color="#EF4444" stop-opacity="0"/>
+        </linearGradient></defs>
+        <path d="M0 8 L14 14 L26 6 L40 24 L52 17 L68 40 L82 32 L98 55 L110 48 L128 66 L142 61 L158 76 L176 84 L 176 88 L 0 88 Z" fill="url(#tlHeatGrad)"/>
+        <path d="M0 8 L14 14 L26 6 L40 24 L52 17 L68 40 L82 32 L98 55 L110 48 L128 66 L142 61 L158 76 L176 84" fill="none" stroke="#F87171" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        <circle cx="176" cy="84" r="3.5" fill="#EF4444"/>
+      </svg></div>
+      <div class="tl-bar"><i></i><span class="tl-tick"></span></div>
+      <span class="tl-24">24 小時｜熱度歸零</span>
+      <div class="tl-axlab"><span>賽事結束</span><span>第 5-7 天</span></div>
+        </div>
+        <div class="tl-note">
+          <p><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12M6 22h12M7 2c0 5 3.5 6.5 5 8-1.5 1.5-5 3-5 8M17 2c0 5-3.5 6.5-5 8 1.5 1.5 5 3 5 8"/></svg><span class="cjk">一個人一個晚上趕出個位數影片，</span><span class="cjk">整場做完要 <span style="color:var(--red-d)">5-7 天</span></span></p>
+          <p class="tl-punch"><span class="cjk">做出來的時候，</span><span class="cjk">熱度早就歸零。</span></p>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 10 · 人工 vs Spot -->
+  <section class="slide" data-ch="3" data-notes="同一條時間軸放兩條車道。灰色是人工：比賽結束才開工，下載、標籤、剪輯、套版、上傳，拖到第 5 到 7 天，出 3 到 5 支。|紅色是 Spot：訊號進來的當下就開始，比賽中每個關鍵時刻一支一支冒出來，終場哨響幾分鐘後全場精華就出來，一場 20 支以上。|上線時間從 5-7 天變即時，單場產量 5 倍以上。產量依據是我們客戶每場完賽後平均 20 多支；VBA 三週 8 隊 1,510 支。">
+    <div class="head tight">
+      <div class="kicker in">03 · 規模化</div>
+      <h2 class="in">賽後才開始，還是<span class="red">比賽中就發</span></h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="vs">
+    <div class="vs-axis"><span></span>
+      <div class="vs-ticks"><span style="left:0">比賽開始</span><span style="left:56%">比賽結束</span><span style="left:68%">24 小時</span><span class="vs-break">//</span><span style="left:100%">第 5-7 天</span></div>
+    </div>
+    <div class="vs-lane">
+      <div class="vs-lab dim" style="font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em">比賽熱度</div>
+      <div class="vs-track vs-heat"><svg viewBox="0 0 680 62" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="vsHeatGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#EF4444" stop-opacity=".38"/><stop offset="1" stop-color="#EF4444" stop-opacity="0"/>
+        </linearGradient></defs>
+        <path d="M0 50 L40 40 L80 45 L130 30 L180 35 L240 18 L300 25 L360 10 L420 17 L480 6 L540 13 L560 9 L600 32 L640 50 L680 61 L680 62 L0 62 Z" fill="url(#vsHeatGrad)"/>
+        <path d="M0 50 L40 40 L80 45 L130 30 L180 35 L240 18 L300 25 L360 10 L420 17 L480 6 L540 13 L560 9 L600 32 L640 50 L680 61" fill="none" stroke="#F87171" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        <circle cx="680" cy="61" r="3.5" fill="#EF4444"/>
+      </svg></div>
+    </div>
+    <div class="vs-lane">
+      <div class="vs-lab dim">人工製作<small>賽事結束才開工</small></div>
+      <div class="vs-track">
+        <div class="vs-bar"></div>
+        <div class="vs-steps"><span>下載</span><span>標籤</span><span>剪輯</span><span>套版</span><span>上傳</span><span>典藏</span></div>
+        
+        <span class="vs-pill grey">3-5 支</span>
+      </div>
+    </div>
+    <div class="vs-lane">
+      <div class="vs-lab hot">Spot AI<small style="opacity:.75">賽中即時產製</small></div>
+      <div class="vs-track">
+        <span class="vs-live"><i></i>LIVE</span>
+        <i class="vs-dot n1"></i><i class="vs-dot n2"></i><i class="vs-dot n3"></i><i class="vs-dot n4"></i><i class="vs-dot n5"></i><i class="vs-dot n6"></i><i class="vs-dot n7"></i><i class="vs-dot n8"></i><i class="vs-dot n9"></i><i class="vs-dot n10"></i><i class="vs-dot n11"></i><i class="vs-dot n12"></i>
+        <i class="vs-fg" title="全場精華"></i>
+        <span class="vs-pill red">20 支以上 / 全場精華</span>
+        
+      </div>
+    </div>
+    <div class="vs-foot">
+        <div class="ba"><span class="lab">上線時間</span><span class="fig was">5-7 天</span><span class="arw">&rarr;</span><span class="fig">即時</span><span class="up">賽中同步</span></div>
+        <div class="ba"><span class="lab">單場產量</span><span class="fig was">3-5 支</span><span class="arw">&rarr;</span><span class="fig">20 支以上</span><span class="up">5 倍＋</span></div>
+      </div>
+      </div>
+      <p class="mono" style="margin-top:14px"><span class="cjk">產量依據：Spot 客戶每場完賽後平均自動產出 20 多支；</span><span class="cjk">越南職籃 VBA 2025 賽季三週、8 支球隊 1,510 支。</span><span class="cjk">人工每場 3-5 支為一般製作量。</span></p>
+    </div></div>
+  </section>
+
+  <!-- 11 · 三個引擎 -->
+  <section class="slide" data-ch="3" data-notes="Spot 在做什麼，一張圖：三個引擎跑在同一個平台上。|左：Spot 360，訊號進雲端。轉播 PGM、場館機位、手機訊號都收進同一個雲端工作區，多視角對齊同一條時間軸，再接聯盟的即時數據 API。|中：Spot Moments，AI 賽事解析。讓 AI 聽（語音轉錄主播講評，「三分進算」就是一個事件）、看（OCR 比分與圖卡、球追蹤）、讀（數據 API 對齊影片時間）。比賽還在進行，片段已經評分、下標、剪好。21 種運動的事件定義是跟運動部做全中運時建起來的。|右：Spot AI，內容自動化。直式重構圖、標題、說明、縮圖、品牌套版到發佈，一句話描述需求片段就出來。|每一環都可以切回人工。全自動不是目標，人只在需要時介入才是。">
+    <div class="head tight">
+      <div class="kicker in">03 · Spot 在做什麼</div>
+      <h2 class="in">三個引擎，一個平台：訊號進，片子出</h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="row engines">
+        <div class="bcard">
+          <div class="bc-diag"><svg viewBox="0 0 300 168" aria-hidden="true">
+        <!-- 場館攝影機 -->
+        <g fill="none" stroke="#1D2E41" stroke-width="1.6" opacity=".62">
+          <rect x="24" y="9" width="13" height="7" rx="2"/>
+          <rect x="16" y="16" width="38" height="21" rx="4"/>
+          <path d="M54 21l9-4v14l-9-4z"/>
+          <path d="M35 37v6M27 49l8-6 8 6"/>
+        </g>
+        <rect x="20" y="21" width="26" height="10.5" rx="5.25" fill="#E8114F"/>
+        <circle class="ld" cx="27" cy="26.25" r="2" fill="#fff"/>
+        <text x="36" y="29.1" font-family="Barlow,sans-serif" font-size="6.4" font-weight="800" fill="#fff" text-anchor="middle">LIVE</text>
+        <!-- 手機 feed -->
+        <rect x="16" y="60" width="32" height="44" rx="6" fill="none" stroke="#1D2E41" stroke-width="1.6" opacity=".62"/>
+        <rect x="25" y="66" width="14" height="2.5" rx="1.25" fill="#1D2E41" opacity=".3"/>
+        <path d="M20 98l7-8 5 6 4-4 4 5" stroke="#1D2E41" stroke-width="1.5" fill="none" opacity=".42" stroke-linejoin="round"/>
+        <rect x="19" y="74" width="26" height="10.5" rx="5.25" fill="#E8114F"/>
+        <circle class="ld" cx="26" cy="79.25" r="2" fill="#fff" style="animation-delay:.4s"/>
+        <text x="35" y="82.1" font-family="Barlow,sans-serif" font-size="6.4" font-weight="800" fill="#fff" text-anchor="middle">LIVE</text>
+        <!-- TV / PGM 訊號 -->
+        <g fill="none" stroke="#1D2E41" stroke-width="1.6" opacity=".62">
+          <rect x="10" y="112" width="56" height="34" rx="4"/>
+          <path d="M30 146v6h16v-6M26 152h24"/>
+        </g>
+        <path d="M16 140l8-9 6 7 5-5 5 6" stroke="#1D2E41" stroke-width="1.5" fill="none" opacity=".42" stroke-linejoin="round"/>
+        <rect x="14" y="118" width="26" height="10.5" rx="5.25" fill="#E8114F"/>
+        <circle class="ld" cx="21" cy="123.25" r="2" fill="#fff" style="animation-delay:.8s"/>
+        <text x="30" y="126.1" font-family="Barlow,sans-serif" font-size="6.4" font-weight="800" fill="#fff" text-anchor="middle">LIVE</text>
+        <!-- 三路訊號 → 同一個雲端工作區 -->
+        <g fill="none" stroke="#E8114F" stroke-width="1.8" stroke-linecap="round">
+          <path class="cf" style="animation-delay:0s" d="M64 27C112 27 132 44 168 58"/>
+          <path class="cf" style="animation-delay:.6s" d="M50 82C100 82 132 66 168 72"/>
+          <path class="cf" style="animation-delay:1.2s" d="M68 129C116 129 138 104 168 86"/>
+        </g>
+        <path d="M164 54l7 4-7 4z" fill="#E8114F"/>
+        <path d="M164 68l7 4-7 4z" fill="#E8114F"/>
+        <path d="M164 82l7 4-7 4z" fill="#E8114F"/>
+        <g fill="none" stroke="#1D2E41" stroke-width="1.8">
+          <rect x="182" y="46" width="92" height="60" rx="5"/>
+          <path d="M170 118h116l-8-12H178z"/>
+        </g>
+        <rect x="188" y="52" width="80" height="48" rx="3" fill="#0D1529"/>
+        <g fill="#8FA3C8" opacity=".85">
+          <rect x="194" y="58" width="32" height="18" rx="2"/><rect x="229" y="58" width="32" height="18" rx="2"/>
+          <rect x="194" y="80" width="32" height="14" rx="2"/><rect x="229" y="80" width="32" height="14" rx="2"/>
+        </g>
+        <rect x="194" y="58" width="32" height="18" rx="2" fill="none" stroke="#E8114F" stroke-width="1.4"/>
+        <text x="228" y="136" font-family="Barlow,sans-serif" font-size="11" font-weight="800" fill="#1D2E41" opacity=".55" text-anchor="middle">單一雲端工作區</text>
+      </svg></div>
+          <img class="sb" src="./media/spot-360.png" alt="Spot 360°">
+          <p>賽事直播：訊號全部進雲端</p>
+          <p class="m"><span class="cjk">轉播 PGM、場館機位、手機訊號上雲端，</span><span class="cjk">多視角對齊同一條時間軸，</span><span class="cjk">再接聯盟即時數據。</span></p>
+        </div>
+        <div class="bcard">
+          <div class="bc-diag"><svg viewBox="0 0 300 168" aria-hidden="true">
+        <text x="10" y="16" font-family="Barlow,sans-serif" font-size="10" font-weight="800" fill="#1D2E41" opacity=".45">比賽進行中</text>
+        <rect x="10" y="24" width="280" height="15" rx="4" fill="#1D2E41" opacity=".08"/>
+        <g fill="#F26B1D">
+          <rect x="26" y="24" width="30" height="15" rx="4"/><rect x="96" y="24" width="26" height="15" rx="4"/>
+          <rect x="164" y="24" width="34" height="15" rx="4"/><rect x="238" y="24" width="28" height="15" rx="4"/>
+        </g>
+        <g stroke="#F26B1D" stroke-width="1.3" opacity=".55" stroke-dasharray="3 3">
+          <path d="M41 39v17"/><path d="M109 39v17"/><path d="M181 39v17"/><path d="M252 39v17"/>
+        </g>
+        <g>
+          <rect x="12" y="58" width="58" height="42" rx="5" fill="#0D1529"/>
+          <rect x="80" y="58" width="58" height="42" rx="5" fill="#0D1529"/>
+          <rect x="152" y="58" width="58" height="42" rx="5" fill="#0D1529"/>
+          <rect x="223" y="58" width="58" height="42" rx="5" fill="#0D1529"/>
+        </g>
+        <g fill="#F26B1D"><rect x="16" y="62" width="20" height="8" rx="2"/><rect x="84" y="62" width="20" height="8" rx="2"/>
+          <rect x="156" y="62" width="20" height="8" rx="2"/><rect x="227" y="62" width="20" height="8" rx="2"/></g>
+        <g fill="#8FA3C8" opacity=".8">
+          <rect x="16" y="86" width="42" height="4" rx="2"/><rect x="16" y="93" width="30" height="4" rx="2"/>
+          <rect x="84" y="86" width="42" height="4" rx="2"/><rect x="84" y="93" width="26" height="4" rx="2"/>
+          <rect x="156" y="86" width="42" height="4" rx="2"/><rect x="156" y="93" width="34" height="4" rx="2"/>
+          <rect x="227" y="86" width="42" height="4" rx="2"/><rect x="227" y="93" width="24" height="4" rx="2"/>
+        </g>
+        <g fill="#1D2E41" opacity=".38" font-family="Barlow,sans-serif" font-size="8" font-weight="700">
+          <text x="12" y="115">已評分</text><text x="80" y="115">已評分</text><text x="152" y="115">已評分</text><text x="223" y="115">已評分</text>
+        </g>
+        <rect x="10" y="126" width="280" height="17" rx="5" fill="#F26B1D" opacity=".1"/>
+        <text x="150" y="138" font-family="Barlow,sans-serif" font-size="10" font-weight="800" fill="#F26B1D" text-anchor="middle">比賽還在進行，精華已經剪好</text>
+      </svg></div>
+          <img class="sb" src="./media/spot-moments.png" alt="Spot Moments">
+          <p>AI 賽事解析：賽中即時產出精華</p>
+          <p class="m"><span class="cjk">AI 聽主播講評、看比分圖卡與球、讀即時數據。</span><span class="cjk">比賽還在進行，</span><span class="cjk">系統已完成評分、下標與剪輯。</span></p>
+        </div>
+        <div class="bcard">
+          <div class="bc-diag"><svg viewBox="0 0 300 168" aria-hidden="true">
+        <!-- 使用者提問：靠右對齊，尾巴在右下 -->
+        <g>
+          <path d="M104 8h178a8 8 0 018 8v24a8 8 0 01-8 8h-8v10l-12-10H104a8 8 0 01-8-8V16a8 8 0 018-8z" fill="#1D2E41" opacity=".08"/>
+          <g fill="#1D2E41" opacity=".5">
+            <rect x="110" y="19" width="148" height="5" rx="2.5"/><rect x="110" y="30" width="104" height="5" rx="2.5"/>
+          </g>
+        </g>
+        <!-- Spot AI 回覆：靠左對齊，尾巴在左下 -->
+        <g>
+          <path d="M26 68h178a8 8 0 018 8v46a8 8 0 01-8 8H38l-12 10v-10h-8a8 8 0 01-8-8V76a8 8 0 018-8z" fill="#6D3BF5" opacity=".1"/>
+          <path d="M30 73l4.2 6.8L41 84l-6.8 4.2L30 95l-4.2-6.8L19 84l6.8-4.2z" fill="#6D3BF5"/>
+          <g fill="#6D3BF5" opacity=".62">
+            <rect x="50" y="76" width="142" height="5" rx="2.5"/><rect x="50" y="87" width="116" height="5" rx="2.5"/>
+          </g>
+          <g>
+            <rect x="50" y="99" width="34" height="22" rx="3" fill="#0D1529"/>
+            <rect x="88" y="99" width="34" height="22" rx="3" fill="#0D1529"/>
+            <rect x="126" y="99" width="34" height="22" rx="3" fill="#0D1529"/>
+            <g fill="#6D3BF5"><rect x="53" y="102" width="13" height="5" rx="2"/><rect x="91" y="102" width="13" height="5" rx="2"/><rect x="129" y="102" width="13" height="5" rx="2"/></g>
+          </g>
+          <text x="168" y="116" font-family="Barlow,sans-serif" font-size="9" font-weight="800" fill="#6D3BF5" opacity=".75">可發佈</text>
+        </g>
+        <rect x="10" y="148" width="280" height="15" rx="7.5" fill="#fff" stroke="#1D2E41" stroke-opacity=".18"/>
+        <g fill="#1D2E41" opacity=".28"><rect x="20" y="154" width="86" height="4" rx="2"/></g>
+        <circle cx="278" cy="155.5" r="6.5" fill="#6D3BF5"/>
+        <path d="M275 155.5h6M279 153l2.4 2.5-2.4 2.5" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg></div>
+          <img class="sb" src="./media/spot-ai.png" alt="Spot AI" style="height:44px">
+          <p>內容自動化：一個人盯整個週末</p>
+          <p class="m"><span class="cjk">直式重構圖、標題、說明、縮圖、</span><span class="cjk">品牌套版到發佈，</span><span class="cjk">開箱即用；</span><span class="cjk">每一環都能切回人工。</span></p>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 12 · 規則一觸發 -->
+  <section class="slide" data-ch="3" data-notes="這一頁是自動化的實際長相。Live 訊號進來，規則盯著；賽中好球 4 星以上就出 4:5 短片，每節結束出該節得分王的 9:16，賽後出 16:9 全場精華。|觸發的瞬間，片子、標題、文案一起出來，直接發到 YouTube、IG、TikTok，或留給人確認再發。|畫面上的規則與文案都是後台實際產出的內容，不是示意。|重點還是那句：每一環都可以切回人工。AI 片段瀏覽、剪輯器修正、代操服務。">
+    <div class="head tight">
+      <div class="kicker in">03 · 規模化</div>
+      <h2 class="in">規則一觸發，<span class="red">影片自己出來</span></h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="ma">
+    <div class="ma-agent">
+      <img src="./media/spot-ai.png" alt="Spot AI">
+      <span class="ma-agent-lab">Marketing Agent</span><i class="ma-dot"></i>
+    </div>
+    <div class="ma-rules">
+      <span class="ma-rule r1">4:5 Shorts / Best Plays In-Game / 4★+</span>
+      <span class="ma-rule r2">18+ Points Highlights / Post-game</span>
+      <span class="ma-rule r3">9:16 Shorts / 逐節 Top Performer</span>
+      <span class="ma-rule r4">16:9 / Full Game Highlight / 賽後</span>
+    </div>
+    <svg class="ma-links" viewBox="0 0 1152 44" preserveAspectRatio="none" aria-hidden="true">
+      <path class="lk1" pathLength="100" d="M204 44 C 204 14, 151 32, 151 0"/>
+      <path class="lk2" pathLength="100" d="M576 44 C 576 14, 771 32, 771 0"/>
+      <path class="lk3" pathLength="100" d="M1120 44 C 1120 14, 1040 32, 1040 0"/>
+    </svg>
+    <div class="ma-feed">
+      <span class="ma-watch"><i></i>Marketing Agent 監看中</span>
+      <div class="ma-ruler"><span>第 1 節</span><span>第 2 節</span><span>第 3 節</span><span>第 4 節</span></div>
+      <div class="ma-track">
+        <div class="ma-clip">
+          <svg class="ma-wavef" viewBox="0 0 1128 56" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14.0v28M12 7.0v42M20 15.0v26M28 12.0v32M36 17.5v21M44 21.5v13M52 9.0v38M60 12.0v32M68 13.0v30M76 11.5v33M84 23.0v10M92 15.5v25M100 9.5v37M108 14.0v28M116 8.5v39M124 17.5v21M132 21.5v13M140 11.0v34M148 14.0v28M156 10.5v35M164 10.0v36M172 22.0v12M180 16.0v24M188 13.5v29M196 14.5v27M204 6.0v44M212 16.0v24M220 20.5v15M228 13.5v29M236 17.0v22M244 9.0v38M252 8.5v39M260 20.0v16M268 15.5v25M276 17.0v22M284 15.5v25M292 5.5v45M300 15.0v26M308 17.5v21M316 15.0v26M324 20.5v15M332 9.5v37M340 8.0v40M348 17.5v21M356 13.5v29M364 19.5v17M372 17.0v22M380 6.0v44M388 14.0v28M396 14.0v28M404 15.0v26M412 22.5v11M420 10.5v35M428 9.5v37M436 14.5v27M444 11.0v34M452 21.0v14M460 18.5v19M468 8.5v39M476 14.0v28M484 10.0v36M492 14.5v27M500 23.0v10M508 12.5v31M516 12.5v31M524 12.5v31M532 8.5v39M540 20.5v15M548 18.5v19M556 12.0v32M564 15.0v26M572 7.5v41M580 13.0v30M588 22.0v12M596 14.0v28M604 16.0v24M612 12.0v32M620 6.5v43M628 19.0v18M636 17.5v21M644 15.0v26M652 17.0v22M660 6.0v44M668 12.0v32M676 19.5v17M684 14.0v28M692 19.5v17M700 12.0v32M708 6.0v44M716 17.0v22M724 15.0v26M732 17.5v21M740 19.5v17M748 6.5v43M756 11.5v33M764 15.5v25M772 13.5v29M780 22.0v12M788 13.5v29M796 7.5v41M804 15.0v26M812 11.5v33M820 18.5v19M828 21.0v14M836 8.5v39M844 12.5v31M852 12.0v32M860 12.0v32M868 23.0v10M876 14.5v27M884 10.5v35M892 14.0v28M900 8.5v39M908 18.0v20M916 21.0v14M924 11.0v34M932 14.5v27M940 9.5v37M948 10.5v35M956 22.5v11M964 15.5v25M972 14.0v28M980 14.0v28M988 6.0v44M996 17.0v22M1004 19.5v17M1012 13.5v29M1020 17.5v21M1028 8.5v39M1036 9.0v38M1044 20.0v16M1052 15.0v26M1060 17.5v21M1068 15.0v26M1076 5.5v45M1084 15.5v25M1092 16.5v23M1100 15.5v25M1108 20.5v15M1116 8.5v39"/></svg>
+          <span class="ma-cliplab">直播收錄中｜PGM</span>
+        </div>
+        <i class="ma-flashx f1"></i><i class="ma-flashx f2"></i><i class="ma-flashx f3"></i>
+        <i class="ma-mark m1"></i><i class="ma-mark m2"></i><i class="ma-mark m3"></i>
+        <span class="ma-mtag g1">賽中即時</span><span class="ma-mtag g2">逐節</span><span class="ma-mtag g3">賽後</span>
+        <span class="ma-live"><i></i>LIVE</span>
+      </div>
+    </div>
+    <div class="ma-outs">
+      <div class="ma-card c1">
+        <img src="./media/spotcrop-45.jpg" alt="">
+        <div class="ma-cap">
+          <b class="ma-type t1">太極 Bosango 禁區坦克式強攻</b>
+          <span class="ma-tags">4:5 / 賽中即時 / 4★+ 好球</span>
+          <span class="ma-done d1">&#10003; Done</span>
+        </div>
+      </div>
+      <div class="ma-card c2">
+        <img src="./media/spotcrop-916.jpg" alt="">
+        <div class="ma-cap">
+          <b class="ma-type t2">第 2 節 得分王 Aidan Mandel 集錦</b>
+          <span class="ma-tags">9:16 / 逐節 / Top Performer</span>
+          <span class="ma-done d2">&#10003; Done</span>
+        </div>
+      </div>
+      <div class="ma-card c3">
+        <svg viewBox="0 0 320 180" style="width:206px;height:116px;border-radius:8px;box-shadow:0 0 0 1px var(--hair-d);flex:none" aria-hidden="true">
+          <defs>
+            <linearGradient id="fghBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#17233F"/><stop offset="1" stop-color="#0A1122"/></linearGradient>
+            <linearGradient id="fghTxt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#94A7C7"/></linearGradient>
+          </defs>
+          <rect width="320" height="180" fill="url(#fghBg)"/>
+          <path d="M-20 180 L56 0 L108 0 L32 180 Z" fill="#1D2E4F" opacity=".5"/>
+          <path d="M340 180 L264 0 L212 0 L288 180 Z" fill="#1D2E4F" opacity=".5"/>
+          <path d="M30 180 L96 0 L106 0 L40 180 Z" fill="#DC2626" opacity=".28"/>
+          <path d="M290 180 L224 0 L214 0 L280 180 Z" fill="#DC2626" opacity=".28"/>
+          <text x="160" y="54" text-anchor="middle" font-family="Barlow,sans-serif" font-weight="900" font-style="italic" font-size="35" fill="url(#fghTxt)" letter-spacing="1">FULL GAME</text>
+          <text x="160" y="88" text-anchor="middle" font-family="Barlow,sans-serif" font-weight="900" font-style="italic" font-size="30" fill="url(#fghTxt)" letter-spacing="2.5">HIGHLIGHTS</text>
+          <rect x="96" y="106" width="50" height="50" rx="10" fill="#14264C"/>
+          <path d="M114 116 L131 116 L121 131 L133 131 L112 148 L119 134 L109 134 Z" fill="#fff"/>
+          <rect x="150" y="122" width="21" height="17" rx="4" fill="#DC2626"/>
+          <text x="160.5" y="134.5" text-anchor="middle" font-family="Barlow,sans-serif" font-weight="800" font-size="10" fill="#fff">VS</text>
+          <rect x="175" y="106" width="50" height="50" rx="10" fill="#471318"/>
+          <circle cx="200" cy="131" r="15" fill="none" stroke="#fff" stroke-width="2.4"/>
+          <path d="M200 116 v30 M185 131 h30 M189.5 120.5 q10.5 10.5 0 21 M210.5 120.5 q-10.5 10.5 0 21" fill="none" stroke="#fff" stroke-width="1.6"/>
+          <rect x="262" y="152" width="48" height="20" rx="4" fill="rgba(0,0,0,.72)"/>
+          <text x="286" y="166" text-anchor="middle" font-family="'Roboto Mono',monospace" font-weight="700" font-size="11" fill="#fff">12:08</text>
+        </svg>
+        <div class="ma-cap">
+          <b class="ma-type t3">馬來西亞 vs 維斯蒙特 全場精華</b>
+          <span class="ma-tags">16:9 / 賽後 / Full Game Highlight</span>
+          <span class="ma-done d3">&#10003; Done</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="mono" style="margin-top:14px"><span class="cjk">規則與文案皆為 Automation 後台實際產出內容。</span><span class="cjk">每一環都可以切回人工：AI 片段瀏覽、剪輯器修正、代操服務。</span></p>
+    </div></div>
+  </section>
+
+  <!-- 13 · SpotCrop -->
+  <section class="slide" data-ch="3" data-notes="直式是社群流量的入口，也是人工最花時間的一段：16:9 轉 9:16 要重新構圖，一支一支調。|SpotCrop 追蹤場上動作，自動重新構圖；同一支轉播畫面同時出 9:16 與 4:5；片段一出現就是成品，不是幾小時後由剪輯補做。|這是我們自己研發的，籃球、排球、羽球、網球、棒球都在跑。">
+    <div class="head tight">
+      <div class="kicker in">03 · 規模化 · SpotCrop</div>
+      <h2 class="in">16:9 轉播畫面，<span class="red">自動</span>變成社群直式</h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="checks cards">
+        <div class="check"><span class="tick">&#10003;</span><div><h4>畫面跟著動作走</h4>
+          <p><span class="cjk">不必逐鏡打關鍵格。</span><span class="cjk"><span class="spotcrop">SpotCrop</span> 追蹤場上動作，</span><span class="cjk">自動重新構圖。</span></p></div></div>
+        <div class="check"><span class="tick">&#10003;</span><div><h4>同一支片段，同時出 9:16 與 4:5</h4>
+          <p><span class="cjk">Reels、Shorts、TikTok 與貼文版本，</span><span class="cjk">都從同一支轉播畫面出來，</span><span class="cjk">不必重剪。</span></p></div></div>
+        <div class="check"><span class="tick">&#10003;</span><div><h4>片段一出現就是成品</h4>
+          <p><span class="cjk">社群版本跟著精華一起產出，</span><span class="cjk">不是幾小時後才由剪輯補做。</span></p></div></div>
+      </div>
+      <div class="spipe">
+        <div class="pipe-step">
+          <figure class="clip ar-169" style="height:190px;width:auto"><video src="./media/spotcrop-169.mp4" poster="./media/spotcrop-169.jpg" muted loop playsinline preload="metadata"></video></figure>
+          <p class="pipe-lab">16:9 轉播畫面</p>
+        </div>
+        <span class="pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h13M12 6l6 6-6 6"/></svg></span>
+        <div class="pipe-ai">
+          <div class="pipe-trk"><span class="track"><span class="crop-lbl l45">4:5</span><span class="crop-lbl l916">9:16</span></span><span class="ball"></span></div>
+          <p class="pipe-lab">追球定位 / 自動構圖</p>
+        </div>
+        <span class="pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h13M12 6l6 6-6 6"/></svg></span>
+        <div class="pipe-outs">
+          <div class="pipe-step">
+            <figure class="clip ar-45" style="height:264px;width:auto"><video src="./media/spotcrop-45.mp4" poster="./media/spotcrop-45.jpg" muted loop playsinline preload="metadata"></video></figure>
+            <p class="pipe-lab">4:5 貼文</p>
+          </div>
+          <div class="pipe-step">
+            <figure class="clip ar-916" style="height:264px;width:auto"><video src="./media/spotcrop-916.mp4" poster="./media/spotcrop-916.jpg" muted loop playsinline preload="metadata"></video></figure>
+            <p class="pipe-lab">9:16 直式</p>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 14 · 產線範例：世足 -->
+  <section class="slide" data-ch="3" data-notes="一個真實的產線範例：2026 世界盃。LiveMode 在泰國轉播 34 場，訊號進 Spot，Spot Moments 偵測進球、切點，Spot AI 轉直式、套品牌、上字幕。|成品直接發到社群，或透過 API 推進他們自己的內容系統，需要原檔就下載。|右邊那支是真的成品：葡萄牙對剛果民主共和國，João Neves 頭槌，畫面上還有主播 fan cam 小窗。進球到直式成品上線，比賽還在進行。|同一條產線，在台灣跑的是籃球排球棒球，在那邊跑的是足球，不用重做。">
+    <div class="head tight">
+      <div class="kicker in">03 · 產線範例 · 2026 世界盃</div>
+      <h2 class="in">同一條產線，<span class="red">換一種運動照跑</span></h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="pl">
+        <div class="pl-node" style="width:176px"><img class="ip" src="./media/fifa-wc26.png" alt="FIFA World Cup 2026"><b>轉播訊號</b><span><span class="cjk">LiveMode TV</span><span class="cjk">34 場比賽直播</span></span></div>
+        <span class="pl-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h13M12 6l6 6-6 6"/></svg></span>
+        <div class="pl-col">
+          <div class="pl-stack" style="width:250px">
+            <div class="pl-node"><img src="./media/spot-moments.png" alt="Spot Moments"></div>
+            <div class="pl-node"><img src="./media/spot-ai.png" alt="Spot AI"></div>
+          </div>
+          <p class="pl-cap"><span class="cjk">偵測進球、切點、轉直式、</span><span class="cjk">套品牌、上字幕，比賽中完成</span></p>
+        </div>
+        <span class="pl-fan" aria-hidden="true"><em></em><i></i><i></i><i></i></span>
+        <div class="pl-outs" style="width:352px">
+          <div class="pl-out" style="--i:0"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></span><div style="flex:1;min-width:0"><b>社群平台</b>
+            <span><span class="cjk">從 Spot 直接發佈，</span><span class="cjk">中間不必再上傳一次</span></span>
+            <div class="socials"><svg viewBox="0 0 24 24" role="img" aria-label="YouTube"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Facebook"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="Instagram"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="TikTok"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg><svg viewBox="0 0 24 24" role="img" aria-label="X"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg></div></div></div>
+          <div class="pl-out" style="--i:1"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2c4.42 0 8 1.34 8 3v14c0 1.66-3.58 3-8 3s-8-1.34-8-3V5c0-1.66 3.58-3 8-3zm0 2c-3.31 0-6 .67-6 1s2.69 1 6 1 6-.67 6-1-2.69-1-6-1zM6 8.2V12c0 .33 2.69 1 6 1s6-.67 6-1V8.2c-1.5.6-3.6.8-6 .8s-4.5-.2-6-.8zm0 6V19c0 .33 2.69 1 6 1s6-.67 6-1v-4.8c-1.5.6-3.6.8-6 .8s-4.5-.2-6-.8z"/></svg></span><div style="flex:1;min-width:0"><b>自有 App / CMS</b>
+            <span><span class="cjk">透過 API 推進轉播單位</span><span class="cjk">原本的內容系統</span></span></div></div>
+          <div class="pl-out" style="--i:2"><span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1zM4 18a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1z"/></svg></span><div style="flex:1;min-width:0"><b>MP4 / MXF 下載</b>
+            <span><span class="cjk">播出端還需要原檔時，</span><span class="cjk">隨時取用</span></span></div></div>
+        </div>
+        <span class="pl-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h13M12 6l6 6-6 6"/></svg></span>
+        <div class="pl-clip">
+          <figure class="clip ar-916" style="height:262px;width:auto"><video src="./media/wc26-por-goal.mp4" poster="./media/wc26-por-goal.jpg" muted loop playsinline preload="metadata"></video></figure>
+          <p class="caption">葡萄牙 1-0 進球<small>LiveMode 直式成品</small></p>
+        </div>
+      </div>
+      <p class="mono" style="margin-top:14px"><span class="cjk">2026 FIFA 世界盃，LiveMode TV（泰國）34 場賽事。</span><span class="cjk">成品畫面自帶 LIVE MODE tv 台標與主播小窗。</span></p>
+    </div></div>
+  </section>
+
+  <!-- 15 · 支援運動 -->
+  <section class="slide" data-ch="3" data-notes="這張是「規模化」的另一個維度：不是更多客戶，是更多運動。|同一套偵測，籃球、棒球、足球、排球、網球、桌球、羽球、賽車、格鬥，到田徑游泳角力匹克球。開箱即用，不必訓練模型、不必逐項設定，排在賽程上就偵測得到。|緯來體育台是全賽程上線：賽程上每一種運動都跑同一條產線。這就是把「每場都要人盯」拿掉之後才做得到的事。">
+    <div class="head tight">
+      <div class="kicker in">03 · 規模化 · 全運動支援</div>
+      <h2 class="in">每一種運動，<span class="red">開箱即用</span></h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="bento">
+      <div class="bcell" style="--i:0"><svg viewBox="0 -960 960 960"><path d="M162-520h114q-6-38-23-71t-43-59q-18 29-30.5 61.5T162-520Zm522 0h114q-5-36-17.5-68.5T750-650q-26 26-43 59t-23 71ZM210-310q26-26 43-59t23-71H162q5 36 17.5 68.5T210-310Zm540 0q18-29 30.5-61.5T798-440H684q6 38 23 71t43 59ZM358-520h82v-278q-53 8-98.5 29.5T260-712q39 38 64.5 86.5T358-520Zm162 0h82q8-57 33.5-105.5T700-712q-36-35-81.5-56.5T520-798v278Zm-80 358v-278h-82q-8 57-33.5 105.5T260-248q36 35 81.5 56.5T440-162Zm80 0q53-8 98.5-29.5T700-248q-39-38-64.5-86.5T602-440h-82v278Zm-40-318Zm0 400q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg><span>籃球</span><em>UBA / TPBL / P.LEAGUE+ / EASL 等</em></div>
+      <div class="bcell" style="--i:1"><svg viewBox="0 -960 960 960"><path d="M224-288q45-35 70.5-85T320-480q0-57-25.5-107T224-672q-31 42-47.5 91T160-480q0 52 16.5 101t47.5 91Zm362.5 110.5Q638-195 680-230q-57-46-88.5-111.5T560-480q0-73 31.5-138.5T680-730q-42-35-93.5-52.5T480-800q-55 0-106.5 17.5T280-730q57 46 88.5 111.5T400-480q0 73-31.5 138.5T280-230q42 35 93.5 52.5T480-160q55 0 106.5-17.5ZM736-288q31-42 47.5-91T800-480q0-52-16.5-101T736-672q-45 35-70.5 85T640-480q0 57 25.5 107t70.5 85ZM480-480ZM324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5Z"/></svg><span>棒球</span><em>大專棒球聯賽 / CPBL 球隊等</em></div>
+      <div class="bcell" style="--i:2"><svg viewBox="0 -960 960 960"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm200-500 54-18 16-54q-32-48-77-82.5T574-786l-54 38v56l160 112Zm-400 0 160-112v-56l-54-38q-54 17-99 51.5T210-652l16 54 54 18Zm-42 308 46-4 30-54-58-174-56-20-40 30q0 65 18 118.5T238-272Zm293 108q25-4 49-12l28-60-26-44H378l-26 44 28 60q24 8 49 12t51 4q26 0 51-4ZM390-360h180l56-160-146-102-144 102 54 160Zm332 88q42-50 60-103.5T800-494l-40-28-56 18-58 174 30 54 46 4Z"/></svg><span>足球</span><em>大專足球聯賽 / FIFA 等</em></div>
+      <div class="bcell" style="--i:3"><svg viewBox="0 -960 960 960"><path d="M782-582q-31-87-101-145.5T520-798v64l262 152ZM320-434l120-70v-294q-32 3-62 14.5T320-756v322Zm-134 78 54-32v-302q-39 44-59.5 98T160-480q0 32 6.5 63.5T186-356Zm134 152 280-160-120-70-254 148q20 25 43 46t51 36Zm160 44q75 0 142-34t112-94l-54-30-264 152q16 3 32 4.5t32 1.5Zm294-196q13-29 19.5-60.5T800-480L520-642v138l254 148ZM480-480Zm0 400q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg><span>排球</span><em>UVL / TPVL 等</em></div>
+      <div class="bcell" style="--i:4"><svg viewBox="0 -960 960 960"><path d="m137-160-57-56 164-164q31-31 42.5-77.5T298-600q0-58 26-114t74-104q91-91 201-103t181 61q72 72 60 182T738-478q-48 48-104 74t-114 26q-97 0-142 11t-77 43L137-160Zm275-334q47 46 127 34t143-75q64-64 76.5-143.5T724-803q-48-48-125.5-36T456-763q-63 63-76.5 142.5T412-494ZM607-87q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113T833-87q-47 47-113 47T607-87Zm169.5-56.5Q800-167 800-200t-23.5-56.5Q753-280 720-280t-56.5 23.5Q640-233 640-200t23.5 56.5Q687-120 720-120t56.5-23.5ZM720-200Z"/></svg><span>網球</span><em>溫布頓等</em></div>
+      <div class="bcell" style="--i:5"><svg viewBox="0 -960 960 960"><path d="M283-381q19 19 42 28t48 9q25 0 48-9t42-28l36-36q19-19 28-42t9-48q0-25-9-47.5T499-596L347-748q-12-12-28.5-12T290-748L132-589q-12 12-12 28t12 28l151 152ZM743-80 508-315q-29 26-64.5 38T372-265q-40 0-77.5-15T227-325L75-476q-17-17-26-39.5T40-561q0-23 9-45.5T75-646l159-159q17-17 39.5-26t45.5-9q23 0 45.5 9t39.5 26l151 152q30 30 45 67.5t15 77.5q0 36-12.5 71.5T564-372l236 236-57 56Zm37-520q-58 0-99-41t-41-99q0-58 41-99t99-41q58 0 99 41t41 99q0 58-41 99t-99 41Zm0-80q25 0 42.5-17.5T840-740q0-25-17.5-42.5T780-800q-25 0-42.5 17.5T720-740q0 25 17.5 42.5T780-680Zm0-60ZM326-554Z"/></svg><span>桌球</span><em>各級賽事</em></div>
+      <div class="bcell" style="--i:6"><svg viewBox="0 -960 960 960"><path d="M337-410q55 1 94-37.5t39-94.5q0-29-13.5-54.5T422-642q-38-38-91.5-58T223-720q-31 0-47 15.5T160-660q0 53 16.5 103.5T229-467q22 23 49 40t59 17Zm347-228L557-765l255-121 18 176-146 72Zm88.5 76.5Q754-565 742-579l-14-15 109-52 2 20q3 19-5.5 35.5T808-566q-17 8-35.5 4.5ZM80-660q0-66 37.5-103T223-800q71 0 139 27t119 78q31 31 49.5 70t18.5 83q0 32-9.5 62T510-425l289 289-56 56-289-289q-26 19-55.5 29.5T337-330q-48-1-90.5-23T172-412q-45-51-68.5-115T80-660Zm235 95Z"/></svg><span>羽球</span><em>各級賽事</em></div>
+      <div class="bcell" style="--i:7"><svg viewBox="0 -960 960 960"><path d="M480-480Zm80 240q100 0 170-70t70-170q0-101-73.5-170.5T550-720q-48 0-93 11t-87 33l100 40q41 17 65.5 52.5T560-504q0 60-41.5 102T418-360H162q-2 24-2 54.5v65.5h400ZM176-440h240q27 0 45.5-18.5T480-504q0-19-10.5-34.5T440-562l-148-60q-42 37-71.5 84T176-440Zm384 280H160q-33 0-56.5-23.5T80-240v-90q0-98 37-183.5t100.5-149Q281-726 367-763t183-37q68 0 128 25t105 68.5Q828-663 854-605t26 125q0 66-25 124.5t-68.5 102Q743-210 684.5-185T560-160Z"/></svg><span>賽車</span><em>F1 / MotoGP 等</em></div>
+      <div class="bcell" style="--i:8"><svg viewBox="0 -960 960 960"><path d="M320-120q-17 0-28.5-11.5T280-160v-120h400v120q0 17-11.5 28.5T640-120H320Zm440-520v120q0 3-2 8l-30 152q-3 18-16.5 29T680-320H280q-18 0-31.5-11T232-360l-30-152q-2-5-2-8v-240q0-33 23.5-56.5T280-840h320q33 0 56.5 23.5T680-760v120q0-17 11.5-28.5T720-680q17 0 28.5 11.5T760-640ZM306-400h348l26-136v-24h-80v-200H280v224l26 136Zm14-160h240v-120H320v120Zm160-20Z"/></svg><span>格鬥運動</span><em>拳擊 / 泰拳等</em></div>
+      <div class="bcell" style="--i:9"><svg viewBox="0 -960 960 960"><path d="M440-200q-100 0-170-70t-70-170q0-11 1-22t3-22q-5 2-12 3t-12 1q-42 0-71-29t-29-71q0-42 27.5-71t69.5-29q33 0 59.5 18.5T274-614q33-30 75.5-48t90.5-18h440v160H680v80q0 100-70 170t-170 70ZM208.5-551.5Q220-563 220-580t-11.5-28.5Q197-620 180-620t-28.5 11.5Q140-597 140-580t11.5 28.5Q163-540 180-540t28.5-11.5ZM539-341q41-41 41-99t-41-99q-41-41-99-41t-99 41q-41 41-41 99t41 99q41 41 99 41t99-41Zm-42.5-42.5Q520-407 520-440t-23.5-56.5Q473-520 440-520t-56.5 23.5Q360-473 360-440t23.5 56.5Q407-360 440-360t56.5-23.5ZM440-440Z"/></svg><span>其他運動 IP</span><em>田徑 / 游泳 / 角力 / 匹克球等</em></div>
+      <div class="bcell bhero">
+        <img src="./media/spot-moments.png" alt="Spot Moments" style="height:40px;width:auto">
+        <p>全項目偵測<br>任何有觀眾的運動</p>
+      </div>
+    </div>
+      <p class="mono" style="margin-top:14px"><span class="cjk">已在緯來體育台全賽程上線：賽程上的每一種運動，都不必逐項設定、不必訓練模型。</span></p>
+    </div></div>
+  </section>
+
+  <!-- 16 · 客戶牆 -->
+  <section class="slide" data-ch="3" data-notes="數字放四個：五萬小時是累積收錄並標籤的 LIVE 賽事影音；20 多個球季；VBA 越南籃球聯盟三週 8 隊 1,510 支；味全龍 700 萬加 MOMO SPORTS 1,300 萬，是今年 3 到 9 月 Shorts 的觀看。|客戶分三群講：聯盟與球團是基本盤，銷售週期大約一個月，有訊號有賽事就有需求。電視台與媒體是成長引擎，但週期很長，下一頁講坑的時候會回來。海外：越南 VBA、泰國 TrueID、東亞超級聯賽。|核心團隊 6 個人，服務 50 多個聯盟與媒體。">
+    <div class="head tight">
+      <div class="kicker in">03 · 台灣的實戰</div>
+      <h2 class="in">從聯盟到電視台，再到海外</h2>
+    </div>
+    <div class="in"><div class="sd">
+      <div class="kpis">
+        <div class="kpi"><b><span data-count="50000">50,000</span><small>hr+</small></b><span>已收錄並標籤的<br>LIVE 賽事影音</span></div>
+        <div class="kpi"><b><span data-count="20">20</span><small>+</small></b><span>服務過的球季<br>職籃、職棒、職排、國際賽</span></div>
+        <div class="kpi hot"><b><span data-count="1510">1,510</span><small>支</small></b><span>越南職籃 VBA<br>三週、8 支球隊的產出</span></div>
+        <div class="kpi"><b><span data-count="2000">2,000</span><small>萬+</small></b><span>味全龍 + MOMO SPORTS<br>Shorts 觀看（3 到 9 月）</span></div>
+      </div>
+      <p class="mono" style="margin:16px 0 10px;text-align:center">合作客戶與賽事</p>
+      <div class="orgs" style="--org:60px;gap:14px 22px">
+      <div class="org" style="--i:0"><img src="./media/clients/vl-sport.jpg" alt="緯來體育台"><div class="t"><span class="zh">緯來體育台</span><span class="en">Videoland Sport</span></div></div>
+      <div class="org" style="--i:1"><img src="./media/clients/axn-sports.jpg" alt="AXN 運動頻道"><div class="t"><span class="zh">AXN 運動頻道</span><span class="en">AXN Sports</span></div></div>
+      <div class="org" style="--i:2"><img src="./media/clients/easl.jpg" alt="東亞超級聯賽"><div class="t"><span class="zh">東亞超級聯賽</span><span class="en">EASL</span></div></div>
+      <div class="org" style="--i:3"><img src="./media/clients/livemode-tv.jpg" alt="LiveMode TV"><div class="t"><span class="zh">LiveMode TV</span><span class="en">體育轉播</span></div></div>
+      <div class="org" style="--i:4"><img src="./media/clients/ministry-of-sports.jpg" alt="運動部"><div class="t"><span class="zh">運動部</span><span class="en">Ministry of Sports</span></div></div>
+      <div class="org" style="--i:5"><img src="./media/clients/tpvl.jpg" alt="台灣職業排球聯盟"><div class="t"><span class="zh">台灣職業排球聯盟</span><span class="en">TPVL</span></div></div>
+      <div class="org" style="--i:6"><img src="./media/clients/pleague.jpg" alt="P.LEAGUE+ 職籃聯盟"><div class="t"><span class="zh">P.LEAGUE+ 職籃聯盟</span><span class="en">P.LEAGUE+</span></div></div>
+      <div class="org" style="--i:7"><img src="./media/clients/tpbl.png" alt="台灣職業籃球聯盟"><div class="t"><span class="zh">台灣職業籃球聯盟</span><span class="en">TPBL</span></div></div>
+      <div class="org" style="--i:8"><img src="./media/clients/blia-cup.png" alt="佛光盃大學籃球邀請賽"><div class="t"><span class="zh">佛光盃大學籃球邀請賽</span><span class="en">BLIA Cup</span></div></div>
+      <div class="org" style="--i:9"><img src="./media/clients/sbl.jpg" alt="超級籃球聯賽"><div class="t"><span class="zh">超級籃球聯賽</span><span class="en">SBL</span></div></div>
+      <div class="org" style="--i:10"><img src="./media/clients/tyc.png" alt="TYC 青年籃球賽"><div class="t"><span class="zh">TYC 青年籃球賽</span><span class="en">Taiwan Youth Cup</span></div></div>
+      <div class="org" style="--i:11"><img src="./media/clients/new-taipei-kings.jpg" alt="新北國王"><div class="t"><span class="zh">新北國王</span><span class="en">New Taipei Kings</span></div></div>
+      <div class="org" style="--i:12"><img src="./media/clients/trueid.jpg" alt="泰國 TrueID"><div class="t"><span class="zh">泰國 TrueID</span><span class="en">TrueID Thailand</span></div></div>
+      <div class="org" style="--i:13"><img src="./media/clients/vba.jpg" alt="越南職業籃球聯賽"><div class="t"><span class="zh">越南職業籃球聯賽</span><span class="en">VBA</span></div></div>
+      <div class="org" style="--i:14"><div class="team-cluster">
+        <img src="./media/clients/wei-chuan-dragons.jpg" alt="味全龍">
+        <img src="./media/clients/ctbc-brothers.jpg" alt="中信兄弟">
+        <img src="./media/clients/uni-lions.jpg" alt="統一 7-ELEVEn 獅">
+        <img src="./media/clients/tsg-hawks.jpg" alt="台鋼雄鷹">
+        <img src="./media/clients/fubon-guardians.jpg" alt="富邦悍將">
+      </div><div class="t"><span class="zh">五支職棒球隊</span><span class="en">CPBL Teams</span></div></div>
+      <div class="org" style="--i:15"><div class="t" style="justify-content:center"><span class="zh" style="opacity:.55">DAZN / MOMOTV / 鏡新聞</span><span class="en">…and more</span></div></div>
+    </div>
+    </div></div>
+  </section>
+
+  <!-- 13 · 規模化路上的坑 -->
+  <section class="slide vc" data-ch="3" data-notes="講坑才可信。四個：|一、媒體的銷售週期是三年，運動是一個月。東森和華視都是 2023 第一次接觸、2026 才簽。|二、海外客戶簽得下來但留不住，遠端互動頻率不足。|三、AI 不是魔法：現在每一路訊號還要開一台 GPU 機器跑偵測，多機位時間差還要人校正。|四、全球品牌競品的壓力。我們贏在即時、在地、價格與全棧整合。|結論：規模化不是功能更多，是把「每場都要人盯」的環節一個一個拿掉。">
+    <div class="head">
+      <div class="kicker in">03 · 規模化</div>
+      <h2 class="in">路上踩過的坑</h2>
+    </div>
+    <div class="pits">
+      <div class="pit in"><div class="n">01</div><div><h3>媒體的銷售週期是三年，運動是一個月</h3><p>電視台從第一次接觸到簽約，花了三年。運動客戶有訊號、有賽事，一個月就決定。先拿快週期養團隊，再去啃慢週期。</p></div></div>
+      <div class="pit in"><div class="n">02</div><div><h3>海外簽得下來，留不住</h3><p>遠端互動頻率不夠、時區與語言成本高。多年約的業務要自己負責續約，不能簽完就交出去。</p></div></div>
+      <div class="pit in"><div class="n">03</div><div><h3>AI 不是魔法，是基礎建設</h3><p>每一路訊號要一台 GPU 機器各自跑偵測；多機位的時間差還要人校正。規模化卡住的常常是這種不性感的環節。</p></div></div>
+      <div class="pit in"><div class="n">04</div><div><h3>全球品牌的競爭</h3><p>國際競品有品牌信任。我們贏在即時（比賽當下）、在地團隊、價格，以及直播、剪輯、AI、資產管理一站式。</p></div></div>
+    </div>
+    <div class="takeaway in"><span class="mono">LESSON</span>規模化不是功能更多，是把「每場都要人盯」的環節一個一個拿掉。</div>
+  </section>
+
+  <!-- 14 · 一個法律系的人怎麼寫產品 -->
+  <section class="slide story vc" data-ch="3" data-notes="回到題目的另一半：AI 不只讓客戶的一個人做到一個團隊的事，也讓我這個法律系的人能自己寫產品。|2018 從零學程式，現在大部分功能是我跟 AI coding agent 一起寫的。核心團隊 6 個人，服務 50 多個聯盟與媒體。|照片是 2024 年在馬德里，Real Madrid Next。從嘉義的法律系教室到那裡，中間沒有一步是規劃好的。">
+    <div class="cols cols-75">
+      <div>
+        <div class="kicker in">03 · 另一半的故事</div>
+        <h2 class="in">AI 也讓一個法律系的人，<br/>能自己把產品寫出來</h2>
+        <p class="lead in" style="margin-top:28px">2018 年從零學程式。2026 年，Spot 大部分新功能是我和 AI coding agent 一起寫的。<strong>核心團隊 6 個人，服務 50 多個聯盟與媒體。</strong></p>
+        <div class="cols cols-2 in" style="gap:28px; margin-top:40px">
+          <div class="card"><div class="tag">對客戶</div><h3 style="font-size:32px">一個人盯整個週末的所有場次</h3></div>
+          <div class="card"><div class="tag">對我們自己</div><h3 style="font-size:32px">一個人寫過去一個團隊才寫得完的產品</h3></div>
+        </div>
+      </div>
+      <div class="in">
+        <div class="photo tilt" style="aspect-ratio: 11/10"><img src="./photos/s8-1.jpg" alt="2024 馬德里 Real Madrid Next" /></div>
+        <div class="cap">2024 · Madrid · Real Madrid Next</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 · 機會在哪裡 -->
+  <section class="slide" data-ch="4" data-notes="機會在哪裡，我只講一個判斷：運動是最後一塊真實的內容。|新聞、戲劇、短影音，越來越多是 AI 生成或改寫，觀眾開始分不清真假。運動賽事是真人、即時、結果未知、不能重拍，是唯一無法被 AI 生成的大眾內容。真實越稀缺，賽事內容的價值越高，這也是全世界賽事版權價格一直漲的原因。|但真實的內容，製作卻還是人工。大型賽會幾十場同時進行，沒人標記的串流就沒有精華；21 種運動的事件定義我們才剛建起來。AI 在這裡的角色不是生成內容，是把真實內容處理得更快、更多。|第三是市場：亞洲。日本職棒球團社群規模是中職的 4 到 5 倍，越南泰國有聯盟有觀眾；電視台流程改善空間極大但週期三年。國際競品在這些市場沒有在地團隊。">
+    <div class="head">
+      <div class="kicker in">04 · 給想踏入運動 × AI 的人</div>
+      <h2 class="in">機會在哪裡：運動是最後一塊<span class="red">真實</span>的內容</h2>
+    </div>
+    <div class="opps">
+      <div class="card in">
+        <div class="tag">缺口 01 · 真實</div>
+        <div class="big">唯一<small>真實的內容</small></div>
+        <h3>其他內容 AI 越來越多，運動不行</h3>
+        <ul>
+          <li>新聞、戲劇、短影音越來越多 AI 生成或改寫，<strong>觀眾開始分不清真假</strong></li>
+          <li>賽事是真人、即時、結果未知、不能重拍</li>
+          <li>真實越稀缺，賽事內容越值錢</li>
+        </ul>
+      </div>
+      <div class="card in">
+        <div class="tag">缺口 02 · 製作</div>
+        <div class="big">21<small>種運動</small></div>
+        <h3>真實的內容，製作卻還是人工</h3>
+        <ul>
+          <li>大型賽會<strong>幾十場同時進行</strong>，沒人標記的串流就沒有精華</li>
+          <li>籃球棒球之外：排球、羽球、桌球、田徑、格鬥，事件定義才剛開始</li>
+          <li>AI 的角色不是生成內容，是把真實內容<strong>處理得更快、更多</strong></li>
+        </ul>
+      </div>
+      <div class="card in">
+        <div class="tag">缺口 03 · 市場</div>
+        <div class="big">4–5<small>倍</small></div>
+        <h3>亞洲與媒體，沒人在地深耕</h3>
+        <ul>
+          <li>日本職棒球團社群規模是中職的 <strong>4 到 5 倍</strong></li>
+          <li>越南、泰國、菲律賓：有聯盟、有觀眾，即時精華還不成熟</li>
+          <li>電視台流程改善空間極大，但銷售週期三年，<strong>要耐心</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 · 創業者可以怎麼選 -->
+  <section class="slide vc" data-ch="4" data-notes="四條，都是我自己踩出來的。|一、從你親手做過一百次的事開始。痛點要親身，不然你賣不出「我懂你」。|二、先賣理解，再賣產品。PPT 出門不是魯莽，是最便宜的驗證。|三、先快週期，再慢週期。運動一個月、媒體三年，順序反了團隊會餓死。|四、AI 不是功能，是拿掉「人盯」。問自己：哪一個環節每場都要人盯？那就是你的產品。">
+    <div class="head">
+      <div class="kicker in">04 · 創業者可以怎麼選</div>
+      <h2 class="in">四條我自己踩出來的規則</h2>
+    </div>
+    <div class="rules">
+      <div class="r in"><div class="n">RULE 01</div><h3>從你親手做過一百次的事開始</h3><p>我剪過一兩百支 Highlight，所以我知道哪裡痛。痛點要親身，不然你賣不出「我懂你」。</p></div>
+      <div class="r in"><div class="n">RULE 02</div><h3>先賣理解，再賣產品</h3><p>一份簡報出門不是魯莽，是最便宜的驗證。對方付錢、而且回來要更多，才算過。</p></div>
+      <div class="r in"><div class="n">RULE 03</div><h3>先快週期，再慢週期</h3><p>運動客戶一個月決定，媒體三年。順序反了，團隊會先餓死。用快的養團隊，帶著案例去啃慢的。</p></div>
+      <div class="r in"><div class="n">RULE 04</div><h3>AI 不是功能，是拿掉「人盯」</h3><p>問自己：哪一個環節每場都要有人盯著？那就是你的產品。規模化就是把這些環節一個一個拿掉。</p></div>
+    </div>
+  </section>
+
+  <!-- 17 · 結尾 -->
+  <section class="slide end vc" data-ch="4" data-notes="收尾回到地圖。六年前一份 PPT，到今天。我問心無愧，真的努力過。|每一條路都沒有對錯。既然選了，就走下去；走久了，那條路就會變成對的路。|留聯絡方式，謝謝大家。">
+    <div class="cols cols-2">
+      <div>
+        <div class="kicker in">回頭看這張地圖</div>
+        <div class="big-q in" style="margin-top:28px">每一條路都沒有對錯。<br/><em>既然選了，就走下去。</em><br/>走久了，那條路就會變成對的路。</div>
+        <div class="contact in">
+          <b>洪頎茗 Jagger Hung</b> · Founder &amp; CEO, Spot<br/>
+          tryspot.app · jagger@tryspot.app
+        </div>
+      </div>
+      <div class="in">
+        <div class="vwall">
+          <video src="./media/web/kings-lin-three.mp4" poster="./media/web/kings-lin-three.jpg" muted loop playsinline preload="metadata"></video>
+          <video src="./media/web/easl-bench.mp4" poster="./media/web/easl-bench.jpg" muted loop playsinline preload="metadata"></video>
+          <video src="./media/web/videoland-baseball-commentary.mp4" poster="./media/web/videoland-baseball-commentary.jpg" muted loop playsinline preload="metadata"></video>
+          <video src="./media/web/volleyball-multiangle.mp4" poster="./media/web/volleyball-multiangle.jpg" muted loop playsinline preload="metadata"></video>
+        </div>
+        <div class="cap">tryspot.app · 2020 一份簡報 → 2026 · 50+ 聯盟與媒體</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- chrome -->
+  <div id="chrome">
+    <div id="rail">
+      <div class="ch" data-ch="1"><div class="fill"></div>01 · 非典型路徑</div>
+      <div class="ch" data-ch="2"><div class="fill"></div>02 · 一份簡報出門</div>
+      <div class="ch" data-ch="3"><div class="fill"></div>03 · 人工 → AI 產線</div>
+      <div class="ch" data-ch="4"><div class="fill"></div>04 · 機會在哪裡</div>
+    </div>
+    <div id="counter"><b>01</b> / 22</div>
+  </div>
+  <div id="timer">00:00</div>
+</div>
+
+<div id="notes"><div class="l">SPEAKER NOTES</div><ul></ul></div>
+<div id="help">← → 翻頁 · N 講稿 · T 計時 · F 全螢幕</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const counter = document.getElementById('counter');
+  const notes = document.getElementById('notes');
+  const notesList = notes.querySelector('ul');
+  const timerEl = document.getElementById('timer');
+  const rail = [...document.querySelectorAll('#rail .ch')];
+  let idx = 0;
+
+  // chapter ranges for the rail fill
+  const chapters = {};
+  slides.forEach((s, i) => {
+    const ch = +s.dataset.ch;
+    if (!chapters[ch]) chapters[ch] = [];
+    chapters[ch].push(i);
+  });
+
+  function fit() {
+    const de = document.documentElement;
+    const vv = window.visualViewport;
+    const w = Math.min(de.clientWidth || Infinity, window.innerWidth || Infinity, vv ? vv.width : Infinity);
+    const hgt = Math.min(de.clientHeight || Infinity, window.innerHeight || Infinity, vv ? vv.height : Infinity);
+    const s = Math.min(w / 1920, hgt / 1080);
+    const st = document.getElementById('stage');
+    st.style.transform = `translate(-50%, -50%) scale(${s})`;
+    st.style.transformOrigin = '50% 50%';
+  }
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+  window.addEventListener('load', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fit();
+
+  function render() {
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    document.body.classList.toggle('on-cover', idx === 0);
+    counter.innerHTML = `<b>${String(idx + 1).padStart(2, '0')}</b> / ${slides.length}`;
+    const cur = +slides[idx].dataset.ch;
+    rail.forEach(r => {
+      const ch = +r.dataset.ch;
+      r.classList.toggle('on', ch === cur);
+      r.classList.toggle('done', ch < cur);
+      const fill = r.querySelector('.fill');
+      if (ch === cur) {
+        const range = chapters[ch];
+        const pos = range.indexOf(idx) + 1;
+        fill.style.width = `${(pos / range.length) * 100}%`;
+      } else if (ch > cur) fill.style.width = '0%';
+    });
+    const n = slides[idx].dataset.notes || '';
+    notesList.innerHTML = n.split('|').filter(Boolean).map(t => `<li>${t}</li>`).join('');
+    location.hash = `#/${idx + 1}`;
+    wake(slides[idx]);
+    if (idx > 0 && !timerStart) startTimer();
+  }
+
+
+  function wake(slide) {
+    // restart the looping CSS animations so the story starts from 0% when the slide appears
+    slide.querySelectorAll('.sd, .sd *').forEach(el => { el.style.animationName = 'none'; });
+    void slide.offsetHeight;
+    slide.querySelectorAll('.sd, .sd *').forEach(el => { el.style.animationName = ''; });
+    document.querySelectorAll('video').forEach(v => {
+      if (slide.contains(v)) { try { v.currentTime = 0; } catch (_) {} const p = v.play(); if (p) p.catch(() => {}); }
+      else v.pause();
+    });
+    slide.querySelectorAll('[data-count]').forEach(el => {
+      const target = +el.dataset.count, t0 = performance.now(), dur = 1400;
+      const step = now => {
+        const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * e).toLocaleString('en-US');
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  function go(n) { idx = Math.max(0, Math.min(slides.length - 1, n)); render(); }
+
+  // timer
+  let timerStart = null, timerTick = null;
+  function startTimer() {
+    timerStart = Date.now();
+    timerTick = setInterval(() => {
+      const s = Math.floor((Date.now() - timerStart) / 1000);
+      const mm = String(Math.floor(s / 60)).padStart(2, '0'), ss = String(s % 60).padStart(2, '0');
+      timerEl.textContent = `${mm}:${ss}`;
+      timerEl.classList.toggle('warn', s >= 17 * 60 && s < 20 * 60);
+      timerEl.classList.toggle('over', s >= 20 * 60);
+    }, 500);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch (e.key) {
+      case 'ArrowRight': case 'ArrowDown': case ' ': case 'PageDown': case 'Enter': e.preventDefault(); go(idx + 1); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': case 'Backspace': e.preventDefault(); go(idx - 1); break;
+      case 'Home': go(0); break;
+      case 'End': go(slides.length - 1); break;
+      case 'n': case 'N': notes.classList.toggle('show'); break;
+      case 't': case 'T': timerEl.classList.toggle('show'); break;
+      case 'f': case 'F': document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); break;
+    }
+  });
+  document.addEventListener('click', e => {
+    if (e.target.closest('#notes')) return;
+    const x = e.clientX / window.innerWidth;
+    go(x < 0.25 ? idx - 1 : idx + 1);
+  });
+
+  const m = location.hash.match(/#\/(\d+)/);
+  idx = m ? Math.max(0, Math.min(slides.length - 1, +m[1] - 1)) : 0;
+  render();
+</script>
+</body>
+</html>
